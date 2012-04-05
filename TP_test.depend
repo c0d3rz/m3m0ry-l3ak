@@ -1,0 +1,100 @@
+# depslib dependency file v1.0
+1333564798 source:/home/sayantan/tp_test/TP_test/main.cpp
+	"main.h"
+
+1332963876 source:/home/sayantan/tp_test/TP_test/test.cpp
+
+1333477854 source:/home/sayantan/tp_test/TP_test/libGraphics.cpp
+	"libGraphics.h"
+
+1333389405 /home/sayantan/tp_test/TP_test/libGraphics.h
+	<iostream>
+	<cstdlib>
+	<string>
+	<vector>
+	<allegro.h>
+	<unistd.h>
+	"txtBox.h"
+	"libSound.h"
+	"data/gfx_util.h"
+
+1332451180 /home/sayantan/tp_test/TP_test/main.h
+	<iostream>
+	<cstdlib>
+	<string>
+	<allegro.h>
+	"libGraphics.h"
+	"libUsr.h"
+	"libSound.h"
+
+1329948958 /home/sayantan/tp_test/TP_test/txtBox.h
+	<iostream>
+	<climits>
+	<allegro.h>
+
+1330357172 source:/home/sayantan/tp_test/TP_test/txtBox.cpp
+	"txtBox.h"
+
+1327743619 /home/sayantan/tp_test/TP_test/gfx_util.h
+
+1333473319 /home/sayantan/tp_test/TP_test/data/gfx_util.h
+
+1328305273 source:/home/sayantan/tp_test/TP_test/libClParser.cpp
+	"libClParser.h"
+
+1328304934 /home/sayantan/tp_test/TP_test/libClParser.h
+	<iostream>
+	<cstdlib>
+	<vector>
+	<string>
+
+1333565208 /home/sayantan/tp_test/TP_test/libUsr.h
+	<iostream>
+	<cstdlib>
+	<fstream>
+	<string>
+	<vector>
+	<dirent.h>
+	<fnmatch.h>
+	<sys/stat.h>
+	<allegro.h>
+	"libGraphics.h"
+	"libCrypt.h"
+
+1333565766 source:/home/sayantan/tp_test/TP_test/libUsr.cpp
+	"libUsr.h"
+
+1330978958 /home/sayantan/tp_test/TP_test/libB64.h
+	<iostream>
+	<string>
+
+1330978709 source:/home/sayantan/tp_test/TP_test/libB64.cpp
+	"libB64.h"
+
+1333400736 source:/home/sayantan/tp_test/TP_test/libSound.cpp
+	"libSound.h"
+
+1333390885 /home/sayantan/tp_test/TP_test/libSound.h
+	<iostream>
+	<cstdlib>
+	<stdio.h>
+	<fmodex/fmod.hpp>
+	<fmodex/fmod_errors.h>
+	"libGraphics.h"
+
+1332626372 /home/sayantan/tp_test/TP_test/libVernam.h
+	<iostream>
+	<cstdlib>
+	<string>
+
+1332626095 source:/home/sayantan/tp_test/TP_test/libVernam.cpp
+	"libVernam.h"
+
+1332966842 /home/sayantan/tp_test/TP_test/libCrypt.h
+	<iostream>
+	<cstdlib>
+	<string>
+
+1332966848 source:/home/sayantan/tp_test/TP_test/libCrypt.cpp
+	"libCrypt.h"
+
