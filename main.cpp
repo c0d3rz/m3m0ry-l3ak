@@ -103,6 +103,7 @@ int main(int argc, char *argv[])
 
     usrProfile usrInst;
     bool calledOnce = false;    // not yet called
+    bool isShown = false;   // not yet shown
 
     usrInst.usrProfileInit();   // about to add more sounds for the key presses
     while(!key[KEY_ESC])
@@ -111,8 +112,15 @@ int main(int argc, char *argv[])
         if(!calledOnce)
         {
             usrInst.load_profile();
-            usrInst.display_level_intro();
             calledOnce = true;
+        }
+
+        if(!isShown)
+        {
+            cout<<"Inside the display_intr part check bool\n";
+            usrInst.display_level_intro();  // for some reason this is not working properly
+            // first create the levelNum checking function
+            isShown = true;
         }
         update_screen();
     }

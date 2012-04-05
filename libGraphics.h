@@ -9,7 +9,8 @@
 #include <allegro.h>
 #include <unistd.h>
 #include "txtBox.h"
-#include "libSound.h"   // why the hell is this not working????!!!!!
+#include "libSound.h"
+#include "libUsr.h"
 #include "data/gfx_util.h"
 
 // Macros

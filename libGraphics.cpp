@@ -527,7 +527,7 @@ string query_uname()
     return inpUsrName;
 }
 
-void display_intro(int mode)
+void display_intro(int mode, string inpEpName)
 {
     // the mode will be for each and every mission rather than double checking mission and the level
     switch(mode)

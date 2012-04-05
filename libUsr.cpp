@@ -158,19 +158,31 @@ void usrProfile::load_profile()
 
 void usrProfile::display_level_intro()
 {
-    // check the level number and the mission number and appropriately display the appropriate level/mission story
-    // the algo would be to check the levelNum and the missionNum and then send the appropriate param
-    // to a function in the libGraphics part that will show the appropriate the story and then wait
-    // for the user to press a key
+    // working principle of this function
+    // This function will be checking the usrLvl and based on this variable as well as the
+    // missionNum
 
-    cout<<usrLvl<<endl; // this part is working
-    // the first level will be having 12 missions -- main ones apart from the ones that will be
-    // set for the user -- for the starting part the 0 value will be checked and then after displaying
-    // the intro gfx for the user the usrLevel variable will be incremented to one
+    // if the level number is zero -- that means that the profile was created for the first time
+    // player -- still make a check of the missionNum -- the value should be zero for level 0
+    // after displaying the intro gfx -- this should increment the usrLvl variable to 1 and
+    // the mission num for level num should be zero at first -- the maximum number of
+    // missions available for the user in level 1 is 6
 
-    // employ the technique that I had written in the paste part of the opensource community
-
-    // first check the usrLevel -- if the user level is zero - then pass the INTRO macro
+    // let the coding begin
+    cout<<usrLvl<<endl;
+    switch(usrLvl)
+    {
+        case INTRO:
+            cout<<"The profile file has recently been created\n";
+            if(missionNum < 0 || missionNum > 0)
+            {
+                cout<<"Exiting -- corrupt profile file read\n";
+                break;
+            }
+            display_intro(INTRO, ".Intro"); // other than this level 0 -- missions will have specific
+            //names of their's -- specific ones
+        break;
+    }
 }
 
 // ---------------------------------- Internal functions ----------------------------------------------------
