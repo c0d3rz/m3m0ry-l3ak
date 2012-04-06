@@ -74,6 +74,7 @@ usrProfile::usrProfile()
     fileCount = 0;
     profileDirPath = PROFILEDIRPATH;
     loadProfile = false;
+    isNewProfileCreated = false;    // assuming that new profile is not created till now
 }
 
 void usrProfile::load_profile()
@@ -86,6 +87,7 @@ void usrProfile::load_profile()
     if(fileCount > 1)
     {
         allegro_message("Only one profile can be handled");
+        destroy_instances();
         allegro_exit();
     }
     else if(fileCount < 1)
@@ -113,6 +115,7 @@ void usrProfile::load_profile()
         // the dynVal is the one that will be used to do the dynamic memory allocation
 
         _filewrite_(_usrName_, hackVal, accBal, usrLvl, missionNum, isMissionComplete, isLevelComplete);    // write the code for this function
+        isNewProfileCreated = true; // indicates that the new profile has been created
     }
     else if (fileCount == 1)
     {
@@ -169,20 +172,16 @@ void usrProfile::display_level_intro()
     // missions available for the user in level 1 is 6
 
     // let the coding begin
-    cout<<usrLvl<<endl;
-    switch(usrLvl)
+    //cout<<usrLvl<<endl;
+    if(isNewProfileCreated)
     {
-        case INTRO:
-            cout<<"The profile file has recently been created\n";
-            if(missionNum < 0 || missionNum > 0)
-            {
-                cout<<"Exiting -- corrupt profile file read\n";
-                break;
-            }
-            display_intro(INTRO, ".Intro"); // other than this level 0 -- missions will have specific
-            //names of their's -- specific ones
-        break;
+        cout<<"New Profile created\n";  // now read from the newly created profile file
+        _usrName_.clear();
+        _fileread_(_usrName_, hackVal, accBal, usrLvl, missionNum, isMissionComplete, isLevelComplete);
     }
+    else
+        cout<<"Reading pre created profile\n";
+    cout<<hackVal<<"\t"<<accBal<<"\t"<<usrLvl<<"\t"<<_usrName_<<"\t"<<missionNum<<"\t"<<isMissionComplete<<"\t"<<isLevelComplete<<endl;
 }
 
 // ---------------------------------- Internal functions ----------------------------------------------------
@@ -263,15 +262,15 @@ void usrProfile::_filewrite_(std::string &inpUname, long &inpHackVal, long &inpA
 void usrProfile::_fileread_(std::string &inpUname, long &inpHackVal, long &inpAccBal, int &inpUsrLevel, int &inpMissionNum, int &inpIsMissionComplete, int &inpIsLevelComplete)
 {
     // clear the variables of the previous data while reading profile file
-    inpUname.clear();
-    inpHackVal = 0;
-    inpAccBal = 0;
-    inpUsrLevel = 0;
+    //inpUname.clear();
+    //inpHackVal = 0;
+    //inpAccBal = 0;
+    //inpUsrLevel = 0;
 
     // clearing the mission and level related variables
-    inpMissionNum = 0;
-    inpIsMissionComplete = 0;
-    inpIsLevelComplete = 0;
+    //inpMissionNum = 0;
+    //inpIsMissionComplete = 0;
+    //inpIsLevelComplete = 0;
 
 
     dynVal = 0; // before any mishap happens better make it zero
@@ -295,6 +294,7 @@ void usrProfile::_fileread_(std::string &inpUname, long &inpHackVal, long &inpAc
         destroy_instances();
         allegro_exit();
     }
+    cout<<"After readFile check\n";
 
     // read the values accordingly
     inpHackVal = pack_igetl(readFile);
@@ -305,6 +305,7 @@ void usrProfile::_fileread_(std::string &inpUname, long &inpHackVal, long &inpAc
     inpMissionNum = pack_igetw(readFile);
     inpIsMissionComplete = pack_igetw(readFile);
     inpIsLevelComplete = pack_igetw(readFile);
+    cout<<"After reading the basic files\n";
 
     dynAr = new char[dynVal];   // dynamically allocate memory
     pack_fgets(dynAr, (dynVal + 1), readFile);
@@ -312,9 +313,12 @@ void usrProfile::_fileread_(std::string &inpUname, long &inpHackVal, long &inpAc
     // copy from the memory into the string that is provided
     for(int index = 0; index < (dynVal + 1); index++)
         inpUname.push_back(dynAr[index]);
+    cout<<"After reading the userName from the file\n";
 
     pack_fclose(readFile);  // close the pack_read_file_instance
     delete []dynAr; // free the dynamically allocated memory
+
+    cout<<"deleting the memory taken for dynamic memory allocation\n";
 
     // after this I will have to deploy the decoding techniques
     inpHackVal = _ver_decode_(inpHackVal, longKey);
@@ -325,9 +329,13 @@ void usrProfile::_fileread_(std::string &inpUname, long &inpHackVal, long &inpAc
     inpMissionNum = _ver_decode_(inpMissionNum, intKey);
     inpIsMissionComplete = _ver_decode_(inpIsMissionComplete, intKey);
     inpIsLevelComplete = _ver_decode_(inpIsLevelComplete, intKey);
+    cout<<"decoding the non-string variables\n";
 
     // Now release the decoding functions related to string
     inpUname = base64_decode(inpUname);
+    cout<<inpUname<<endl;
     inpUname = _ver_decode_(inpUname, strKey);
     _unpad_string_(inpUname);   // proper string value done
+
+    cout<<"String operations done\n";
 }

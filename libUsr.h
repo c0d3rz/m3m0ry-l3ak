@@ -56,6 +56,7 @@ class usrProfile
         int isMissionComplete;  // 0 -> not completed, 1 -> not completed, default value will be set
         // after checking the missionNum variable value -- if missionNum = 0 --> value = 0
         int isLevelComplete;    // same as the aforewritten
+        bool isNewProfileCreated;
 
         bool _is_dir_exist_(std::string inpDirPath);    // check dir existence
         void _filewrite_(std::string &inpUname, long &inpHackVal, long &inpAccBal, int &inpUsrLevel, int &inpMissionNum, int &inpIsMissionComplete, int &inpIsLevelComplete);
