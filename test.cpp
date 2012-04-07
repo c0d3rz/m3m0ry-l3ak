@@ -1,4 +1,4 @@
-#include <iostream>
+/*#include <iostream>
 #include <cstdlib>
 
 #include <allegro.h>
@@ -52,4 +52,4 @@ int main(int argc, char *argv[])
     allegro_exit();
     return 0;
 }
-END_OF_MAIN();
+END_OF_MAIN();/**/

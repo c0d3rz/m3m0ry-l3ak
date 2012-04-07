@@ -1,14 +1,14 @@
 # depslib dependency file v1.0
-1333744084 source:/home/sayantan/tp_test/TP_test/main.cpp
+1333819594 source:/home/sayantan/tp_test/TP_test/main.cpp
+	"main.h"
 
-1333745570 source:/home/sayantan/tp_test/TP_test/test.cpp
-	<iostream>
+1333819567 source:/home/sayantan/tp_test/TP_test/test.cpp
 	<cstdlib>
 	<allegro.h>
 	"libGraphics.h"
 	"libUsr.h"
 
-1333663993 source:/home/sayantan/tp_test/TP_test/libGraphics.cpp
+1333819647 source:/home/sayantan/tp_test/TP_test/libGraphics.cpp
 	"libGraphics.h"
 
 1333663958 /home/sayantan/tp_test/TP_test/libGraphics.h
@@ -53,7 +53,7 @@
 	<vector>
 	<string>
 
-1333746687 /home/sayantan/tp_test/TP_test/libUsr.h
+1333817300 /home/sayantan/tp_test/TP_test/libUsr.h
 	<iostream>
 	<cstdlib>
 	<fstream>
@@ -66,7 +66,7 @@
 	"libGraphics.h"
 	"libCrypt.h"
 
-1333749524 source:/home/sayantan/tp_test/TP_test/libUsr.cpp
+1333819684 source:/home/sayantan/tp_test/TP_test/libUsr.cpp
 	"libUsr.h"
 
 1330978958 /home/sayantan/tp_test/TP_test/libB64.h

@@ -736,13 +736,15 @@ void _handle_event_(BITMAP *consoleTextBmp, int keyRead, txtBox& inpObj, string&
                 // After completing the display of the text in the credits part -- any key pressed
                 // gets displayed in the terminal -- better clear the terminal screen after dislaying the credits
             }
-            else
+            else if(checkBootLvl)
             {
                 // pass the input command to the tokenizer -- the tokenizer still needs some more tweaking to be done
                 // the file path separator is throwing errors leading to the stoppage of the tokenizing
                 cout<<"Will be sending the inpCliStr to the tokenizer\n";
                 inpCliStr.clear();
             }
+            else
+                inpCliStr.clear();
         break;
         case KEY_LEFT:
             inpObj.getxy(txtBoxPosx, txtBoxPosy);

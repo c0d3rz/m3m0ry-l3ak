@@ -190,7 +190,7 @@ void usrProfile::display_level_intro()
         if(missionNum == 0)   // that's good
         {
             // call the function that will display the first cutscenes
-            display_level_intro(INTRO, ".Init");
+            display_intro(INTRO, ".Init");
         }
         else
         {

@@ -1,4 +1,4 @@
-/*#include "main.h"
+#include "main.h"
 
 using namespace std;
 
@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
         Create the function that will display the story based on the level number the user is in.
     */
 
-    /*graphics_init(WINDOW, 1024, 768);
+    graphics_init(WINDOW, 1024, 768);
     sfx.play_sound(FSND);   // No level check for this -- the music will be played one after the other
 
     // redesigning the sound library first
