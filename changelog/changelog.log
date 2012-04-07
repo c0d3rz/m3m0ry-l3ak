@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2012.2.9)  1 APR 2012 02:19
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2012.2.9)  7 APR 2012 19:39
 entering extended mode
  %&-line parsing enabled.
 **changelog.tex
@@ -167,17 +167,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 18--22
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 24--30
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 32--33
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 34--35
+Underfull \hbox (badness 10000) in paragraph at lines 24--25
 
  []
 
@@ -187,10 +177,10 @@ Underfull \hbox (badness 10000) in paragraph at lines 34--35
 Here is how much of TeX's memory you used:
  730 strings out of 495062
  9871 string characters out of 1182645
- 62579 words of memory out of 3000000
+ 60579 words of memory out of 3000000
  3964 multiletter control sequences out of 15000+50000
  7280 words of font info for 26 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
- 23i,6n,19p,369b,187s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 23i,6n,19p,219b,187s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on changelog.dvi (1 page, 3272 bytes).
+Output written on changelog.dvi (1 page, 1648 bytes).

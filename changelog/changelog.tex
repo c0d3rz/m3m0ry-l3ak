@@ -4,34 +4,24 @@
 
 \begin{document}
 
-\title{Changelog v21 devRelease}	% give document title here
+\title{Changelog v23 devRelease}	% give document title here
 \author{war10ck}	% give author name here
 \date{\today}
 \maketitle
 
-\section{Changelog for dev release v21:}
+\section{Changelog for dev release v23:}
 Issues Resolved:\newline
-1. Limited charEntry in the accept\_username function. 8 chars supported, all types of chars supported - can has 1337 skillz.\newline
-2. Profile fileRead and fileWrite functions written with proper encryption schemes. Two types of encryption applied. Final version will have changed internal keys and hence the final version will not be updated in the code-page. Implementation of pack\_fwrite and pack\_fread functions in the profile read and write functions.\newline
-3. Removal of the backend SEG FAULT as instructed by cr4zy\_d33p. Issue with freeing memory.\newline
+1. Read\_file when new profile created.\newline
+2. Reduced size of the uname\_acceptance BMP as well as the text\_image created using allocBitmap().\newline
+3. Cutscene display function under test environment -- needs more work. Primary part completed to a certain extent.\newline
 
 Issues to be resolved:\newline
-1. Reduce size of uname\_acceptance BMP as well as the textImage.\newline
-2. Design level zero work before moving on to the main level design. Need new gfx for levels.\newline
-3. Design of the AI\_SERVER.\newline
-
-\section{FMOD installation:}
-Some people who are downloading the devReleases might start to come up with problems from devRelease 20. So I thought I should write this small setup manual for running FMOD that might be starting to give problems -- the compiler will refuse to build the project. Follow these steps and you should be fine:\newline
-1. Get the respective fmod lib file from www.fmod.org\newline
-2. Extract the contents of the lib file in some directory -- especially the api directory is the important one.\newline
-3. Then use the command in the terminal to acquire super user access.\newline
-4. Navigate to the respective api directory and type in the command ``make install".\newline
-Use the linker directive -lfmodex with g++ and you should be fine while working with FMOD.\newline
+1. Design cutscene display function -- check proper levelNum and missionNum for this. Work is underway.\newline
+2. Correct the algorithm for redisplaying the cutscene based on the missionComplete status.\newline
+3. Check out bug that might exist in the display\_terminal handle event function.\newline
 
 \section{Note to developers}
-Earlier I thought that I would provide a big update after some time. But the update took long and little could I implement in this time. Hence I will try a different approach. Apart from that, I have implemented a new sound handling lib and created the libSound. I also need to find out some more data for sfx and create some for the gfx.\newline
-
-P.P.S. I need padding to be done for all types of variables before they are encoded and then write them in the file.\newline
+This is another update. Work is going on. I have some distractions coming up and these might get stronger in the near future. I just want you guys to pray that I can get what I want to create/do.\newline
 
 Happy Coding!!!\newline
 \pagebreak
