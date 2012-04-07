@@ -533,6 +533,10 @@ void display_intro(int mode, string inpEpName)
     switch(mode)
     {
         case INTRO: // this is for the level zero part
+            // display the required gfx and also play the appropriate sound for that part -- check
+            // if the sound can be played properly played or not
+
+            // create gfx for the INTRO -- level zero -- this will be a bit big cutscene.
         break;
     }
 }

@@ -25,7 +25,7 @@
 #define INCOMPLETE 0
 
 #define INTRO 0
-#define INIT 1
+#define INIT 10
 
 
 class usrProfile

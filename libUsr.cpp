@@ -182,6 +182,23 @@ void usrProfile::display_level_intro()
     else
         cout<<"Reading pre created profile\n";
     cout<<hackVal<<"\t"<<accBal<<"\t"<<usrLvl<<"\t"<<_usrName_<<"\t"<<missionNum<<"\t"<<isMissionComplete<<"\t"<<isLevelComplete<<endl;
+
+    if(usrLvl == 0)
+    {
+        // check if the usrLvl is zero or not
+        cout<<"UsrLvl is zero\n";   // usrLvl is checked
+        if(missionNum == 0)   // that's good
+        {
+            // call the function that will display the first cutscenes
+            display_level_intro(INTRO, ".Init");
+        }
+        else
+        {
+            allegro_message("Profile file corrupted");
+            destroy_instances();
+            allegro_exit();
+        }
+    }
 }
 
 // ---------------------------------- Internal functions ----------------------------------------------------
