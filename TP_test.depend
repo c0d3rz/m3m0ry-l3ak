@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1333819594 source:/home/sayantan/tp_test/TP_test/main.cpp
-	"main.h"
+1333886358 source:/home/sayantan/tp_test/TP_test/main.cpp
 
-1333819567 source:/home/sayantan/tp_test/TP_test/test.cpp
+1333886383 source:/home/sayantan/tp_test/TP_test/test.cpp
+	<iostream>
 	<cstdlib>
 	<allegro.h>
 	"libGraphics.h"

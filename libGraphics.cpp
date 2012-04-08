@@ -17,6 +17,7 @@ BITMAP *consoleImg; // the command_prompt/terminal
 BITMAP *creditImg;  // display credit image
 BITMAP *loginBckImg;    // the login screen/uname_passwd login image background
 BITMAP *upQueryImg;    // the username and passwd query image
+BITMAP *mainBgImg;  // the main background image
 DATAFILE *gfxDat;   // the gfx_datafile
 // ---------------------------------------------
 
@@ -63,10 +64,12 @@ void create_instances()
     loginBckImg = (BITMAP *)gfxDat[UNAME_LOGIN_BCK_BMP].dat;
     //upQueryImg = (BITMAP *)gfxDat[UN_PW_QUERY_BMP].dat;
     upQueryImg = (BITMAP *)gfxDat[UN_PW_QUERY_DUP_BMP].dat;
+    mainBgImg = (BITMAP *)gfxDat[BCK_2_BMP].dat;
 
     // error checking part
     if(gfx_error_handler(bootImg) && gfx_error_handler(splashImg) && gfxDat && gfx_error_handler(projNameImg) && gfx_error_handler(consoleImg)\
-    && gfx_error_handler(creditImg) && gfx_error_handler(secTempStorage) && gfx_error_handler(loginBckImg) && gfx_error_handler(upQueryImg));
+    && gfx_error_handler(creditImg) && gfx_error_handler(secTempStorage) && gfx_error_handler(loginBckImg) && gfx_error_handler(upQueryImg)\
+    && gfx_error_handler(mainBgImg));
     else
     {
         allegro_message("Error loading game resource files in memory");
@@ -530,6 +533,8 @@ string query_uname()
 void display_intro(int mode, string inpEpName)
 {
     // the mode will be for each and every mission rather than double checking mission and the level
+    txtBox cutScInst;   // cutscene instance
+
     switch(mode)
     {
         case INTRO: // this is for the level zero part
@@ -537,6 +542,36 @@ void display_intro(int mode, string inpEpName)
             // if the sound can be played properly played or not
 
             // create gfx for the INTRO -- level zero -- this will be a bit big cutscene.
+
+            // first part will be containing a display of the terminal along with the blitting
+            // of the webbrowser showing the arrest of the antagonist.
+
+            // so first I need to display the display_terminal() -- as in I am not calling that function
+            // I will just blit that image on the double buffer
+
+            // before I proceed with the cutscenes always remember -- remove the keyboard
+            // after finishing the cutscene -- install the keyboard again
+            remove_keyboard();
+            clear_to_color(screen, CBLACK);
+            blit_on_dBuffer(mainBgImg, 0, 0, OPAQ);
+
+            // now display the terminal image
+            //blit_on_dBuffer(consoleImg, 200, 200, TRANS);   // now display some commands on the
+            // create the other primitives
+            BITMAP *cutScText = allocBITMAP(76, 27, text_length(font, "D"), text_height(font));
+            cutScInst.cursorVisible = true;
+            cutScInst.curColor = cWHITE;
+            cutScInst.txtColor = cGREEN;
+            cutScInst.init(76, 27, cutScText, font);
+
+            cutScInst.writeText("n@$h> netmap -v -A static.internic.lan -port 3221\m");
+            cutScInst.writeText("\nStarting netmap v1.0\n");
+            cutScInst.writeText("Loaded 30 scripts for scanning");  // need to use the sequence writer
+            // once again -- other wise this will take a hell amount of time
+            blit(cutScText, consoleImg, 0, 0, 10, 40, cutScText->w, cutScText->h);
+            blit_on_dBuffer(consoleImg, 200, 200, TRANS);
+            update_screen();
+            install_keyboard();
         break;
     }
 }
