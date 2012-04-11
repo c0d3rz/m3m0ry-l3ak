@@ -122,6 +122,8 @@ int main(int argc, char *argv[])
             // first create the levelNum checking function
             isShown = true;
         }
+        // some seg fault is occuring leading to the crash of the program
+        // check out the crash of that -- checking to be done in the testBed
         update_screen();
     }
     sfx.stop_sound(FSND);

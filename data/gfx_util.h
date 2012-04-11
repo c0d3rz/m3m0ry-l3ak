@@ -1,6 +1,6 @@
 /* Allegro datafile object indexes, produced by dat v4.2.2, Unix */
 /* Datafile: gfx_util.dat */
-/* Date: Tue Apr  3 22:45:19 2012 */
+/* Date: Thu Apr 12 02:45:01 2012 */
 /* Do not hand edit! */
 
 #define BCK_2_BMP                        0        /* BMP  */
@@ -17,4 +17,5 @@
 #define UN_PW_QUERY_DUP_BMP              11       /* BMP  */
 #define UNAME_LOGIN_BCK_BMP              12       /* BMP  */
 #define VIDL0_BMP                        13       /* BMP  */
+#define WEBBROWSER_BMP                   14       /* BMP  */
 

@@ -191,6 +191,9 @@ void usrProfile::display_level_intro()
         {
             // call the function that will display the first cutscenes
             display_intro(INTRO, ".Init");
+
+            // cleaned up the debug part that was implemented here
+            // cleaning up other files that were debugged
         }
         else
         {

@@ -44,8 +44,10 @@ int main(int argc, char *argv[])
         if(!showedOnce) // there should also be a check on whether the mission has been failed or not
         // in that case again show the level intro
         {
-            profileInst.display_level_intro();  // start debugging from this part of the code
+            profileInst.display_level_intro();
             showedOnce = true;
+
+            // removal of te debug codes are done
         }
     }
     destroy_instances();

@@ -18,6 +18,7 @@ BITMAP *creditImg;  // display credit image
 BITMAP *loginBckImg;    // the login screen/uname_passwd login image background
 BITMAP *upQueryImg;    // the username and passwd query image
 BITMAP *mainBgImg;  // the main background image
+BITMAP *webBrowserImg;  // the web browser image
 DATAFILE *gfxDat;   // the gfx_datafile
 // ---------------------------------------------
 
@@ -65,11 +66,12 @@ void create_instances()
     //upQueryImg = (BITMAP *)gfxDat[UN_PW_QUERY_BMP].dat;
     upQueryImg = (BITMAP *)gfxDat[UN_PW_QUERY_DUP_BMP].dat;
     mainBgImg = (BITMAP *)gfxDat[BCK_2_BMP].dat;
+    webBrowserImg = (BITMAP *)gfxDat[WEBBROWSER_BMP].dat;
 
     // error checking part
     if(gfx_error_handler(bootImg) && gfx_error_handler(splashImg) && gfxDat && gfx_error_handler(projNameImg) && gfx_error_handler(consoleImg)\
     && gfx_error_handler(creditImg) && gfx_error_handler(secTempStorage) && gfx_error_handler(loginBckImg) && gfx_error_handler(upQueryImg)\
-    && gfx_error_handler(mainBgImg));
+    && gfx_error_handler(mainBgImg) && gfx_error_handler(webBrowserImg));
     else
     {
         allegro_message("Error loading game resource files in memory");
@@ -132,7 +134,7 @@ void display_boot_seq()
     // the sequence has been populated
     // now let's pass this vector to some obscure function that will the work of displaying this
 
-    _seq_display_(bootSeq, bootImg, 200, 100, 10, 10, 45, 30, false, CWHITE);  // lower the size of the allocation of the text
+    _seq_display_(bootSeq, bootImg, 200, 100, 10, 10, 45, 30, false, CWHITE, CHBYCH);  // lower the size of the allocation of the text
     // bitmap -- the faster the display
     install_keyboard();
 }
@@ -322,7 +324,7 @@ void display_credits()
 
     credVec.push_back("[Hit any key to return back to the console]");
 
-    _seq_display_(credVec, creditImg, 75, 20, 5, 20, 150, 250, false, CTXTCOL);  // since it is not some vid display
+    _seq_display_(credVec, creditImg, 75, 20, 5, 20, 150, 250, false, CTXTCOL, CHBYCH);  // since it is not some vid display
     // Issue resolved using the remove and install keyboard functions
     install_keyboard(); // the bug that was here in the last release has been fixed
     // the following allegro built-in fucntion helped in solving this
@@ -533,7 +535,6 @@ string query_uname()
 void display_intro(int mode, string inpEpName)
 {
     // the mode will be for each and every mission rather than double checking mission and the level
-    txtBox cutScInst;   // cutscene instance
 
     switch(mode)
     {
@@ -555,21 +556,56 @@ void display_intro(int mode, string inpEpName)
             clear_to_color(screen, CBLACK);
             blit_on_dBuffer(mainBgImg, 0, 0, OPAQ);
 
-            // now display the terminal image
-            //blit_on_dBuffer(consoleImg, 200, 200, TRANS);   // now display some commands on the
-            // create the other primitives
-            BITMAP *cutScText = allocBITMAP(76, 27, text_length(font, "D"), text_height(font));
-            cutScInst.cursorVisible = true;
-            cutScInst.curColor = cWHITE;
-            cutScInst.txtColor = cGREEN;
-            cutScInst.init(76, 27, cutScText, font);
+            vector<string> lvlzIntroTxt;
+            lvlzIntroTxt.push_back("n@$h> netmap -v -A static.internic.lan");
+            lvlzIntroTxt.push_back("Starting netmap v1.0\n");
+            lvlzIntroTxt.push_back("Loaded 30 scripts for scanning");
+            lvlzIntroTxt.push_back("Initiating ping scan");
+            lvlzIntroTxt.push_back("Scanning 218.92.64.48[2 ports]");
+            lvlzIntroTxt.push_back("Completed ping scan -- ttl elapsed[total number of hosts 1]");
+            lvlzIntroTxt.push_back("Initiating parallel DNS resolution of 1 host");
+            lvlzIntroTxt.push_back("Completed parallel DNS resolution");
+            lvlzIntroTxt.push_back("Initiating connect scan");
+            lvlzIntroTxt.push_back("Scanning 218.92.64.48[100 ports]");
+            lvlzIntroTxt.push_back("Discovered open port 80/tcp on 218.92.64.48\nCompleted Connect Scan");
+            lvlzIntroTxt.push_back("NSE: Script Scanning completed.\nHost 218.92.64.48 is up (0.36s latency).\nInteresting ports on 216.218.248.135:\
+Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed ssh\n80/tcp  open   http    Apache httpd 2.2.20 ((Unix))\
+\n|_ html-title: internic.lan: This is Secure Internic LAN\n\n443/tcp closed https");
 
-            cutScInst.writeText("n@$h> netmap -v -A static.internic.lan -port 3221\m");
-            cutScInst.writeText("\nStarting netmap v1.0\n");
-            cutScInst.writeText("Loaded 30 scripts for scanning");  // need to use the sequence writer
-            // once again -- other wise this will take a hell amount of time
-            blit(cutScText, consoleImg, 0, 0, 10, 40, cutScText->w, cutScText->h);
-            blit_on_dBuffer(consoleImg, 200, 200, TRANS);
+            lvlzIntroTxt.push_back("n@$h> ");
+
+            // the display for the terminal has been done -- now to display the web browser
+            // I think I might be needing two displays as in two blits to display the end part
+            // of the game. Whatever, I will check it when the appropriate time comes up
+
+            // display the web-browser now -- This one will be displaying the main antagonists
+            // capture to the user
+
+            // I might also have to insert some time delay for this so that the user is able to read
+            // the story properly
+
+            // displaying the web-browser after the call to the seq_displayer function for the first
+            // instance
+
+
+            // now call the seq_displayer function to display the aforewritten text
+            _seq_display_(lvlzIntroTxt, consoleImg, 76, 27, 10, 40, 100, 100, true, CGREEN, LINEBYLN);
+            update_screen();
+
+            // display and blit on the web-browser -- done
+            blit_on_dBuffer(webBrowserImg, 250, 250, OPAQ);
+
+            // now to display the text on the webBrowserImg -- this will be done later
+            // need to create some more designs for the web browser -- this one makes it look
+            // cliched
+
+            // nect work to be done:
+            // 1. write the data that needs to be written on the web browser
+            // 2. Insert a time delay function -- wait for some seconds so that the user
+            // can read what has been written on the screen
+            // 3. make a move for the next version of the display -- the screen tear needs to be
+            // checked next -- if that can be created
+            // checked next -- if that can be created
             update_screen();
             install_keyboard();
         break;
@@ -577,7 +613,7 @@ void display_intro(int mode, string inpEpName)
 }
 
 // ------------ the internal functions ----------------------------------------------------------------------
-void _seq_display_(vector<string> inpVector, BITMAP *inpBitmap, int allocWidth, int allocHeight, int inpBmpBlitx, int inpBmpBlity, int dBufBlitx, int dBufBlity, bool cursorVisibility, int txtColor)
+void _seq_display_(vector<string> inpVector, BITMAP *inpBitmap, int allocWidth, int allocHeight, int inpBmpBlitx, int inpBmpBlity, int dBufBlitx, int dBufBlity, bool cursorVisibility, int txtColor, int mode)
 {
     // inpBitmap - the bitmap on which the text will be displayed
     // inpVector - the vector stack containing the display text content
@@ -599,20 +635,43 @@ void _seq_display_(vector<string> inpVector, BITMAP *inpBitmap, int allocWidth, 
     vector<string>::iterator iter;
     unsigned int index;
 
-    for(iter = inpVector.begin(); iter != inpVector.end(); iter++)
+    switch(mode)
     {
-        /*sTxt.writeText(const_cast<char *>((*iter).c_str()));
-        blit(useImg, inpBitmap, 0, 0, inpBmpBlitx, inpBmpBlity, useImg->w, useImg->h);
-        blit_on_dBuffer(inpBitmap, dBufBlitx, dBufBlity);
-        update_screen();*/
-        for(index = 0; index < (*iter).length(); index++)
-        {
-            sTxt.writeChar((*iter).at(index));
-            blit(useImg, inpBitmap, 0, 0, inpBmpBlitx, inpBmpBlity, useImg->w, useImg->h);
-            blit_on_dBuffer(inpBitmap, dBufBlitx, dBufBlity, OPAQ);
-            update_screen();
-        }
-        sTxt.writeChar('\n');
+        case CHBYCH:
+            for(iter = inpVector.begin(); iter != inpVector.end(); iter++)
+            {
+                /*sTxt.writeText(const_cast<char *>((*iter).c_str()));
+                blit(useImg, inpBitmap, 0, 0, inpBmpBlitx, inpBmpBlity, useImg->w, useImg->h);
+                blit_on_dBuffer(inpBitmap, dBufBlitx, dBufBlity);
+                update_screen();*/
+                for(index = 0; index < (*iter).length(); index++)
+                {
+                    sTxt.writeChar((*iter).at(index));
+                    blit(useImg, inpBitmap, 0, 0, inpBmpBlitx, inpBmpBlity, useImg->w, useImg->h);
+                    blit_on_dBuffer(inpBitmap, dBufBlitx, dBufBlity, OPAQ);
+                    update_screen();
+                }
+                sTxt.writeChar('\n');
+            }
+        break;
+
+        case LINEBYLN:
+            for(iter = inpVector.begin(); iter != inpVector.end(); iter++)
+            {
+                sTxt.writeText(const_cast<char *>((*iter).c_str()));
+                blit(useImg, inpBitmap, 0, 0, inpBmpBlitx, inpBmpBlity, useImg->w, useImg->h);
+                blit_on_dBuffer(inpBitmap, dBufBlitx, dBufBlity, OPAQ);
+                sTxt.writeChar('\n');
+                update_screen();
+                /*for(index = 0; index < (*iter).length(); index++)
+                {
+                    sTxt.writeChar((*iter).at(index));
+                    blit(useImg, inpBitmap, 0, 0, inpBmpBlitx, inpBmpBlity, useImg->w, useImg->h);
+                    blit_on_dBuffer(inpBitmap, dBufBlitx, dBufBlity, OPAQ);
+                    update_screen();
+                }*/
+            }
+        break;
     }
 }
 

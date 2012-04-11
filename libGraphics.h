@@ -42,6 +42,9 @@
 #define UNAME 1
 #define PASWD 2
 
+#define CHBYCH 1
+#define LINEBYLN 2
+
 #define CBLACK makecol(0, 0, 0)
 #define CWHITE makecol(255, 255, 255)
 #define CGREEN makecol(0, 255, 0)
@@ -64,7 +67,7 @@ std::string query_uname(); // username query
 void display_intro(int mode, std::string inpEpName);   // give the mode to display that intro -- decide other modes too
 
 // internal functions
-void _seq_display_(std::vector<std::string> inpVector, BITMAP *inpBitmap, int allocWidth, int allocHeight, int inpBmpBlitx, int inpBmpBlity, int dBufBlitx, int dBufBlity, bool cursorVisibility, int txtColor); // character by character display
+void _seq_display_(std::vector<std::string> inpVector, BITMAP *inpBitmap, int allocWidth, int allocHeight, int inpBmpBlitx, int inpBmpBlity, int dBufBlitx, int dBufBlity, bool cursorVisibility, int txtColor, int mode); // character by character display
 void _blit_translucent_bmp_(BITMAP *inpBitmap, int alphaGradVal, int blitPosx, int blitPosy); // set the translucency value and draw the translucent sprite
 void _blit_translucent_bmp_(BITMAP *inpGuestBitmap, BITMAP *inpHostBitmap, int alphaGradVal, int blitPosx, int blitPosy);  // function overloaded here -- makes bmp translucent with respect to the hostBmp
 void _fade_in_(BITMAP *inpBitmap, int blitPosx, int blitPosy, int fadeRate);   // fade in an image
