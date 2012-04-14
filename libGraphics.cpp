@@ -532,7 +532,7 @@ string query_uname()
     return inpUsrName;
 }
 
-void display_intro(int mode, string inpEpName)
+void display_intro(int mode, string inpEpName, string inpUserName)  // I might be needing the object to be passed
 {
     // the mode will be for each and every mission rather than double checking mission and the level
 
@@ -595,18 +595,101 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             // display and blit on the web-browser -- done
             blit_on_dBuffer(webBrowserImg, 250, 250, OPAQ);
 
-            // now to display the text on the webBrowserImg -- this will be done later
-            // need to create some more designs for the web browser -- this one makes it look
-            // cliched
+            // write the website address at the top of the image where the space has been created
+            // another concept needs to be checked for this web browser that might be implemented in case
+            // the concept works out fine
+            // writing the web site address at the top of the webBrowser image
+            textout_ex(webBrowserImg, font, "www.undergroundnews.com", 10, 8, CGREEN, -1);
 
-            // nect work to be done:
+            // making no change to the gfx of the webbrowser
+            // writing new text to the webBrowser display
+
+            // checking another concept
+            vector<string> brwDisplayVec;   // this is the display for the first browser window
+            brwDisplayVec.push_back("Breaking News\n");
+            brwDisplayVec.push_back("----------------------------------------\n\n");
+            brwDisplayVec.push_back("Revered Head of Security of Internic was today arrested");
+            brwDisplayVec.push_back("on multiple accounts of espionage and revealing of");
+            brwDisplayVec.push_back("information to rival companies for extra money. Apart from");
+            brwDisplayVec.push_back("that his accomplice was the head of Management of Secure");
+            brwDisplayVec.push_back("Digital Corp which had tried to sneak into the operations");
+            brwDisplayVec.push_back("as well as used the information to play the companies' resources");
+            //brwDisplayVec.push_back("\n\n\n\nPress a key to continue"); // better write this text in some
+            // other part of the screen
+
+
+            _seq_display_(brwDisplayVec, webBrowserImg, 76, 27, 10, 40, 250, 250, false, CGREEN, LINEBYLN);
+            textout_ex(dBuffer, font, "Press a key to continue", 10, 10, CGREEN, -1);
+            update_screen();
+
+            // allowing the user to carry on with the cut scene display
+            install_keyboard();
+            readkey();  // this is working fine
+            remove_keyboard();
+
+            // more text needs to be written for the first display of the web browser
+            // plus trying to show another character image in that
+
+            // next work to be done:
             // 1. write the data that needs to be written on the web browser
             // 2. Insert a time delay function -- wait for some seconds so that the user
             // can read what has been written on the screen
             // 3. make a move for the next version of the display -- the screen tear needs to be
             // checked next -- if that can be created
             // checked next -- if that can be created
+            textout_ex(dBuffer, font, "Press a key to continue", 10, 10, CBLACK, -1);
+            // the action event will be displayed at the top left corner of the background image
+            // will be displayed when the user action will be required and then it will go back again
+            blit_on_dBuffer(webBrowserImg, 150, 150, OPAQ);
+
+            // creating another vector to display some other text to the user
+            vector<string> brDisplayVec;
+            brDisplayVec.push_back("Breaking news");
+            brDisplayVec.push_back("-------------------------------------------------------\n");
+            brDisplayVec.push_back("Jim Lee's adjutant was also arrested last night from his home");
+            brDisplayVec.push_back("on aiding and abetting his employer in numerous cases of fraud");
+            brDisplayVec.push_back("The 26 year old Security specialist is also known as r4pt0r");
+            brDisplayVec.push_back("in the underground community. A lot of news came up with the ");
+            brDisplayVec.push_back("arrest of these people. Some underground hacker named " + inpUserName);
+            brDisplayVec.push_back("has given up information about these activities. A special source");
+            brDisplayVec.push_back("said that this " + inpUserName + " once was among the elite in the ");
+            brDisplayVec.push_back("community, who left the scene and re-emerged just 6 weeks back");
+            // get the username and display after that "hacker named" part -- done
+
+            // now since the function requires the username to be provided -- the cutscenes
+            // and the objective display screen text needs to be changed accordingly
+
+
+            _seq_display_(brDisplayVec, webBrowserImg, 76, 27, 10, 40, 150, 150, false, CGREEN, LINEBYLN);
+            // allow the user to carry on with the cut scene display
+
+            install_keyboard();
+            textout_ex(dBuffer, font, "Press a key to continue", 10, 10, CGREEN, -1);
             update_screen();
+            readkey();
+            textout_ex(dBuffer, font, "Press a key to continue", 10, 10, CBLACK, -1);
+            update_screen();
+            remove_keyboard();
+
+            // now there would be a screen tear - as in the spark effect we see in the monitor in
+            // case that monitor is starting to get bad -- and after that there will be a display
+            // "8 years before" -- and then show memory leak
+
+            // after that exit this function and update the usrLvl to the new one
+            // there will be no separate cutscene for level 1
+            // But there will be an objectives display for level 1
+
+            // Issues to be resolved:
+            // 1. display HmFace to the user in WebBrowser
+            // 2. Change the web address to something more realistic
+            // 3. Change text display content of web browser -- check out some of the news papers
+            // 4. If possible -- also display the name of the web browser -- WebTerminal[as suggested by cr4zy_d33p]
+
+            // update code base to git and google code dump
+            // google code will be done later -- git hub will be done now
+
+            // Changelog will be changed after update to google code
+            // bringing into sync both the code dumps
             install_keyboard();
         break;
     }

@@ -190,7 +190,7 @@ void usrProfile::display_level_intro()
         if(missionNum == 0)   // that's good
         {
             // call the function that will display the first cutscenes
-            display_intro(INTRO, ".Init");
+            display_intro(INTRO, ".Init", _usrName_);
 
             // cleaned up the debug part that was implemented here
             // cleaning up other files that were debugged
@@ -202,6 +202,12 @@ void usrProfile::display_level_intro()
             allegro_exit();
         }
     }
+}
+
+string usrProfile::getUserName()
+{
+    cout<<_usrName_<<endl;  // why the hell is the username not displayed -- aaha new profile object
+    return _usrName_;
 }
 
 // ---------------------------------- Internal functions ----------------------------------------------------

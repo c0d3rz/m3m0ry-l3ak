@@ -64,7 +64,7 @@ void display_splash();  // show the splash image for this game
 int display_terminal(bool mode, const std::string& inpPromptContent);    // for some commands
 void display_credits(); // display the credits -- removing the display_login function
 std::string query_uname(); // username query
-void display_intro(int mode, std::string inpEpName);   // give the mode to display that intro -- decide other modes too
+void display_intro(int mode, std::string inpEpName, std::string inpUserName);   // give the mode to display that intro -- decide other modes too
 
 // internal functions
 void _seq_display_(std::vector<std::string> inpVector, BITMAP *inpBitmap, int allocWidth, int allocHeight, int inpBmpBlitx, int inpBmpBlity, int dBufBlitx, int dBufBlity, bool cursorVisibility, int txtColor, int mode); // character by character display

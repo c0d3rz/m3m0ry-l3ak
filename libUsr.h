@@ -27,7 +27,6 @@
 #define INTRO 0
 #define INIT 10
 
-
 class usrProfile
 {
     public:
@@ -35,6 +34,7 @@ class usrProfile
         usrProfile();
         void load_profile();  // load the profile
         void display_level_intro(); // check the level, mission num and display the level story
+        std::string getUserName();  // return the username of the player
 
     private:
         std::string _usrName_;
