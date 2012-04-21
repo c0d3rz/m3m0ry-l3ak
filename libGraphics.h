@@ -39,6 +39,9 @@
 #define LOGINSAV 40
 #define LOGINBLT 41
 
+#define FULLSAV 100
+#define FULLBLT 111
+
 #define UNAME 1
 #define PASWD 2
 

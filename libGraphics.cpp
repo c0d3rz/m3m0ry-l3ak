@@ -19,6 +19,7 @@ BITMAP *loginBckImg;    // the login screen/uname_passwd login image background
 BITMAP *upQueryImg;    // the username and passwd query image
 BITMAP *mainBgImg;  // the main background image
 BITMAP *webBrowserImg;  // the web browser image
+BITMAP *prevDisplayImg;    // level zero pre display image
 DATAFILE *gfxDat;   // the gfx_datafile
 // ---------------------------------------------
 
@@ -67,11 +68,12 @@ void create_instances()
     upQueryImg = (BITMAP *)gfxDat[UN_PW_QUERY_DUP_BMP].dat;
     mainBgImg = (BITMAP *)gfxDat[BCK_2_BMP].dat;
     webBrowserImg = (BITMAP *)gfxDat[WEBBROWSER_BMP].dat;
+    prevDisplayImg = (BITMAP *)gfxDat[PREV_BMP].dat;
 
     // error checking part
     if(gfx_error_handler(bootImg) && gfx_error_handler(splashImg) && gfxDat && gfx_error_handler(projNameImg) && gfx_error_handler(consoleImg)\
     && gfx_error_handler(creditImg) && gfx_error_handler(secTempStorage) && gfx_error_handler(loginBckImg) && gfx_error_handler(upQueryImg)\
-    && gfx_error_handler(mainBgImg) && gfx_error_handler(webBrowserImg));
+    && gfx_error_handler(mainBgImg) && gfx_error_handler(webBrowserImg) && gfx_error_handler(prevDisplayImg));
     else
     {
         allegro_message("Error loading game resource files in memory");
@@ -134,7 +136,7 @@ void display_boot_seq()
     // the sequence has been populated
     // now let's pass this vector to some obscure function that will the work of displaying this
 
-    _seq_display_(bootSeq, bootImg, 200, 100, 10, 10, 45, 30, false, CWHITE, CHBYCH);  // lower the size of the allocation of the text
+    _seq_display_(bootSeq, bootImg, 200, 100, 10, 10, 45, 30, false, CGREEN, LINEBYLN);  // lower the size of the allocation of the text
     // bitmap -- the faster the display
     install_keyboard();
 }
@@ -145,10 +147,10 @@ void display_splash()
     // gfx effect
 
     // let the screwing up begin -- first I need to write the routines for the fade_out and the fade_in
-    _fade_in_(splashImg, 0, 0, 32);
+    _fade_in_(splashImg, 0, 0, 64);
     _fade_out_(splashImg, 0, 0, 64);
 
-    _fade_in_(projNameImg, 0, 0, 32);
+    _fade_in_(projNameImg, 0, 0, 64);
     _fade_out_(projNameImg, 0, 0, 64);
 }
 
@@ -630,13 +632,6 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             // more text needs to be written for the first display of the web browser
             // plus trying to show another character image in that
 
-            // next work to be done:
-            // 1. write the data that needs to be written on the web browser
-            // 2. Insert a time delay function -- wait for some seconds so that the user
-            // can read what has been written on the screen
-            // 3. make a move for the next version of the display -- the screen tear needs to be
-            // checked next -- if that can be created
-            // checked next -- if that can be created
             textout_ex(dBuffer, font, "Press a key to continue", 10, 10, CBLACK, -1);
             // the action event will be displayed at the top left corner of the background image
             // will be displayed when the user action will be required and then it will go back again
@@ -654,7 +649,6 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             brDisplayVec.push_back("has given up information about these activities. A special source");
             brDisplayVec.push_back("said that this " + inpUserName + " once was among the elite in the ");
             brDisplayVec.push_back("community, who left the scene and re-emerged just 6 weeks back");
-            // get the username and display after that "hacker named" part -- done
 
             // now since the function requires the username to be provided -- the cutscenes
             // and the objective display screen text needs to be changed accordingly
@@ -671,13 +665,45 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             update_screen();
             remove_keyboard();
 
-            // now there would be a screen tear - as in the spark effect we see in the monitor in
-            // case that monitor is starting to get bad -- and after that there will be a display
-            // "8 years before" -- and then show memory leak
+            // let's start the next part of the coding
+            _save_reblit_buffer_state_(FULLSAV);
+            clear_to_color(dBuffer, CWHITE);
+            update_screen();
 
-            // after that exit this function and update the usrLvl to the new one
-            // there will be no separate cutscene for level 1
-            // But there will be an objectives display for level 1
+            for(int counter = 0; counter < 2; counter++)
+            {
+                _save_reblit_buffer_state_(FULLBLT);
+                clear_to_color(dBuffer, CBLACK);
+                update_screen();
+                for(long counter = 0; counter < 9999999; counter++);
+                // stretching the blit
+                stretch_blit(tempStorage, dBuffer, 0, 0, tempStorage->w, tempStorage->h, 0, 0, 2048, 640);
+                // insert some miliseconds delay in here -- need internet access for that
+                update_screen();
+                // the wait function will be entered here
+                // let's try the raw version
+                for(long counter = 0; counter < 9999999; counter++);
+                _save_reblit_buffer_state_(FULLBLT);
+                update_screen();
+            }
+
+            for(long counter = 0; counter < 999999999; counter++);  // perfect wait timings done
+
+
+            // now start the fade sequence
+            clear_to_color(dBuffer, CBLACK);
+            _fade_in_(prevDisplayImg, 0, 0, 64);
+            _fade_out_(prevDisplayImg, 0, 0, 64);
+
+            // Now to show what had happened 8 years before
+            // In this part of the cut scene the display will contain the following components
+            // 1. terminal_display() showing the typing of some commands
+            // 2. A approve box will appear asking for access to some servers
+            // 3. The NP main character will be allowing the access to that
+            // 4. and after that -- there will be some warning boxes that will be appearing
+            // 5. the whole space will be filled up with warning boxes saying the message
+            // "WARNING! MEMORY LEAK"
+
 
             // Issues to be resolved:
             // 1. display HmFace to the user in WebBrowser
@@ -690,6 +716,8 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
 
             // Changelog will be changed after update to google code
             // bringing into sync both the code dumps
+
+            // will be updating the dumps if I get a proper internet connection
             install_keyboard();
         break;
     }
@@ -840,6 +868,14 @@ void _save_reblit_buffer_state_(int blitState)
         break;
         case LOGINBLT:
             blit(tempStorage, dBuffer, 0, 0, 315, 265, upQueryImg->w, upQueryImg->h);
+        break;
+
+        case FULLSAV:
+            blit(dBuffer, tempStorage, 0, 0, 0, 0, dBuffer->w, dBuffer->h);
+        break;
+
+        case FULLBLT:
+            blit(tempStorage, dBuffer, 0, 0, 0, 0, dBuffer->w, dBuffer->h);
         break;
     }
 }
