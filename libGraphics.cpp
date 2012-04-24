@@ -147,6 +147,7 @@ void display_splash()
     // gfx effect
 
     // let the screwing up begin -- first I need to write the routines for the fade_out and the fade_in
+
     _fade_in_(splashImg, 0, 0, 64);
     _fade_out_(splashImg, 0, 0, 64);
 
@@ -161,7 +162,7 @@ int display_terminal(bool mode, const string& inpPromptContent)
 
     if(mode)
     {
-        blit_on_dBuffer(loginBckImg, 0, 0, OPAQ);   // just to improve the looks
+        blit_on_dBuffer(loginBckImg, 0, 0, OPAQ);   // just to improve the looks -- another problem presolved
         _save_reblit_buffer_state_(CONSLSAV);   // <-- according to the blit state, make the change
         _blit_translucent_bmp_(consoleImg, 175, 100, 100);
         update_screen();
@@ -670,25 +671,13 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             clear_to_color(dBuffer, CWHITE);
             update_screen();
 
-            for(int counter = 0; counter < 2; counter++)
-            {
-                _save_reblit_buffer_state_(FULLBLT);
-                clear_to_color(dBuffer, CBLACK);
-                update_screen();
-                for(long counter = 0; counter < 9999999; counter++);
-                // stretching the blit
-                stretch_blit(tempStorage, dBuffer, 0, 0, tempStorage->w, tempStorage->h, 0, 0, 2048, 640);
-                // insert some miliseconds delay in here -- need internet access for that
-                update_screen();
-                // the wait function will be entered here
-                // let's try the raw version
-                for(long counter = 0; counter < 9999999; counter++);
-                _save_reblit_buffer_state_(FULLBLT);
-                update_screen();
-            }
+            _handle_screen_tear(FULLBLT);
 
-            for(long counter = 0; counter < 999999999; counter++);  // perfect wait timings done
+            for(long counter = 0; counter < 999999999; counter++);
+            // I might have to make the screen_tear() function -- a generic one is what I mean
+            // Let's start by building that -- need to play more music
 
+            // making the screen tear function generic -- before that another implementation
 
             // now start the fade sequence
             clear_to_color(dBuffer, CBLACK);
@@ -717,10 +706,20 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             // Changelog will be changed after update to google code
             // bringing into sync both the code dumps
 
-            // will be updating the dumps if I get a proper internet connection
+            // github dump updated -- now to write the other codes
+
+            // the clear_dBuffer function needs to be called before the display is shifted
+            // from one function to another -- some display issues with the FULLSCR mode
+
+            // have to check out the issues
             install_keyboard();
         break;
     }
+}
+
+void clear_dBuffer()
+{
+    clear_to_color(dBuffer, CBLACK);
 }
 
 // ------------ the internal functions ----------------------------------------------------------------------
@@ -1011,6 +1010,30 @@ void _handle_event_(BITMAP *consoleTextBmp, int keyRead, txtBox& inpObj, string&
                 // enhancements are already listed in the changelog
             }
         break;
+    }
+}
+
+void _handle_screen_tear(int blitMode)
+{
+    // some genericity issue is remaining with this one
+    // like this function doesn't work properly while called anywhere else
+
+    // check out the way the screen tear was being implemented
+    for(int counter = 0; counter < 2; counter++)
+    {
+        _save_reblit_buffer_state_(blitMode);
+        clear_to_color(dBuffer, CBLACK);
+        update_screen();
+        for(long counter = 0; counter < 9999999; counter++);
+        // stretched blit
+        stretch_blit(tempStorage, dBuffer, 0, 0, tempStorage->w, tempStorage->h, 0, 0, 2048, 640);
+        stretch_blit(tempStorage, dBuffer, 0, 0, tempStorage->w, tempStorage->h, 0, 0, 2048, 800);
+
+        update_screen();
+
+        for(long counter = 0; counter < 9999999; counter++);
+        _save_reblit_buffer_state_(blitMode);
+        update_screen();
     }
 }
 

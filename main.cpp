@@ -11,19 +11,20 @@ int main(int argc, char *argv[])
 
 
     set_color_depth(COLORDEPTH);
-    graphics_init(WINDOW, 1024, 768);   // for testing -- default == WINDOWED mode
+    graphics_init(FULLSCR, 1024, 768);   // for testing -- default == WINDOWED mode
 
     create_instances();
     sndfx sfx;
     sfx.init_load_sound();
-    //display_splash(); // commenting this for the purpose of writing new code for this
+    display_splash(); // commenting this for the purpose of writing new code for this
     install_keyboard();
 
     sfx.play_sound(MENU);
     int dispRetVal = display_terminal(true, "n@$h>>> ");
+    clear_dBuffer();
     if(dispRetVal == STARTX) // decide on the return type
     {
-        graphics_init(WINDOW, 600, 400);
+        graphics_init(FULLSCR, 600, 400);
         display_boot_seq();
     }
     else if(dispRetVal == POWEROFF)
@@ -89,7 +90,8 @@ int main(int argc, char *argv[])
         Create the function that will display the story based on the level number the user is in.
     */
 
-    graphics_init(WINDOW, 1024, 768);
+    clear_dBuffer();
+    graphics_init(FULLSCR, 1024, 768);
     sfx.play_sound(FSND);   // No level check for this -- the music will be played one after the other
 
     // redesigning the sound library first
@@ -101,6 +103,8 @@ int main(int argc, char *argv[])
     // the problem is with the type of converter that are being used to convert the files
     // create the user profile
 
+    clear_dBuffer();
+    // need to check the issue in other laptops with better display
     usrProfile usrInst;
     bool calledOnce = false;    // not yet called
     bool isShown = false;   // not yet shown

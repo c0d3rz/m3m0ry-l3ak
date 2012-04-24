@@ -68,6 +68,7 @@ int display_terminal(bool mode, const std::string& inpPromptContent);    // for 
 void display_credits(); // display the credits -- removing the display_login function
 std::string query_uname(); // username query
 void display_intro(int mode, std::string inpEpName, std::string inpUserName);   // give the mode to display that intro -- decide other modes too
+void clear_dBuffer();   // just clear the double buffer to the dark color
 
 // internal functions
 void _seq_display_(std::vector<std::string> inpVector, BITMAP *inpBitmap, int allocWidth, int allocHeight, int inpBmpBlitx, int inpBmpBlity, int dBufBlitx, int dBufBlity, bool cursorVisibility, int txtColor, int mode); // character by character display
@@ -78,6 +79,7 @@ void _fade_out_(BITMAP *inpBitmap, int blitPosx, int blitPosy, int fadeRate);  /
 void _save_reblit_buffer_state_(int blitState); // saves the buffer state before the image is being
 void _translucent_bmp_txt_print_(BITMAP *inpHostBmp, BITMAP *inpTxtBmp, int reblitState, int blitTxtBmpPosx, int blitTxtBmpPosy, int alphaGradVal, int blitTransBmpPosx, int blitTransBmpPosy); // display the text on translucent BMP without losing the translucency
 void _handle_event_(BITMAP *consoleTextBmp, int keyRead, txtBox& inpObj, std::string& inpCliStr, bool& inpLoopCont, int &returnVal, std::string& desPromptStr, bool checkBootLvl);  // handle key_events --> non main Engine
+void _handle_screen_tear(int blitMode);
 
 bool gfx_error_handler(BITMAP *inpBmp); // bitmap error checker
 
