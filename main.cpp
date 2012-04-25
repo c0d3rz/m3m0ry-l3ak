@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     install_keyboard();
 
     sfx.play_sound(MENU);
-    int dispRetVal = display_terminal(true, "n@$h>>> ");
+    int dispRetVal = display_terminal(true, "n@$h> ");
     clear_dBuffer();
     if(dispRetVal == STARTX) // decide on the return type
     {
@@ -105,6 +105,11 @@ int main(int argc, char *argv[])
 
     clear_dBuffer();
     // need to check the issue in other laptops with better display
+    // though it looks fine from my side
+
+    // tasks neede to be completed
+    // 1. first solve the blitting problem in fullscreen mode for desktops with higher
+    // resolution
     usrProfile usrInst;
     bool calledOnce = false;    // not yet called
     bool isShown = false;   // not yet shown

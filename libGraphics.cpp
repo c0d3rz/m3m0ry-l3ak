@@ -138,6 +138,9 @@ void display_boot_seq()
 
     _seq_display_(bootSeq, bootImg, 200, 100, 10, 10, 45, 30, false, CGREEN, LINEBYLN);  // lower the size of the allocation of the text
     // bitmap -- the faster the display
+
+    // clearing the dBuffer
+    clear_dBuffer();
     install_keyboard();
 }
 
@@ -288,6 +291,7 @@ int display_terminal(bool mode, const string& inpPromptContent)
             update_screen();
         }
         _save_reblit_buffer_state_(CONSLBLT);
+        clear_dBuffer();
         update_screen();
         return retVal;
     }
