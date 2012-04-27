@@ -11,12 +11,16 @@ int main(int argc, char *argv[])
 
 
     set_color_depth(COLORDEPTH);
-    graphics_init(FULLSCR, 1024, 768);   // for testing -- default == WINDOWED mode
+    graphics_init(WINDOW, 1024, 768);   // for testing -- default == WINDOWED mode
+
+    // there is some issue with the console text image that is being blitted on top of the
+    // console image -- index out of range Seg fault is occuring -- most probable solution might be
+    // to set the position of the console text image on the console image.
 
     create_instances();
     sndfx sfx;
     sfx.init_load_sound();
-    display_splash(); // commenting this for the purpose of writing new code for this
+    //display_splash(); // commenting this for the purpose of writing new code for this
     install_keyboard();
 
     sfx.play_sound(MENU);
@@ -24,7 +28,7 @@ int main(int argc, char *argv[])
     clear_dBuffer();
     if(dispRetVal == STARTX) // decide on the return type
     {
-        graphics_init(FULLSCR, 600, 400);
+        graphics_init(WINDOW, 600, 400);
         display_boot_seq();
     }
     else if(dispRetVal == POWEROFF)
@@ -91,7 +95,7 @@ int main(int argc, char *argv[])
     */
 
     clear_dBuffer();
-    graphics_init(FULLSCR, 1024, 768);
+    graphics_init(WINDOW, 1024, 768);
     sfx.play_sound(FSND);   // No level check for this -- the music will be played one after the other
 
     // redesigning the sound library first

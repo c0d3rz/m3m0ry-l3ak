@@ -704,18 +704,24 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             // 3. Change text display content of web browser -- check out some of the news papers
             // 4. If possible -- also display the name of the web browser -- WebTerminal[as suggested by cr4zy_d33p]
 
-            // update code base to git and google code dump
-            // google code will be done later -- git hub will be done now
-
-            // Changelog will be changed after update to google code
-            // bringing into sync both the code dumps
-
-            // github dump updated -- now to write the other codes
-
-            // the clear_dBuffer function needs to be called before the display is shifted
-            // from one function to another -- some display issues with the FULLSCR mode
-
             // have to check out the issues
+
+
+            // display the terminal image and display some text
+            // after that create the alertbox window
+            clear_dBuffer();
+            blit_on_dBuffer(loginBckImg, 0, 0, OPAQ);
+            blit_on_dBuffer(consoleImg, 100, 100, OPAQ);
+
+            // populate the vector that will be displaying the next display
+            // for the terminal
+            vector<string> termDisplayLvlz;
+            termDisplayLvlz.push_back("lCooper@internic> iwlist eth0 scan");
+            // a new implementation needs to be done -- I think I will be blitting in
+            // two different bitmaps -- a bit of an experiment eh!!!!
+
+            _seq_display_(termDisplayLvlz, consoleImg, 76, 27, 10, 30, 100, 100, true, CGREEN, CHBYCH);
+            update_screen();
             install_keyboard();
         break;
     }

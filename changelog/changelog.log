@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2012.2.9)  17 APR 2012 03:12
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2012.2.9)  27 APR 2012 23:22
 entering extended mode
  %&-line parsing enabled.
 **changelog.tex
@@ -157,17 +157,22 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 10.
 
-Underfull \hbox (badness 10000) in paragraph at lines 13--16
+Underfull \hbox (badness 10000) in paragraph at lines 13--18
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 17--21
+Underfull \hbox (badness 10000) in paragraph at lines 19--24
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 23--24
+Underfull \hbox (badness 10000) in paragraph at lines 26--27
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 28--29
 
  []
 
@@ -181,6 +186,6 @@ Here is how much of TeX's memory you used:
  3964 multiletter control sequences out of 15000+50000
  7280 words of font info for 26 fonts, out of 3000000 for 9000
  28 hyphenation exceptions out of 8191
- 23i,6n,19p,428b,187s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 23i,6n,19p,310b,187s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on changelog.dvi (1 page, 1828 bytes).
+Output written on changelog.dvi (1 page, 1712 bytes).
