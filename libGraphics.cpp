@@ -192,6 +192,8 @@ int display_terminal(bool mode, const string& inpPromptContent)
         txtInst.curColor = cWHITE;
         txtInst.txtColor = cGREEN;
         txtInst.init(76, 27, consoleText, font);
+
+        int allocWidth = 76, allocHeight = 27;
         int txtBoxPosx, txtBoxPosy; // for the position of the cursor
 
         /*
@@ -200,6 +202,11 @@ int display_terminal(bool mode, const string& inpPromptContent)
 
             That is an internal function that will be handling the events -- now to remove the redundancies
             Also the changelog needs to be updated.
+
+            A bug has been found at the moment -- when the text entering reaches the end of the text
+            bitmap the text printing gives a seg fault. Have to check that part
+
+            Also need to try loading vector graphics in allegro.
         */
 
         // write routine for the return of state as command is entered
@@ -231,7 +238,15 @@ int display_terminal(bool mode, const string& inpPromptContent)
                 {
                     // get the current position of txtBoxPosx, txtBoxPosy
                     txtInst.getxy(txtBoxPosx, txtBoxPosy);
-                    if((txtBoxPosx - _PROMPT.length() == 0) && (!cli.empty()))
+
+                    // bug removed - bug existed at insertion of characters when cursor reaches
+                    // the last border of the consoleText Image
+
+                    // Solution : cli.length() < allocWidth - LINE_GAP
+
+                    // prepare formula for allocWidth and allocHeight calculation
+                    // moving on to the creation of the next part of the level Zero cutscene display
+                    if((txtBoxPosx - _PROMPT.length() == 0) && (!cli.empty()) && (cli.length() < (allocWidth - LINE_GAP - 2)))
                     {
                         txtInst.writeChar(asciiChar);
                         _translucent_bmp_txt_print_(consoleImg, consoleText, CONSLBLT, 10, 40, 175, 100, 100);
@@ -249,7 +264,7 @@ int display_terminal(bool mode, const string& inpPromptContent)
                         txtInst.cursorVisible = true;
                         txtInst.reset_cursor_pos(txtBoxPosx++);
                     }
-                    else if((txtBoxPosx - _PROMPT.length() > 0) && (txtBoxPosx - _PROMPT.length() < cli.length())) // if the position of the cursor is inside the command that has been input
+                    else if((txtBoxPosx - _PROMPT.length() > 0) && (txtBoxPosx - _PROMPT.length() < cli.length()) && (cli.length() < (allocWidth - LINE_GAP - 2))) // if the position of the cursor is inside the command that has been input
                     {
                         txtInst.writeChar(asciiChar);
                         _translucent_bmp_txt_print_(consoleImg, consoleText, CONSLBLT, 10, 40, 175, 100, 100);
@@ -267,7 +282,7 @@ int display_terminal(bool mode, const string& inpPromptContent)
                         txtInst.cursorVisible = true;
                         txtInst.reset_cursor_pos(txtBoxPosx++);
                     }
-                    else
+                    else if(cli.length() < (allocWidth - LINE_GAP - 2))
                     {
                         txtInst.writeChar(asciiChar);
                         _translucent_bmp_txt_print_(consoleImg, consoleText, CONSLBLT, 10, 40, 175, 100, 100);
@@ -716,11 +731,15 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             // populate the vector that will be displaying the next display
             // for the terminal
             vector<string> termDisplayLvlz;
-            termDisplayLvlz.push_back("lCooper@internic> iwlist eth0 scan");
-            // a new implementation needs to be done -- I think I will be blitting in
-            // two different bitmaps -- a bit of an experiment eh!!!!
+            termDisplayLvlz.push_back("lCooper@internic> w");
+            termDisplayLvlz.push_back("10:53:46 up 3 days, 12:38,  5 users,  load average: 0.00, 0.00, 0.00");
+            termDisplayLvlz.push_back("USER   TTY     FROM             LOGIN@   IDLE   JCPU     PCPU WHAT");
+            termDisplayLvlz.push_back("andrew tty7     :0               00:14   13:17  21.55s  0.16s gnome-session");
+            termDisplayLvlz.push_back("jack   pts/0    :0               00:10   13:20  21.32s  0.19s gnome-session");
+            termDisplayLvlz.push_back("lCooper@internic> ");
+            // the experiment can be done later on
 
-            _seq_display_(termDisplayLvlz, consoleImg, 76, 27, 10, 30, 100, 100, true, CGREEN, CHBYCH);
+            _seq_display_(termDisplayLvlz, consoleImg, 76, 27, 10, 30, 100, 100, true, CGREEN, LINEBYLN);
             update_screen();
             install_keyboard();
         break;

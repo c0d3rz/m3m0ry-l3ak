@@ -13,11 +13,11 @@
 	<File name="libCrypt.h" open="0" top="0" tabpos="9">
 		<Cursor position="623" topLine="0" />
 	</File>
-	<File name="libGraphics.cpp" open="1" top="0" tabpos="2">
-		<Cursor position="33425" topLine="706" />
+	<File name="libGraphics.cpp" open="1" top="1" tabpos="2">
+		<Cursor position="34318" topLine="730" />
 	</File>
 	<File name="libGraphics.h" open="1" top="0" tabpos="3">
-		<Cursor position="1961" topLine="65" />
+		<Cursor position="3160" topLine="15" />
 	</File>
 	<File name="libSound.cpp" open="0" top="0" tabpos="7">
 		<Cursor position="730" topLine="0" />
@@ -31,7 +31,7 @@
 	<File name="libUsr.h" open="1" top="0" tabpos="4">
 		<Cursor position="501" topLine="48" />
 	</File>
-	<File name="main.cpp" open="1" top="1" tabpos="1">
+	<File name="main.cpp" open="1" top="0" tabpos="1">
 		<Cursor position="570" topLine="0" />
 	</File>
 	<File name="main.h" open="0" top="0" tabpos="10">
@@ -44,6 +44,6 @@
 		<Cursor position="5797" topLine="251" />
 	</File>
 	<File name="txtBox.h" open="1" top="0" tabpos="7">
-		<Cursor position="2303" topLine="67" />
+		<Cursor position="2303" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>
