@@ -1,6 +1,10 @@
 Issues to be resolved:
-1. Create the gfx for the "warning! memory leak" and make it appear at multiple places on the screen. Basically that will be a blitting function.
-2. Tweak the libSound modue for using the other sounds -- appropriate for different situations.
+1. Create the gfx for the "warning! memory leak" and make it appear at multiple places on the screen. Basically that will be a blitting function call -- a multiple call that will be showing it in different places on the screen.
+2. Tweak the libSound module for using the other sounds -- appropriate for different situations.
 3. Tweak the screen_tear display to display the screen tear in a much more natural way. Add sfx for the same.
 
 P.S. Masked blit might be required to be used for the blitting in different desktops with different desktop resolutions. Have to check that part. 
+
+P.P.S. Formulate some calculation for determining the display of the text that will be written in the txtBmp that is created in the _seq_display_() function.
+
+P.P.P.S. Hope this project of mine finished properly and become at least presentable.
