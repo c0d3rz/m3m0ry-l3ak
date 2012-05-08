@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     //display_splash(); // commenting this for the purpose of writing new code for this
     install_keyboard();
 
-    sfx.play_sound(MENU);
+    //sfx.play_sound(MENU);
     int dispRetVal = display_terminal(true, "n@$h> ");
     clear_dBuffer();
     if(dispRetVal == STARTX) // decide on the return type
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
         allegro_exit();
         exit(0);
     }
-    sfx.stop_sound(MENU);
+    //sfx.stop_sound(MENU);
 
     /*
         The following modules have been planned and will be implemented in the near future.
@@ -96,7 +96,7 @@ int main(int argc, char *argv[])
 
     clear_dBuffer();
     graphics_init(WINDOW, 1024, 768);
-    sfx.play_sound(FSND);   // No level check for this -- the music will be played one after the other
+    //sfx.play_sound(FSND);   // No level check for this -- the music will be played one after the other
 
     // redesigning the sound library first
 
@@ -137,9 +137,9 @@ int main(int argc, char *argv[])
         // check out the crash of that -- checking to be done in the testBed
         update_screen();
     }
-    sfx.stop_sound(FSND);
+    //sfx.stop_sound(FSND); // stopping the sound routines for time being
 
-    sfx.destroy_sound_instances();
+    sfx.destroy_sound_instances();  // this is theer because of the load_sound() routine
     destroy_instances();    // back_end seg_fault existing at this point -- probing inside for
     // more information
     allegro_exit();

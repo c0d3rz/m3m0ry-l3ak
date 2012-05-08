@@ -68,6 +68,21 @@ void sndfx::destroy_sound_instances()
     error_check(result);
 }
 
+bool sndfx::isPlaying(int mode) // function to be called while interfering with another sound instance
+{
+    bool playStat;  // No default value -- unknown part while calling this function
+    switch(mode)
+    {
+        case FSND:
+            result = channel->isPlaying(&playStat);
+        break;
+    }
+    cout<<playStat<<endl;   // just to check the value
+    // a pause sound might also be required -- or some way to reduce the volume of the sound to zero
+    // creating the visual for the alert box -- created, adding to the data file
+    return playStat;
+}
+
 void sndfx::error_check(FMOD_RESULT result)
 {
     if(result != FMOD_OK)

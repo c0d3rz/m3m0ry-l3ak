@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
+	<File name="data/gfx_util.h" open="0" top="0" tabpos="0">
+		<Cursor position="0" topLine="3" />
+	</File>
 	<File name="libClParser.cpp" open="0" top="0" tabpos="7">
 		<Cursor position="687" topLine="9" />
 	</File>
@@ -8,22 +11,22 @@
 		<Cursor position="438" topLine="3" />
 	</File>
 	<File name="libCrypt.cpp" open="0" top="0" tabpos="8">
-		<Cursor position="2752" topLine="164" />
+		<Cursor position="2752" topLine="0" />
 	</File>
 	<File name="libCrypt.h" open="0" top="0" tabpos="9">
 		<Cursor position="623" topLine="0" />
 	</File>
 	<File name="libGraphics.cpp" open="1" top="1" tabpos="2">
-		<Cursor position="43120" topLine="836" />
+		<Cursor position="44764" topLine="870" />
 	</File>
 	<File name="libGraphics.h" open="1" top="0" tabpos="3">
 		<Cursor position="3160" topLine="15" />
 	</File>
-	<File name="libSound.cpp" open="0" top="0" tabpos="7">
-		<Cursor position="730" topLine="0" />
+	<File name="libSound.cpp" open="1" top="0" tabpos="7">
+		<Cursor position="2389" topLine="70" />
 	</File>
-	<File name="libSound.h" open="0" top="0" tabpos="6">
-		<Cursor position="311" topLine="16" />
+	<File name="libSound.h" open="1" top="0" tabpos="8">
+		<Cursor position="303" topLine="2" />
 	</File>
 	<File name="libUsr.cpp" open="1" top="0" tabpos="5">
 		<Cursor position="7051" topLine="187" />
@@ -32,7 +35,7 @@
 		<Cursor position="501" topLine="48" />
 	</File>
 	<File name="main.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="570" topLine="0" />
+		<Cursor position="5977" topLine="126" />
 	</File>
 	<File name="main.h" open="0" top="0" tabpos="10">
 		<Cursor position="195" topLine="0" />
@@ -40,10 +43,10 @@
 	<File name="test.cpp" open="1" top="0" tabpos="6">
 		<Cursor position="2" topLine="36" />
 	</File>
-	<File name="txtBox.cpp" open="1" top="0" tabpos="8">
+	<File name="txtBox.cpp" open="0" top="0" tabpos="8">
 		<Cursor position="5797" topLine="251" />
 	</File>
-	<File name="txtBox.h" open="1" top="0" tabpos="7">
+	<File name="txtBox.h" open="0" top="0" tabpos="7">
 		<Cursor position="2303" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

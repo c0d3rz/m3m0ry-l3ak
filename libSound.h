@@ -11,7 +11,7 @@
 #include "libGraphics.h"
 
 #define MENUSND "./msdata/menusnd.wav"
-#define FIRSTSND "./msdata/lvlzsnd.wav"
+#define FIRSTSND "./msdata/lvlzsnd.wav" // have to change them
 #define MENU 99
 #define FSND 0
 
@@ -23,10 +23,13 @@ class sndfx
         void play_sound(int mode);  // play the specific sound
         void stop_sound(int mode);  // stop that specific sound -- free the channel
         void destroy_sound_instances(); // release all the channels and the sounds as well as the system
+        bool isPlaying(int mode);   // check channel.isPlaying()
+        // write the code for the isPLaying() function
 
 
         // sound module is semi complete -- but work will go on in this respect
         // now for the acceptance of the username and the playing of the keysounds -- key presses
+        // need some function to pause the sound and also some bool isPlaying(&channel) type function
 
     private:
         FMOD::System *system;

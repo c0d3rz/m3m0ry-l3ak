@@ -20,6 +20,7 @@ BITMAP *upQueryImg;    // the username and passwd query image
 BITMAP *mainBgImg;  // the main background image
 BITMAP *webBrowserImg;  // the web browser image
 BITMAP *prevDisplayImg;    // level zero pre display image
+BITMAP *queryBoxImg;    // the alert box query user
 DATAFILE *gfxDat;   // the gfx_datafile
 // ---------------------------------------------
 
@@ -69,11 +70,13 @@ void create_instances()
     mainBgImg = (BITMAP *)gfxDat[BCK_2_BMP].dat;
     webBrowserImg = (BITMAP *)gfxDat[WEBBROWSER_BMP].dat;
     prevDisplayImg = (BITMAP *)gfxDat[PREV_BMP].dat;
+    queryBoxImg = (BITMAP *)gfxDat[QUERYBOX_BMP].dat;
 
     // error checking part
     if(gfx_error_handler(bootImg) && gfx_error_handler(splashImg) && gfxDat && gfx_error_handler(projNameImg) && gfx_error_handler(consoleImg)\
     && gfx_error_handler(creditImg) && gfx_error_handler(secTempStorage) && gfx_error_handler(loginBckImg) && gfx_error_handler(upQueryImg)\
-    && gfx_error_handler(mainBgImg) && gfx_error_handler(webBrowserImg) && gfx_error_handler(prevDisplayImg));
+    && gfx_error_handler(mainBgImg) && gfx_error_handler(webBrowserImg) && gfx_error_handler(prevDisplayImg) && \
+    gfx_error_handler(queryBoxImg));
     else
     {
         allegro_message("Error loading game resource files in memory");
@@ -89,6 +92,9 @@ void destroy_instances()
 
     unload_datafile(gfxDat);    // SegFault removed -- make an update as soon as possible
     // a big hurdle is removed -- more tweakings require to be done
+
+    // on a side note for the tweakings that might be done -- chapapapa, I have forgotten
+    // what they were
 }
 
 void update_screen()    // blits the double buffer on the screen
@@ -853,11 +859,40 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             termDisplayLvlz.push_back("Server side data is trusted\n");
             termDisplayLvlz.push_back("+++++++++++++++++++++++++++++++++++++++++++++++++++");
             termDisplayLvlz.push_back("lCooper@internic> ");
-            // well still I don't have my own internet connection
-            // I hope by the end of this year that gets resolved
+            // current work to be done
+            // 1. add the queryBox to the imageData file -- use the c2 compression
 
             _seq_display_(termDisplayLvlz, consoleImg, 76, 27, 10, 30, 100, 100, true, CGREEN, LINEBYLN);
             update_screen();
+
+            // display the queryBoxImg -- show that a confirmation box appeared asking for some access
+            // to come database/network -- the ip was a bit peculiar -- though seemed legit
+
+            blit_on_dBuffer(queryBoxImg, 250, 150, OPAQ);
+            // the design looks fine
+            // now to display the query and then display the memory leak part
+            // have to see the memory leak style in the HEN from sukkiri save game exploit
+
+            vector<string>dispQuerycsc; // display the query of the cutscene
+            dispQuerycsc.push_back("hostname: subRoot on NixBox84");
+            dispQuerycsc.push_back("user \"subRoot\" on hub node 48 is requesting access");
+            dispQuerycsc.push_back("destination hub : DB82G66 on node 48");
+            dispQuerycsc.push_back("\n         Press Y/N for accept/decline             ");
+            // this one looks fine
+            // need some good music from the fruity loops site for the game
+            // also serach for some mouse pointer images that can be used for the game
+
+            _seq_display_(dispQuerycsc, queryBoxImg, 45, 10, 10, 30, 250, 150, false, CGREEN, LINEBYLN);
+            // need to perfect the location of the textDisplay
+            // also need to get a formula for calculating the placement of the textImg for
+            // display
+
+            // Some other issues that need to be resolved:
+            // 1. provide the buttons for "yes"/"accept" and the opposite of both of them
+            // 2. show a black screen after that and display the rest part of the story after that
+
+            // Decide the move of the game play for the whole part of the game
+            // remember the demo release date
             install_keyboard();
         break;
     }
