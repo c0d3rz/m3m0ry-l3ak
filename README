@@ -1,1 +1,6 @@
-Test readme. Will be filling this up with the necessary details once everything starts working.
+Issues to be resolved:
+1. Create the gfx for the "warning! memory leak" and make it appear at multiple places on the screen. Basically that will be a blitting function.
+2. Tweak the libSound modue for using the other sounds -- appropriate for different situations.
+3. Tweak the screen_tear display to display the screen tear in a much more natural way. Add sfx for the same.
+
+P.S. Masked blit might be required to be used for the blitting in different desktops with different desktop resolutions. Have to check that part. 
