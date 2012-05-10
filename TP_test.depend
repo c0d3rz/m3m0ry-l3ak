@@ -8,14 +8,15 @@
 	"libGraphics.h"
 	"libUsr.h"
 
-1335706047 source:/home/sayantan/tp_test/TP_test/libGraphics.cpp
+1336657804 source:/home/sayantan/tp_test/TP_test/libGraphics.cpp
 	"libGraphics.h"
 
-1335620710 /home/sayantan/tp_test/TP_test/libGraphics.h
+1336680306 /home/sayantan/tp_test/TP_test/libGraphics.h
 	<iostream>
 	<cstdlib>
 	<string>
 	<vector>
+	<cmath>
 	<allegro.h>
 	<unistd.h>
 	"txtBox.h"

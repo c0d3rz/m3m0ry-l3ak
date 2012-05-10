@@ -566,20 +566,7 @@ void display_intro(int mode, string inpEpName, string inpUserName)  // I might b
 
     switch(mode)
     {
-        case INTRO: // this is for the level zero part
-            // display the required gfx and also play the appropriate sound for that part -- check
-            // if the sound can be played properly played or not
-
-            // create gfx for the INTRO -- level zero -- this will be a bit big cutscene.
-
-            // first part will be containing a display of the terminal along with the blitting
-            // of the webbrowser showing the arrest of the antagonist.
-
-            // so first I need to display the display_terminal() -- as in I am not calling that function
-            // I will just blit that image on the double buffer
-
-            // before I proceed with the cutscenes always remember -- remove the keyboard
-            // after finishing the cutscene -- install the keyboard again
+        case INTRO: // Level Zero
             remove_keyboard();
             clear_to_color(screen, CBLACK);
             blit_on_dBuffer(mainBgImg, 0, 0, OPAQ);
@@ -600,40 +587,21 @@ void display_intro(int mode, string inpEpName, string inpUserName)  // I might b
 Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed ssh\n80/tcp  open   http    Apache httpd 2.2.20 ((Unix))\
 \n|_ html-title: internic.lan: This is Secure Internic LAN\n\n443/tcp closed https");
 
-            lvlzIntroTxt.push_back("n@$h> ");
-
-            // the display for the terminal has been done -- now to display the web browser
-            // I think I might be needing two displays as in two blits to display the end part
-            // of the game. Whatever, I will check it when the appropriate time comes up
-
-            // display the web-browser now -- This one will be displaying the main antagonists
-            // capture to the user
-
-            // I might also have to insert some time delay for this so that the user is able to read
-            // the story properly
-
-            // displaying the web-browser after the call to the seq_displayer function for the first
-            // instance
+            lvlzIntroTxt.push_back("n@$h> ");   // removing unnecessary comments
 
 
-            // now call the seq_displayer function to display the aforewritten text
+            // display the first part of the cutscene text
             _seq_display_(lvlzIntroTxt, consoleImg, 76, 27, 10, 40, 100, 100, true, CGREEN, LINEBYLN);
             update_screen();
 
             // display and blit on the web-browser -- done
             blit_on_dBuffer(webBrowserImg, 250, 250, OPAQ);
 
-            // write the website address at the top of the image where the space has been created
-            // another concept needs to be checked for this web browser that might be implemented in case
-            // the concept works out fine
-            // writing the web site address at the top of the webBrowser image
+            // write addr of the website that will be showing the news to the user
             textout_ex(webBrowserImg, font, "www.undergroundnews.com", 10, 8, CGREEN, -1);
 
-            // making no change to the gfx of the webbrowser
-            // writing new text to the webBrowser display
-
-            // checking another concept
-            vector<string> brwDisplayVec;   // this is the display for the first browser window
+            // rinse and repeat
+            vector<string> brwDisplayVec;   // browser display vector
             brwDisplayVec.push_back("Breaking News\n");
             brwDisplayVec.push_back("----------------------------------------\n\n");
             brwDisplayVec.push_back("Revered Head of Security of Internic was today arrested");
@@ -642,8 +610,8 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             brwDisplayVec.push_back("that his accomplice was the head of Management of Secure");
             brwDisplayVec.push_back("Digital Corp which had tried to sneak into the operations");
             brwDisplayVec.push_back("as well as used the information to play the companies' resources");
-            //brwDisplayVec.push_back("\n\n\n\nPress a key to continue"); // better write this text in some
-            // other part of the screen
+
+            // key event will be dispayed kat the top left corner of the screen -- done
 
 
             _seq_display_(brwDisplayVec, webBrowserImg, 76, 27, 10, 40, 250, 250, false, CGREEN, LINEBYLN);
@@ -663,7 +631,7 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             // will be displayed when the user action will be required and then it will go back again
             blit_on_dBuffer(webBrowserImg, 150, 150, OPAQ);
 
-            // creating another vector to display some other text to the user
+            // browser display
             vector<string> brDisplayVec;
             brDisplayVec.push_back("Breaking news");
             brDisplayVec.push_back("-------------------------------------------------------\n");
@@ -678,6 +646,10 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
 
             // now since the function requires the username to be provided -- the cutscenes
             // and the objective display screen text needs to be changed accordingly
+            // the name of the user will be displayed in every cut scene display
+
+            // screenDisturbance function will be handled later
+            // trying to tweak the sound library
 
 
             _seq_display_(brDisplayVec, webBrowserImg, 76, 27, 10, 40, 150, 150, false, CGREEN, LINEBYLN);
@@ -691,14 +663,21 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             update_screen();
             remove_keyboard();
 
-            // let's start the next part of the coding
+            //_handle_screen_tear(FULLBLT);   // this is where the screen tear is being handled
+            // now check out the fullBlt state in that save_screen_state
+
+            // will be using the secTempStorage function
             _save_reblit_buffer_state_(FULLSAV);
-            clear_to_color(dBuffer, CWHITE);
+            _distort_frame_(dBuffer, secTempStorage, 0, 0);
+            // need to display the secTempStorage on the screen
+            blit_on_dBuffer(secTempStorage, 0, 0, OPAQ);
             update_screen();
 
-            _handle_screen_tear(FULLBLT);
-
-            for(long counter = 0; counter < 999999999; counter++);
+            //for(long counter = 0; counter < 999999999L; counter++);
+            for(long counter = 0; counter < 9999999L; counter++);
+            _save_reblit_buffer_state_(FULLBLT);
+            update_screen();
+            for(long counter = 0; counter < 999999999L; counter++);
             // I might have to make the screen_tear() function -- a generic one is what I mean
             // Let's start by building that -- need to play more music
 
@@ -893,6 +872,9 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
 
             // Decide the move of the game play for the whole part of the game
             // remember the demo release date
+
+            // currently fixing the libGraphics screen_tear gfx issue -- checking if the tweaking
+            // can be done or not
             install_keyboard();
         break;
     }
@@ -1194,28 +1176,54 @@ void _handle_event_(BITMAP *consoleTextBmp, int keyRead, txtBox& inpObj, string&
     }
 }
 
-void _handle_screen_tear(int blitMode)
+void _distort_frame_(BITMAP* src, BITMAP* dst, int t, int type)
 {
-    // some genericity issue is remaining with this one
-    // like this function doesn't work properly while called anywhere else
+	ASSERT(source != dest);
+	ASSERT(source != NULL && dest != NULL);
+	ASSERT(source->w == dest->w && source->h == dest->h);
+	ASSERT(type = 0 || type == 1 || type == 3);
 
-    // check out the way the screen tear was being implemented
-    for(int counter = 0; counter < 2; counter++)
-    {
-        _save_reblit_buffer_state_(blitMode);
-        clear_to_color(dBuffer, CBLACK);
-        update_screen();
-        for(long counter = 0; counter < 9999999; counter++);
-        // stretched blit
-        stretch_blit(tempStorage, dBuffer, 0, 0, tempStorage->w, tempStorage->h, 0, 0, 2048, 640);
-        stretch_blit(tempStorage, dBuffer, 0, 0, tempStorage->w, tempStorage->h, 0, 0, 2048, 800);
+	// Some hard-coded distortion parameters
+	float A = 90.5;		// Amplitude
+	float F = 0.1;		// Frequency
+	float S = 0.1;		// Time scaling
+	float C = 1.0;		// Compression (only used for vertical distortion)
 
-        update_screen();
+	// Get pointers to raw bitmap data
+	int* srcdata = (int*)src->line[0];
+	int* dstdata = (int*)dst->line[0];
 
-        for(long counter = 0; counter < 9999999; counter++);
-        _save_reblit_buffer_state_(blitMode);
-        update_screen();
-    }
+	int width = src->w;
+	int height = src->h;
+
+	// For each line...
+	for(int y = 0; y < height; y++)
+	{
+		// Calculate the distortion offset for this line
+		int offset = A * sinf(F * y + S * t);
+
+		int src_x = 0;	// new x position
+		int src_y = y;	// new y position
+
+		if(type == 0)
+			src_x = offset;
+		else if(type == 1)
+			src_x = (y % 2)? offset : -offset;
+		else if(type == 2)
+			src_y = y * C + offset;
+
+		// Wrap the y offset correctly - e.g., -1 should become height-1
+		src_y = (src_y + height) % height;
+
+		// Copy the line into the destination with translation
+		for(int x = 0; x < width; x++)
+		{
+			// Also need to wrap the x offset
+			src_x = (src_x + width) % width;
+			dstdata[y * width + x] = srcdata[src_y * width + src_x];
+			src_x++;
+		}
+	}
 }
 
 // --------------------------------------- bitmap error checker ----------------------------------------------------
