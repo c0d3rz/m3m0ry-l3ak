@@ -16,17 +16,17 @@
 	<File name="libCrypt.h" open="0" top="0" tabpos="9">
 		<Cursor position="623" topLine="0" />
 	</File>
-	<File name="libGraphics.cpp" open="1" top="1" tabpos="2">
-		<Cursor position="56436" topLine="1172" />
+	<File name="libGraphics.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="56582" topLine="1168" />
 	</File>
 	<File name="libGraphics.h" open="1" top="0" tabpos="3">
-		<Cursor position="3397" topLine="67" />
+		<Cursor position="3476" topLine="62" />
 	</File>
 	<File name="libSound.cpp" open="1" top="0" tabpos="7">
-		<Cursor position="2389" topLine="70" />
+		<Cursor position="1460" topLine="48" />
 	</File>
-	<File name="libSound.h" open="1" top="0" tabpos="8">
-		<Cursor position="303" topLine="2" />
+	<File name="libSound.h" open="1" top="1" tabpos="8">
+		<Cursor position="337" topLine="0" />
 	</File>
 	<File name="libUsr.cpp" open="1" top="0" tabpos="5">
 		<Cursor position="7051" topLine="187" />
@@ -35,7 +35,7 @@
 		<Cursor position="501" topLine="48" />
 	</File>
 	<File name="main.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="5977" topLine="126" />
+		<Cursor position="5618" topLine="0" />
 	</File>
 	<File name="main.h" open="0" top="0" tabpos="10">
 		<Cursor position="195" topLine="0" />

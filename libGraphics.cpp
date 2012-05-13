@@ -668,7 +668,7 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
 
             // will be using the secTempStorage function
             _save_reblit_buffer_state_(FULLSAV);
-            _distort_frame_(dBuffer, secTempStorage, 0, 0);
+            _distort_frame_(dBuffer, secTempStorage, 0, 0, 45.5); // the implementation -- distort_frame -- screen disturbance
             // need to display the secTempStorage on the screen
             blit_on_dBuffer(secTempStorage, 0, 0, OPAQ);
             update_screen();
@@ -1176,15 +1176,27 @@ void _handle_event_(BITMAP *consoleTextBmp, int keyRead, txtBox& inpObj, string&
     }
 }
 
-void _distort_frame_(BITMAP* src, BITMAP* dst, int t, int type)
+void _distort_frame_(BITMAP* src, BITMAP* dst, int t, int type, float inpAmpli) // some changes need to be done
 {
+    // here the desination should be created when the source has been passed
+    // the return type of the function should be changed to BITMAP *
+
+    // destroy the returned bitmap after the use has completed to free the memory taken up by that
+    // next issue to be resolved -- this is something that I should have completed a long time before
+    // Also both the dumps need to updated
+
+    // will have to update the dumps after compiling the same in another system
+
+    // have to add the amplitude as an input parameter
+    // plus I will have to change the music data into a data file
+
 	ASSERT(source != dest);
 	ASSERT(source != NULL && dest != NULL);
 	ASSERT(source->w == dest->w && source->h == dest->h);
 	ASSERT(type = 0 || type == 1 || type == 3);
 
 	// Some hard-coded distortion parameters
-	float A = 90.5;		// Amplitude
+	float A = inpAmpli;		// Amplitude
 	float F = 0.1;		// Frequency
 	float S = 0.1;		// Time scaling
 	float C = 1.0;		// Compression (only used for vertical distortion)

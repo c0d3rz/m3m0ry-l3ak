@@ -11,7 +11,8 @@
 #include "libGraphics.h"
 
 #define MENUSND "./msdata/menusnd.wav"
-#define FIRSTSND "./msdata/lvlzsnd.wav" // have to change them
+//#define FIRSTSND "./msdata/lvlzsnd.wav" // have to change them
+#define FIRSTSND "./msdata/Not_Main_Theme.mp3" // have to change them
 #define MENU 99
 #define FSND 0
 
