@@ -9,19 +9,30 @@ int main(int argc, char *argv[])
     // init all the primitives required for allegro to startup
     allegro_init();
 
+    FMOD::System *sfxSystem;
+    FMOD_RESULT sfxResult;
 
     set_color_depth(COLORDEPTH);
-    graphics_init(FULLSCR, 1024, 768);   // for testing -- default == WINDOWED mode
+    graphics_init(WINDOW, 1024, 768);   // for testing -- default == WINDOWED mode
+    init_sfx(sfxSystem, sfxResult);    // till this part this is working fine
+
+    FMOD::Sound *menuSfx;
+    FMOD::Sound *mainSfx;   // This will be the primary music that will be played in the game
+    FMOD::Channel *mainChannel; // Main channel -- will play most of the music
+    FMOD::Channel *subChannel;  // the auxilliary channel
+
+    // Now let's play some music
 
     // there is some issue with the console text image that is being blitted on top of the
     // console image -- index out of range Seg fault is occuring -- most probable solution might be
     // to set the position of the console text image on the console image.
 
     create_instances();
-    sndfx sfx;
-    sfx.init_load_sound();
-    sfx.play_sound(FSND);
-    display_splash(); // commenting this for the purpose of writing new code for this
+    create_sfx_instances(sfxSystem, sfxResult, menuSfx, MENUSFX, REPEAT);
+    create_sfx_instances(sfxSystem, sfxResult, mainSfx, MAINSFX, REPEAT);
+
+    play_sfx(sfxSystem, sfxResult, menuSfx, mainChannel);
+    //display_splash(); // commenting this for the purpose of writing new code for this
     install_keyboard();
 
     //sfx.play_sound(MENU);
@@ -29,7 +40,7 @@ int main(int argc, char *argv[])
     clear_dBuffer();
     if(dispRetVal == STARTX) // decide on the return type
     {
-        graphics_init(FULLSCR, 600, 400);
+        graphics_init(WINDOW, 600, 400);
         display_boot_seq();
     }
     else if(dispRetVal == POWEROFF)
@@ -87,16 +98,15 @@ int main(int argc, char *argv[])
         completed
         int isLevelComplete;
 
-        In short I have write three more variables of integer type. The above part has been completed
-        The writing of these data variables needs to be done -- as in the comditions that needs to be
-        checked before the values are modified.
+        Level cutscene display function has been created.
+        Plus the libSound module has been redesigned. Though that requires a bit of tweaking.
 
-        Next to create the graphics for the intro cutscene.
-        Create the function that will display the story based on the level number the user is in.
+        Oh, BTW I almost forgot, I installed UNIX env in my VirtualBox distro. That is really cool
+        operating system. A bit difficult for an idiot like me though.
     */
 
     clear_dBuffer();
-    graphics_init(FULLSCR, 1024, 768);
+    graphics_init(WINDOW, 1024, 768);
     //sfx.play_sound(FSND);   // No level check for this -- the music will be played one after the other
 
     // redesigning the sound library first
@@ -108,7 +118,6 @@ int main(int argc, char *argv[])
     // the problem is with the type of converter that are being used to convert the files
     // create the user profile
 
-    clear_dBuffer();
     // need to check the issue in other laptops with better display
     // though it looks fine from my side
 
@@ -131,16 +140,35 @@ int main(int argc, char *argv[])
 
         if(!isShown)
         {
-            usrInst.display_level_intro();
+            // stop the previous sound playing function
+            mainChannel->setPaused(true);
+
+            // changing the music for the game
+            // pass to function to be relayed to another one
+            usrInst.display_level_intro(sfxSystem, sfxResult, mainSfx, subChannel);  // passing the system and others to this function
             isShown = true;
         }
-        // some seg fault is occuring leading to the crash of the program
-        // check out the crash of that -- checking to be done in the testBed
+        sfxSystem->update();
+        mainChannel->setPaused(false);
+        //play_sfx(sfxSystem, sfxResult, mainSfx, mainChannel);
+        // implementing the code that was written here
         update_screen();
     }
-    sfx.stop_sound(FSND); // stopping the sound routines for time being
+    stop_play_sfx(mainChannel, sfxResult);
+    // Now to implement the next part that was creating the problem
 
-    sfx.destroy_sound_instances();  // this is theer because of the load_sound() routine
+    // porting code written in testSfx to the libSound module
+    // porting done properly -- working version
+
+    // This version will be going as a upload.
+    // now to add/remove some sound -- have to remove the skyrim music
+
+    // next issue to be resolved needs to be reported
+
+    // Till now the internet is working fine -- hope it works out fine
+
+    //sfx.destroy_sound_instances();  // this is theer because of the load_sound() routine
+    destroy_sfx_instances(sfxSystem, menuSfx, sfxResult, mainChannel);
     destroy_instances();    // back_end seg_fault existing at this point -- probing inside for
     // more information
     allegro_exit();

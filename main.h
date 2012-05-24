@@ -10,6 +10,9 @@
 #include "libUsr.h"
 #include "libSound.h"
 
+#include <fmodex/fmod.hpp>
+#include <fmodex/fmod_errors.h>
+
 #define COLORDEPTH 32
 
 #endif // MAIN_H_INCLUDED

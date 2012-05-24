@@ -14,6 +14,8 @@
 #include <allegro.h>
 #include "libGraphics.h"
 #include "libCrypt.h"
+#include <fmodex/fmod.hpp>
+#include <fmodex/fmod_errors.h> // just for passing the arguments of the FMOD::System and channel
 
 // MACROS
 #define PROFILEDIRPATH "./profile"  // this is a relative path
@@ -33,7 +35,7 @@ class usrProfile
         void usrProfileInit();   // initialize profile creation
         usrProfile();
         void load_profile();  // load the profile
-        void display_level_intro(); // check the level, mission num and display the level story
+        void display_level_intro(FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD::Sound*& inpSfxState, FMOD::Channel*& inpChannel); // check the level, mission num and display the level story
         std::string getUserName();  // return the username of the player
 
     private:

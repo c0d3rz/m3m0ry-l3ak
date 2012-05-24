@@ -1,17 +1,14 @@
 # depslib dependency file v1.0
-1336923557 source:/home/sayantan/tp_test/TP_test/main.cpp
+1337886542 source:/home/sayantan/tp_test/TP_test/main.cpp
 	"main.h"
 
-1334947335 source:/home/sayantan/tp_test/TP_test/test.cpp
-	<cstdlib>
-	<allegro.h>
-	"libGraphics.h"
-	"libUsr.h"
+1337884696 source:/home/sayantan/tp_test/TP_test/test.cpp
 
-1336923544 source:/home/sayantan/tp_test/TP_test/libGraphics.cpp
+1337886174 source:/home/sayantan/tp_test/TP_test/libGraphics.cpp
 	"libGraphics.h"
 
-1336923478 /home/sayantan/tp_test/TP_test/libGraphics.h
+1337886663 /home/sayantan/tp_test/TP_test/libGraphics.h
+	"libSound.h"
 	<iostream>
 	<cstdlib>
 	<string>
@@ -20,11 +17,10 @@
 	<allegro.h>
 	<unistd.h>
 	"txtBox.h"
-	"libSound.h"
 	"libUsr.h"
 	"data/gfx_util.h"
 
-1332451180 /home/sayantan/tp_test/TP_test/main.h
+1337884958 /home/sayantan/tp_test/TP_test/main.h
 	<iostream>
 	<cstdlib>
 	<string>
@@ -32,6 +28,8 @@
 	"libGraphics.h"
 	"libUsr.h"
 	"libSound.h"
+	<fmodex/fmod.hpp>
+	<fmodex/fmod_errors.h>
 
 1329948958 /home/sayantan/tp_test/TP_test/txtBox.h
 	<iostream>
@@ -54,7 +52,7 @@
 	<vector>
 	<string>
 
-1334401620 /home/sayantan/tp_test/TP_test/libUsr.h
+1337193571 /home/sayantan/tp_test/TP_test/libUsr.h
 	<iostream>
 	<cstdlib>
 	<fstream>
@@ -66,8 +64,10 @@
 	<allegro.h>
 	"libGraphics.h"
 	"libCrypt.h"
+	<fmodex/fmod.hpp>
+	<fmodex/fmod_errors.h>
 
-1334402362 source:/home/sayantan/tp_test/TP_test/libUsr.cpp
+1337193975 source:/home/sayantan/tp_test/TP_test/libUsr.cpp
 	"libUsr.h"
 
 1330978958 /home/sayantan/tp_test/TP_test/libB64.h
@@ -77,16 +77,16 @@
 1330978709 source:/home/sayantan/tp_test/TP_test/libB64.cpp
 	"libB64.h"
 
-1336330367 source:/home/sayantan/tp_test/TP_test/libSound.cpp
+1337886699 source:/home/sayantan/tp_test/TP_test/libSound.cpp
 	"libSound.h"
 
-1336923636 /home/sayantan/tp_test/TP_test/libSound.h
+1337884990 /home/sayantan/tp_test/TP_test/libSound.h
 	<iostream>
 	<cstdlib>
-	<stdio.h>
+	<string>
+	<allegro.h>
 	<fmodex/fmod.hpp>
 	<fmodex/fmod_errors.h>
-	"libGraphics.h"
 
 1332626372 /home/sayantan/tp_test/TP_test/libVernam.h
 	<iostream>
@@ -103,4 +103,15 @@
 
 1332966848 source:/home/sayantan/tp_test/TP_test/libCrypt.cpp
 	"libCrypt.h"
+
+1337284653 source:/home/sayantan/tp_test/TP_test/testSfx.cpp
+	"testSfx.h"
+
+1337284117 /home/sayantan/tp_test/TP_test/testSfx.h
+	<iostream>
+	<cstdlib>
+	<string>
+	<allegro.h>
+	<fmodex/fmod.hpp>
+	<fmodex/fmod_errors.h>
 

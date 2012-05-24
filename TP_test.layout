@@ -17,31 +17,31 @@
 		<Cursor position="623" topLine="0" />
 	</File>
 	<File name="libGraphics.cpp" open="1" top="0" tabpos="2">
-		<Cursor position="56582" topLine="1168" />
+		<Cursor position="44027" topLine="859" />
 	</File>
 	<File name="libGraphics.h" open="1" top="0" tabpos="3">
-		<Cursor position="3476" topLine="62" />
+		<Cursor position="83" topLine="0" />
 	</File>
-	<File name="libSound.cpp" open="1" top="0" tabpos="7">
-		<Cursor position="1460" topLine="48" />
+	<File name="libSound.cpp" open="1" top="0" tabpos="8">
+		<Cursor position="649" topLine="18" />
 	</File>
-	<File name="libSound.h" open="1" top="1" tabpos="8">
-		<Cursor position="337" topLine="0" />
+	<File name="libSound.h" open="1" top="0" tabpos="9">
+		<Cursor position="1143" topLine="0" />
 	</File>
 	<File name="libUsr.cpp" open="1" top="0" tabpos="5">
-		<Cursor position="7051" topLine="187" />
+		<Cursor position="7103" topLine="179" />
 	</File>
 	<File name="libUsr.h" open="1" top="0" tabpos="4">
-		<Cursor position="501" topLine="48" />
+		<Cursor position="828" topLine="30" />
 	</File>
-	<File name="main.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="5618" topLine="0" />
+	<File name="main.cpp" open="1" top="1" tabpos="1">
+		<Cursor position="1170" topLine="20" />
 	</File>
-	<File name="main.h" open="0" top="0" tabpos="10">
-		<Cursor position="195" topLine="0" />
+	<File name="main.h" open="1" top="0" tabpos="7">
+		<Cursor position="174" topLine="0" />
 	</File>
 	<File name="test.cpp" open="1" top="0" tabpos="6">
-		<Cursor position="2" topLine="36" />
+		<Cursor position="7694" topLine="153" />
 	</File>
 	<File name="txtBox.cpp" open="0" top="0" tabpos="8">
 		<Cursor position="5797" topLine="251" />

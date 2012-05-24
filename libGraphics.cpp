@@ -560,7 +560,7 @@ string query_uname()
     return inpUsrName;
 }
 
-void display_intro(int mode, string inpEpName, string inpUserName)  // I might be needing the object to be passed
+void display_intro(int mode, string inpEpName, string inpUserName, FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD::Sound*& inpSfxState, FMOD::Channel*& inpChannel)  // I might be needing the object to be passed
 {
     // the mode will be for each and every mission rather than double checking mission and the level
 
@@ -570,6 +570,8 @@ void display_intro(int mode, string inpEpName, string inpUserName)  // I might b
             remove_keyboard();
             clear_to_color(screen, CBLACK);
             blit_on_dBuffer(mainBgImg, 0, 0, OPAQ);
+
+            play_sfx(inpSystem, inpResult, inpSfxState, inpChannel);
 
             vector<string> lvlzIntroTxt;
             lvlzIntroTxt.push_back("n@$h> netmap -v -A static.internic.lan");
@@ -715,6 +717,7 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
 
             // populate the vector that will be displaying the next display
             // for the terminal
+
             vector<string> termDisplayLvlz;
             termDisplayLvlz.push_back("lCooper@internic> w");
             termDisplayLvlz.push_back("10:53:46 up 3 days, 12:38,  5 users,  load average: 0.00, 0.00, 0.00");
@@ -848,34 +851,29 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             // to come database/network -- the ip was a bit peculiar -- though seemed legit
 
             blit_on_dBuffer(queryBoxImg, 250, 150, OPAQ);
-            // the design looks fine
-            // now to display the query and then display the memory leak part
-            // have to see the memory leak style in the HEN from sukkiri save game exploit
+
 
             vector<string>dispQuerycsc; // display the query of the cutscene
             dispQuerycsc.push_back("hostname: subRoot on NixBox84");
             dispQuerycsc.push_back("user \"subRoot\" on hub node 48 is requesting access");
             dispQuerycsc.push_back("destination hub : DB82G66 on node 48");
             dispQuerycsc.push_back("\n         Press Y/N for accept/decline             ");
-            // this one looks fine
-            // need some good music from the fruity loops site for the game
-            // also serach for some mouse pointer images that can be used for the game
 
             _seq_display_(dispQuerycsc, queryBoxImg, 45, 10, 10, 30, 250, 150, false, CGREEN, LINEBYLN);
-            // need to perfect the location of the textDisplay
-            // also need to get a formula for calculating the placement of the textImg for
-            // display
 
-            // Some other issues that need to be resolved:
-            // 1. provide the buttons for "yes"/"accept" and the opposite of both of them
-            // 2. show a black screen after that and display the rest part of the story after that
-
-            // Decide the move of the game play for the whole part of the game
-            // remember the demo release date
-
-            // currently fixing the libGraphics screen_tear gfx issue -- checking if the tweaking
-            // can be done or not
             install_keyboard();
+            stop_play_sfx(inpChannel, inpResult);
+            //release_channel(inpSystem, inpResult, inpChannel); -- deprecated function call
+            // not required any more
+
+            // Here I will be passing for the moment two channels and two sounds
+            // one will be the master sound, the specialSfx. After that I need to
+            // return ctrl to the calling function
+
+            // gfx issue to be resolved:
+            // 1. display the "Warning" part to the user
+            // 2. properly playSound in the background
+            inpSystem->update();
         break;
     }
 }

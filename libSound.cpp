@@ -2,93 +2,129 @@
 
 using namespace std;
 
-void sndfx::init_load_sound()
+void init_sfx(FMOD::System*& inpSystem, FMOD_RESULT &inpResult)
 {
-    result = FMOD::System_Create(&system);
-    error_check(result);
-    result = system->init(1024, FMOD_INIT_NORMAL, 0);    // later check about the values in this function
-    // the values might be determining the sound volume and the like -- if it is -- create a cfg file
-    // for this -- read the file and then populate the appropriate values
-    error_check(result);
+    inpResult = FMOD::System_Create(&inpSystem);
+    _sfx_error_check_(inpResult);
 
-    // now load the sound for the menu
-    result = system->createSound(MENUSND, FMOD_LOOP_NORMAL, 0, &menuSound);
-    error_check(result);    // the file has been loaded now
-    result = system->createSound(FIRSTSND, FMOD_LOOP_NORMAL, 0, &firstSound);
-    error_check(result);
+    // init the system
+    inpResult = inpSystem->init(100, FMOD_INIT_NORMAL, 0);
+    _sfx_error_check_(inpResult);
 }
 
-void sndfx::play_sound(int mode)
+void create_sfx_instances(FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD::Sound*& inpSfxState, int mode, int playMode)
 {
+    string filePath;    // remember that string <var> != NULL at the time of declaring
     switch(mode)
     {
-        case MENU:
-            // channel free is something that I will be using in this case
-            result = system->playSound(FMOD_CHANNEL_FREE, menuSound, 0, &channel);
+        case MENUSFX:
+            filePath.clear();
+            filePath = "./msdata/menusnd.wav";
         break;
-        case FSND:
-            result = system->playSound(FMOD_CHANNEL_FREE, firstSound, 0, &channel);
+
+        case MAINSFX:
+            filePath.clear();
+            filePath = "./msdata/lvlzsnd.wav";
         break;
     }
-}
-
-void sndfx::stop_sound(int mode)
-{
-    // check if the channel is playing or not
-    bool playStat = false;  // default -- channel is not playing
-    result = channel->isPlaying(&playStat);
-    switch(mode)
+    if(playMode == NORMAL)
     {
-        case MENU:
-            if(playStat)
-                channel->stop();
-        break;
-
-        case FSND:
-            if(playStat)
-                channel->stop();
-        break;
+        inpResult = inpSystem->createSound(filePath.c_str(), FMOD_DEFAULT, 0, &inpSfxState);
+        _sfx_error_check_(inpResult);
     }
+    else if(playMode == REPEAT)
+    {
+        inpResult = inpSystem->createSound(filePath.c_str(), FMOD_LOOP_NORMAL, 0, &inpSfxState);
+        _sfx_error_check_(inpResult);
+    }
+    else
+    {
+        // have to think of something
+    }
+
+    // create another sound
 }
 
-void sndfx::destroy_sound_instances()
+void play_sfx(FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD::Sound*& inpSfxState, FMOD::Channel*& inpChannel)
+{
+    inpResult = inpSystem->playSound(FMOD_CHANNEL_FREE, inpSfxState, false, &inpChannel);
+    _sfx_error_check_(inpResult);
+}
+
+
+void release_channel(FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD::Channel*& inpChannel)
+{
+    // deprecated code -- right now working but still with bugs
+
+    unsigned int ms = 0;    // no idea what it is supposed to do
+    unsigned int lenms = 0; // again no idea what the hell is this going to do
+    bool playing = false;
+    bool paused = false;    // default value == false;
+
+    int channelIsPlaying = 0;   // why do people show off
+
+    if(inpChannel)
+    {
+        FMOD::Sound *currentSfx = NULL;
+
+        inpResult = inpChannel->isPlaying(&playing);
+        if((inpResult != FMOD_OK) && (inpResult == FMOD_ERR_INVALID_HANDLE) && (inpResult == FMOD_ERR_CHANNEL_STOLEN))
+            _sfx_error_check_(inpResult);
+
+        inpResult = inpChannel->getPaused(&paused);
+        if((inpResult != FMOD_OK) && (inpResult == FMOD_ERR_INVALID_HANDLE) && (inpResult == FMOD_ERR_CHANNEL_STOLEN))
+            _sfx_error_check_(inpResult);
+
+        inpResult = inpChannel->getPosition(&ms, FMOD_TIMEUNIT_MS);
+        if((inpResult != FMOD_OK) && (inpResult == FMOD_ERR_INVALID_HANDLE) && (inpResult == FMOD_ERR_CHANNEL_STOLEN))
+            _sfx_error_check_(inpResult);
+
+        inpChannel->getCurrentSound(&currentSfx);
+        if(currentSfx)
+        {
+            inpResult = currentSfx->getLength(&lenms, FMOD_TIMEUNIT_MS);
+            if((inpResult != FMOD_OK) && (inpResult == FMOD_ERR_INVALID_HANDLE) && (inpResult == FMOD_ERR_CHANNEL_STOLEN))
+                _sfx_error_check_(inpResult);
+        }
+    }
+    inpSystem->getChannelsPlaying(&channelIsPlaying);
+}
+
+void stop_play_sfx(FMOD::Channel*& inpPlayChannel, FMOD_RESULT &inpResult)
 {
     bool playStat = false;
-    result = channel->isPlaying(&playStat);
-
-
+    inpResult = inpPlayChannel->isPlaying(&playStat);
     if(playStat)
-        channel->stop();
-
-    result = menuSound->release();
-    error_check(result);
-    result = system->close();
-    error_check(result);
-    result = system->release();
-    error_check(result);
+        inpPlayChannel->stop();
+    //inpPlayChannel->setPriority(0);
 }
 
-bool sndfx::isPlaying(int mode) // function to be called while interfering with another sound instance
+void reset_play_sfx_pos(FMOD::Channel*& inpChannel, FMOD_RESULT &inpResult)
 {
-    bool playStat;  // No default value -- unknown part while calling this function
-    switch(mode)
-    {
-        case FSND:
-            result = channel->isPlaying(&playStat);
-        break;
-    }
-    cout<<playStat<<endl;   // just to check the value
-    // a pause sound might also be required -- or some way to reduce the volume of the sound to zero
-    // creating the visual for the alert box -- created, adding to the data file
-    return playStat;
+    inpResult = inpChannel->setPosition(0, FMOD_TIMEUNIT_MS);
+    _sfx_error_check_(inpResult);
 }
 
-void sndfx::error_check(FMOD_RESULT result)
+void destroy_sfx_instances(FMOD::System*& inpSystem, FMOD::Sound*& inpSfxState, FMOD_RESULT &inpResult, FMOD::Channel*& inpPlayChannel)
 {
-    if(result != FMOD_OK)
+    stop_play_sfx(inpPlayChannel, inpResult);   // I am not sure I will be keeping this
+    // since I will have to call the stop playing function many times to stop all the channels
+
+    inpResult = inpSfxState->release();
+    _sfx_error_check_(inpResult);
+    inpResult = inpSystem->close();
+    _sfx_error_check_(inpResult);
+    inpResult = inpSystem->release();
+    _sfx_error_check_(inpResult);
+}
+
+// Internal sfx function
+void _sfx_error_check_(FMOD_RESULT &inpResult)
+{
+    if(inpResult != FMOD_OK)
     {
-        printf("FMOD error! (%d) %s\n", result, FMOD_ErrorString(result));
-        destroy_instances();
+        // exit from allegro
+        allegro_message("Something went wrong with the sfx routines");
         allegro_exit();
     }
 }

@@ -4,43 +4,32 @@
 
 #include <iostream>
 #include <cstdlib>
-#include <stdio.h>
+#include <string>
 
+#include <allegro.h>
 #include <fmodex/fmod.hpp>
 #include <fmodex/fmod_errors.h>
-#include "libGraphics.h"
 
-#define MENUSND "./msdata/menusnd.wav"
-//#define FIRSTSND "./msdata/lvlzsnd.wav" // have to change them
-#define FIRSTSND "./msdata/Not_Main_Theme.mp3" // have to change them
-#define MENU 99
-#define FSND 0
+// define the modes that will define what will be played
+#define MENUSFX 1
+#define MAINSFX 2
 
-// class concept -- hope this works out
-class sndfx
-{
-    public:
-        void init_load_sound(); // initialize and load the sounds
-        void play_sound(int mode);  // play the specific sound
-        void stop_sound(int mode);  // stop that specific sound -- free the channel
-        void destroy_sound_instances(); // release all the channels and the sounds as well as the system
-        bool isPlaying(int mode);   // check channel.isPlaying()
-        // write the code for the isPLaying() function
+#define REPEAT 10
+#define NORMAL 20
+
+// sfx_functions
+void init_sfx(FMOD::System*& inpSystem, FMOD_RESULT &inpResult);
+void create_sfx_instances(FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD::Sound*& inpSfxState, int mode, int playMode);
+void play_sfx(FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD::Sound*& inpSfxState, FMOD::Channel*& inpChannel);
+void stop_play_sfx(FMOD::Channel*& inpPlayChannel, FMOD_RESULT &inpResult);
+void destroy_sfx_instances(FMOD::System*& inpSystem, FMOD::Sound*& inpSfxState, FMOD_RESULT &inpResult, FMOD::Channel*& inpPlayChannel);
+void reset_play_sfx_pos(FMOD::Channel*& inpChannel, FMOD_RESULT &inpResult);
+
+// experimentation
+void release_channel(FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD::Channel*& inpChannel);
 
 
-        // sound module is semi complete -- but work will go on in this respect
-        // now for the acceptance of the username and the playing of the keysounds -- key presses
-        // need some function to pause the sound and also some bool isPlaying(&channel) type function
-
-    private:
-        FMOD::System *system;
-        FMOD::Channel *channel;
-        FMOD::Sound *menuSound;
-        FMOD::Sound *firstSound;
-        FMOD_RESULT result;
-
-        void error_check(FMOD_RESULT result);
-};
-// Aim : just play the menu snd as of now
+// internal sfx functions
+void _sfx_error_check_(FMOD_RESULT &inpResult);
 
 #endif

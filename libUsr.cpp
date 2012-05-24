@@ -159,7 +159,7 @@ void usrProfile::load_profile()
     }
 }
 
-void usrProfile::display_level_intro()
+void usrProfile::display_level_intro(FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD::Sound*& inpSfxState, FMOD::Channel*& inpChannel)
 {
     // working principle of this function
     // This function will be checking the usrLvl and based on this variable as well as the
@@ -190,7 +190,7 @@ void usrProfile::display_level_intro()
         if(missionNum == 0)   // that's good
         {
             // call the function that will display the first cutscenes
-            display_intro(INTRO, ".Init", _usrName_);
+            display_intro(INTRO, ".Init", _usrName_, inpSystem, inpResult, inpSfxState, inpChannel);
 
             // cleaned up the debug part that was implemented here
             // cleaning up other files that were debugged
