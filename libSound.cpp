@@ -24,7 +24,17 @@ void create_sfx_instances(FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD
 
         case MAINSFX:
             filePath.clear();
-            filePath = "./msdata/lvlzsnd.wav";
+            filePath = "./msdata/mainsnd1.wav";
+        break;
+
+        case DISTORTSFX:
+            filePath.clear();
+            filePath = "./msdata/distortframe.mp3";
+        break;
+
+        case CUTSCSFX:
+            filePath.clear();
+            filePath = "./msdata/cutscmain.wav";
         break;
     }
     if(playMode == NORMAL)

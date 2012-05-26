@@ -16,10 +16,17 @@ int main(int argc, char *argv[])
     graphics_init(WINDOW, 1024, 768);   // for testing -- default == WINDOWED mode
     init_sfx(sfxSystem, sfxResult);    // till this part this is working fine
 
-    FMOD::Sound *menuSfx;
-    FMOD::Sound *mainSfx;   // This will be the primary music that will be played in the game
+    // sounds -- first creating only the sounds
+    FMOD::Sound *menuSfx;   // the sound that will be played for the menu
+    FMOD::Sound *cutscMainSfx;  // sound that will be played while showing the cutscenes
+    FMOD::Sound *distortFrameSfx;   // distort frame sfx
+    FMOD::Sound *mainSfx;   // The music that will be played primarily for this game -- though I have doubt on that
+
+    // channels -- corresponding to the sounds that will be played
+    FMOD::Channel *menuChannel; // menu sfx channel
+    FMOD::Channel *custscMainChannel;   // cutscene bg music
+    FMOD::Channel *distortChannel;  // channel for playing the distort sound
     FMOD::Channel *mainChannel; // Main channel -- will play most of the music
-    FMOD::Channel *subChannel;  // the auxilliary channel
 
     // Now let's play some music
 
@@ -28,11 +35,18 @@ int main(int argc, char *argv[])
     // to set the position of the console text image on the console image.
 
     create_instances();
+    // create the sound instances
     create_sfx_instances(sfxSystem, sfxResult, menuSfx, MENUSFX, REPEAT);
     create_sfx_instances(sfxSystem, sfxResult, mainSfx, MAINSFX, REPEAT);
+    // create the sfx channels after putting the appropriate
+    // loading the distort frame sound
+    create_sfx_instances(sfxSystem, sfxResult, distortFrameSfx, DISTORTSFX, NORMAL);   // have to check about this part
+    create_sfx_instances(sfxSystem, sfxResult, cutscMainSfx, CUTSCSFX, REPEAT);  // this will be played in normal loop
 
-    play_sfx(sfxSystem, sfxResult, menuSfx, mainChannel);
+
     //display_splash(); // commenting this for the purpose of writing new code for this
+    // an issue to be resolved -- slowly increase the volume of the sound that will be played here
+    play_sfx(sfxSystem, sfxResult, menuSfx, menuChannel);
     install_keyboard();
 
     //sfx.play_sound(MENU);
@@ -141,15 +155,15 @@ int main(int argc, char *argv[])
         if(!isShown)
         {
             // stop the previous sound playing function
-            mainChannel->setPaused(true);
+            menuChannel->setPaused(true);
 
             // changing the music for the game
             // pass to function to be relayed to another one
-            usrInst.display_level_intro(sfxSystem, sfxResult, mainSfx, subChannel);  // passing the system and others to this function
+            usrInst.display_level_intro(sfxSystem, sfxResult, distortFrameSfx, distortChannel);  // passing the system and others to this function
             isShown = true;
         }
         sfxSystem->update();
-        mainChannel->setPaused(false);
+        menuChannel->setPaused(false);
         //play_sfx(sfxSystem, sfxResult, mainSfx, mainChannel);
         // implementing the code that was written here
         update_screen();

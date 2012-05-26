@@ -612,6 +612,9 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             brwDisplayVec.push_back("that his accomplice was the head of Management of Secure");
             brwDisplayVec.push_back("Digital Corp which had tried to sneak into the operations");
             brwDisplayVec.push_back("as well as used the information to play the companies' resources");
+            stop_play_sfx(inpChannel, inpResult);
+            inpSystem->update();    // check from this part
+            play_sfx(inpSystem, inpResult, inpSfxState, inpChannel);
 
             // key event will be dispayed kat the top left corner of the screen -- done
 

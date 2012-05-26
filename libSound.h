@@ -13,6 +13,8 @@
 // define the modes that will define what will be played
 #define MENUSFX 1
 #define MAINSFX 2
+#define DISTORTSFX 3
+#define CUTSCSFX 4
 
 #define REPEAT 10
 #define NORMAL 20
