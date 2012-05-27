@@ -159,7 +159,9 @@ int main(int argc, char *argv[])
 
             // changing the music for the game
             // pass to function to be relayed to another one
-            usrInst.display_level_intro(sfxSystem, sfxResult, distortFrameSfx, distortChannel);  // passing the system and others to this function
+            usrInst.display_level_intro(sfxSystem, sfxResult, cutscMainSfx, distortFrameSfx, custscMainChannel, distortChannel);  // passing the system and others to this function
+            // the userInstance display_level_intro will be passing two channels and two sounds
+            // one will be the cutscene bg music and the other will be sfx music
             isShown = true;
         }
         sfxSystem->update();

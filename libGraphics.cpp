@@ -560,7 +560,7 @@ string query_uname()
     return inpUsrName;
 }
 
-void display_intro(int mode, string inpEpName, string inpUserName, FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD::Sound*& inpSfxState, FMOD::Channel*& inpChannel)  // I might be needing the object to be passed
+void display_intro(int mode, string inpEpName, string inpUserName, FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD::Sound*& inpBgSfxState, FMOD::Sound*& inpExSfxState, FMOD::Channel*& inpBgChannel, FMOD::Channel*& inpExChannel)  // I might be needing the object to be passed
 {
     // the mode will be for each and every mission rather than double checking mission and the level
 
@@ -571,7 +571,7 @@ void display_intro(int mode, string inpEpName, string inpUserName, FMOD::System*
             clear_to_color(screen, CBLACK);
             blit_on_dBuffer(mainBgImg, 0, 0, OPAQ);
 
-            play_sfx(inpSystem, inpResult, inpSfxState, inpChannel);
+            play_sfx(inpSystem, inpResult, inpBgSfxState, inpBgChannel);
 
             vector<string> lvlzIntroTxt;
             lvlzIntroTxt.push_back("n@$h> netmap -v -A static.internic.lan");
@@ -612,9 +612,6 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             brwDisplayVec.push_back("that his accomplice was the head of Management of Secure");
             brwDisplayVec.push_back("Digital Corp which had tried to sneak into the operations");
             brwDisplayVec.push_back("as well as used the information to play the companies' resources");
-            stop_play_sfx(inpChannel, inpResult);
-            inpSystem->update();    // check from this part
-            play_sfx(inpSystem, inpResult, inpSfxState, inpChannel);
 
             // key event will be dispayed kat the top left corner of the screen -- done
 
@@ -665,7 +662,10 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             update_screen();
             readkey();
             textout_ex(dBuffer, font, "Press a key to continue", 10, 10, CBLACK, -1);
-            update_screen();
+            play_sfx(inpSystem, inpResult, inpExSfxState, inpExChannel);
+            for(int counter = 0; counter != 5; counter++)
+                for(long counter = 0; counter < 9999999L; counter++);
+            update_screen();    // also need to change the bgCutScene music -- that sounds sloppy
             remove_keyboard();
 
             //_handle_screen_tear(FULLBLT);   // this is where the screen tear is being handled
@@ -673,10 +673,14 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
 
             // will be using the secTempStorage function
             _save_reblit_buffer_state_(FULLSAV);
+            //play_sfx(inpSystem, inpResult, inpExSfxState, inpExChannel);
             _distort_frame_(dBuffer, secTempStorage, 0, 0, 45.5); // the implementation -- distort_frame -- screen disturbance
-            // need to display the secTempStorage on the screen
+            // need to display the secTempStorage on the screen -- this is where the second sfx will
+            // be played
             blit_on_dBuffer(secTempStorage, 0, 0, OPAQ);
             update_screen();
+            stop_play_sfx(inpExChannel, inpResult);
+            inpSystem->update();
 
             //for(long counter = 0; counter < 999999999L; counter++);
             for(long counter = 0; counter < 9999999L; counter++);
@@ -865,7 +869,7 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             _seq_display_(dispQuerycsc, queryBoxImg, 45, 10, 10, 30, 250, 150, false, CGREEN, LINEBYLN);
 
             install_keyboard();
-            stop_play_sfx(inpChannel, inpResult);
+            stop_play_sfx(inpBgChannel, inpResult);   // this will be stopping the bgMusic for the cutsc
             //release_channel(inpSystem, inpResult, inpChannel); -- deprecated function call
             // not required any more
 

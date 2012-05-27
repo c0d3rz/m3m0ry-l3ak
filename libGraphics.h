@@ -69,7 +69,7 @@ void display_splash();  // show the splash image for this game
 int display_terminal(bool mode, const std::string& inpPromptContent);    // for some commands
 void display_credits(); // display the credits -- removing the display_login function
 std::string query_uname(); // username query
-void display_intro(int mode, std::string inpEpName, std::string inpUserName, FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD::Sound*& inpSfxState, FMOD::Channel*& inpChannel);   // give the mode to display that intro -- decide other modes too
+void display_intro(int mode, std::string inpEpName, std::string inpUserName, FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD::Sound*& inpBgSfxState, FMOD::Sound*& inpExSfxState, FMOD::Channel*& inpBgChannel, FMOD::Channel*& inpExChannel);   // give the mode to display that intro -- decide other modes too
 void clear_dBuffer();   // just clear the double buffer to the dark color
 
 // internal functions
