@@ -21,6 +21,8 @@ BITMAP *mainBgImg;  // the main background image
 BITMAP *webBrowserImg;  // the web browser image
 BITMAP *prevDisplayImg;    // level zero pre display image
 BITMAP *queryBoxImg;    // the alert box query user
+BITMAP *alertBoxImg;    // the alert box warning for the user
+BITMAP *objImg;     // the objective display image
 DATAFILE *gfxDat;   // the gfx_datafile
 // ---------------------------------------------
 
@@ -71,12 +73,14 @@ void create_instances()
     webBrowserImg = (BITMAP *)gfxDat[WEBBROWSER_BMP].dat;
     prevDisplayImg = (BITMAP *)gfxDat[PREV_BMP].dat;
     queryBoxImg = (BITMAP *)gfxDat[QUERYBOX_BMP].dat;
+    alertBoxImg = (BITMAP *)gfxDat[ALERT_BOX_BMP].dat;
+    objImg = (BITMAP *)gfxDat[L0S_BMP].dat;
 
     // error checking part
     if(gfx_error_handler(bootImg) && gfx_error_handler(splashImg) && gfxDat && gfx_error_handler(projNameImg) && gfx_error_handler(consoleImg)\
     && gfx_error_handler(creditImg) && gfx_error_handler(secTempStorage) && gfx_error_handler(loginBckImg) && gfx_error_handler(upQueryImg)\
     && gfx_error_handler(mainBgImg) && gfx_error_handler(webBrowserImg) && gfx_error_handler(prevDisplayImg) && \
-    gfx_error_handler(queryBoxImg));
+    gfx_error_handler(queryBoxImg) && gfx_error_handler(alertBoxImg) && gfx_error_handler(objImg));
     else
     {
         allegro_message("Error loading game resource files in memory");
@@ -867,6 +871,43 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             dispQuerycsc.push_back("\n         Press Y/N for accept/decline             ");
 
             _seq_display_(dispQuerycsc, queryBoxImg, 45, 10, 10, 30, 250, 150, false, CGREEN, LINEBYLN);
+
+            // This is where the user will be told that "Hadn't you given access, hadn't you had pressed
+            // y, this wouldn't have occured" -- for this another bitmap needs to be used. This bitmap
+            // will also be used for displaying the objectives of the level the user is in. So the objective
+            // screen will also be used for displaying some events that are bound to occur
+            // displaying the next part of the cutscene
+
+            // showing the user what had been done before
+
+            // save the screen state before blitting the objective image -- actually this is not the
+            // the objective that will be displayed
+            clear_to_color(tempStorage, CBLACK);
+            clear_to_color(secTempStorage, CBLACK);
+
+            // save the display state
+            _save_reblit_buffer_state_(FULLSAV);
+
+            // blitting the image -- objective screen
+            blit_on_dBuffer(objImg, 150, 150, OPAQ);
+            update_screen();
+
+            install_keyboard();
+            textout_ex(dBuffer, font, "Press a key to continue", 10, 10, CGREEN, -1);
+            update_screen();
+            readkey();
+
+            // this is where I will be creating the vector and then display the text to the user/player
+            // updating this to github code dump
+            textout_ex(dBuffer, font, "Press a key to continue", 10, 10, CBLACK, -1);
+            update_screen();
+            remove_keyboard();
+
+            // reblitting the previous state to the user -- to proceed with the cutscene display
+            _save_reblit_buffer_state_(FULLBLT);    // so this is working fine -- now to write in the
+            // objective image -- "If you hadn't given access to that user" and after that display the
+            // warning message to the user/game player
+            update_screen();
 
             install_keyboard();
             stop_play_sfx(inpBgChannel, inpResult);   // this will be stopping the bgMusic for the cutsc
