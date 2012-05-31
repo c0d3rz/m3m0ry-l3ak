@@ -943,17 +943,26 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             remove_keyboard();  // so this part is working -- next display the distort frame along with
             // the playing of the distort_frame gfx and then display m3m0ry-l3ak
 
+            // play the sound
+            play_sfx(inpSystem, inpResult, inpExSfxState, inpExChannel);
+
             // clearing the save_buffers incase any of them will be required
             clear_to_color(tempStorage, CBLACK);
             clear_to_color(secTempStorage, CBLACK);
 
-            // next display the image on the screen -- this has already been done
-
-            // play the sound
-            play_sfx(inpSystem, inpResult, inpExSfxState, inpExChannel);
 
             // save the screen state
             _save_reblit_buffer_state_(FULLSAV);
+
+            // call to distort the frame
+            _distort_frame_(dBuffer, secTempStorage, 0, 0, 18.0);
+            blit_on_dBuffer(secTempStorage, 0, 0, OPAQ);
+            update_screen();
+
+            // insert another small delay here
+            for(long counter = 0; counter < 9999999L; counter++);
+            _save_reblit_buffer_state_(FULLBLT);
+            update_screen();
 
             // creating the time dalay
             for(int cpuWaitTime = 0; cpuWaitTime != 1; ++cpuWaitTime)
@@ -961,14 +970,33 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             // the sfx playback is working -- hope everything goes alright and I can submit my
             // 250 th tweet
 
-            _distort_frame_(dBuffer, secTempStorage, 0, 0, 18.5);
+            // clear the buffer states once again since this time the distort_sfx will be played
+            // fully
+            clear_to_color(secTempStorage, CBLACK);
+
+
+            _distort_frame_(dBuffer, secTempStorage, 0, 0, 90.0);
             blit_on_dBuffer(secTempStorage, 0, 0, OPAQ);
             update_screen();
 
+            for(long counter = 0; counter < 9999999L; counter++);
             _save_reblit_buffer_state_(FULLBLT);
+            update_screen();
 
-            // clear the buffer states once again since this time the distort_sfx will be played
-            // fully
+            for(int waitTime = 0; waitTime < 2; waitTime++)
+                for(long counter = 0; counter < 99999999L; counter++);
+
+            // again repeating the above process
+            clear_to_color(secTempStorage, CBLACK);
+            _distort_frame_(dBuffer, secTempStorage, 0, 0,45.5);
+            blit_on_dBuffer(secTempStorage, 0, 0, OPAQ);
+            update_screen();
+
+            for(long counter = 0; counter < 9999999L; counter++);
+            _save_reblit_buffer_state_(FULLBLT);
+            update_screen();
+            for(long counter = 0; counter < 9999999L; counter++);   // distort work completed
+            // now to show the warning message
 
             stop_play_sfx(inpExChannel, inpResult);
             install_keyboard();
