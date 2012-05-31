@@ -23,6 +23,7 @@ BITMAP *prevDisplayImg;    // level zero pre display image
 BITMAP *queryBoxImg;    // the alert box query user
 BITMAP *alertBoxImg;    // the alert box warning for the user
 BITMAP *objImg;     // the objective display image
+BITMAP *acPerf;     // action performed user -- previous action
 DATAFILE *gfxDat;   // the gfx_datafile
 // ---------------------------------------------
 
@@ -75,12 +76,14 @@ void create_instances()
     queryBoxImg = (BITMAP *)gfxDat[QUERYBOX_BMP].dat;
     alertBoxImg = (BITMAP *)gfxDat[ALERT_BOX_BMP].dat;
     objImg = (BITMAP *)gfxDat[L0S_BMP].dat;
+    acPerf = (BITMAP *)gfxDat[UN_PW_QUERY_BMP].dat;
 
     // error checking part
     if(gfx_error_handler(bootImg) && gfx_error_handler(splashImg) && gfxDat && gfx_error_handler(projNameImg) && gfx_error_handler(consoleImg)\
     && gfx_error_handler(creditImg) && gfx_error_handler(secTempStorage) && gfx_error_handler(loginBckImg) && gfx_error_handler(upQueryImg)\
-    && gfx_error_handler(mainBgImg) && gfx_error_handler(webBrowserImg) && gfx_error_handler(prevDisplayImg) && \
-    gfx_error_handler(queryBoxImg) && gfx_error_handler(alertBoxImg) && gfx_error_handler(objImg));
+    && gfx_error_handler(mainBgImg) && gfx_error_handler(webBrowserImg) && gfx_error_handler(prevDisplayImg) &&\
+    gfx_error_handler(queryBoxImg) && gfx_error_handler(alertBoxImg) && gfx_error_handler(objImg) &&\
+    gfx_error_handler(acPerf));
     else
     {
         allegro_message("Error loading game resource files in memory");
@@ -861,7 +864,13 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             // display the queryBoxImg -- show that a confirmation box appeared asking for some access
             // to come database/network -- the ip was a bit peculiar -- though seemed legit
 
-            blit_on_dBuffer(queryBoxImg, 250, 150, OPAQ);
+            // clear the save_state storer
+            clear_to_color(secTempStorage, CBLACK); // secTempStorage will be storing the dBuffer state
+            // save the screen state
+            _save_reblit_buffer_state_(ALERTCUTSCSAV);  // reblit this state -- rem_inportant
+
+            blit_on_dBuffer(queryBoxImg, 250, 150, OPAQ);   // save the state of the screen in one
+            // of the buffers other than dBuffer
 
 
             vector<string>dispQuerycsc; // display the query of the cutscene
@@ -882,14 +891,34 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
 
             // save the screen state before blitting the objective image -- actually this is not the
             // the objective that will be displayed
-            clear_to_color(tempStorage, CBLACK);
-            clear_to_color(secTempStorage, CBLACK);
+            clear_to_color(tempStorage, CBLACK);    // for the distort frame that will be done later
+            // this distort_frame will be implemented after the alert box gets the go forward
 
             // save the display state
             _save_reblit_buffer_state_(FULLSAV);
 
-            // blitting the image -- objective screen
-            blit_on_dBuffer(objImg, 150, 150, OPAQ);
+            // blitting the image -- objective screen -- This objective screen has to be removed
+            // from this part -- too big to fit the small amount of text to be displayed
+            // might be using the previous username query image for this
+            blit_on_dBuffer(acPerf, 550, 250, OPAQ);    // removing the objective image
+            // also have to tweak the save_reblit state code -- not required -- that is a FULLSAV
+            update_screen();
+
+            // the text to be displayed
+            vector<string> actionPerf;
+
+            // pushing in the text data
+            actionPerf.push_back("This was the moment that changed everything");
+            actionPerf.push_back("in your life. Had you performed a detailed");
+            actionPerf.push_back("network scanning on that port that had asked");
+            actionPerf.push_back("for the access you might not have suffered");
+
+            actionPerf.push_back("\n\n");   // 1 add auto mode
+            actionPerf.push_back("You had given the access to that node thereby installing a");
+            actionPerf.push_back("backdoor to your system. This led to the final mishap");
+
+            _seq_display_(actionPerf, acPerf, 47, 14, 7, 7, 550, 250, false, CGREEN, LINEBYLN);
+            // now to move on to the next part of the coding
             update_screen();
 
             install_keyboard();
@@ -897,8 +926,7 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             update_screen();
             readkey();
 
-            // this is where I will be creating the vector and then display the text to the user/player
-            // updating this to github code dump
+            // create the vector that will be displaying the cutscene display
             textout_ex(dBuffer, font, "Press a key to continue", 10, 10, CBLACK, -1);
             update_screen();
             remove_keyboard();
@@ -909,6 +937,40 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             // warning message to the user/game player
             update_screen();
 
+            install_keyboard();
+            while(!key[KEY_Y]);
+            _save_reblit_buffer_state_(ALERTCUTSCBLT);
+            remove_keyboard();  // so this part is working -- next display the distort frame along with
+            // the playing of the distort_frame gfx and then display m3m0ry-l3ak
+
+            // clearing the save_buffers incase any of them will be required
+            clear_to_color(tempStorage, CBLACK);
+            clear_to_color(secTempStorage, CBLACK);
+
+            // next display the image on the screen -- this has already been done
+
+            // play the sound
+            play_sfx(inpSystem, inpResult, inpExSfxState, inpExChannel);
+
+            // save the screen state
+            _save_reblit_buffer_state_(FULLSAV);
+
+            // creating the time dalay
+            for(int cpuWaitTime = 0; cpuWaitTime != 1; ++cpuWaitTime)
+                for(long counter = 0; counter < 99999999L; counter++);
+            // the sfx playback is working -- hope everything goes alright and I can submit my
+            // 250 th tweet
+
+            _distort_frame_(dBuffer, secTempStorage, 0, 0, 18.5);
+            blit_on_dBuffer(secTempStorage, 0, 0, OPAQ);
+            update_screen();
+
+            _save_reblit_buffer_state_(FULLBLT);
+
+            // clear the buffer states once again since this time the distort_sfx will be played
+            // fully
+
+            stop_play_sfx(inpExChannel, inpResult);
             install_keyboard();
             stop_play_sfx(inpBgChannel, inpResult);   // this will be stopping the bgMusic for the cutsc
             //release_channel(inpSystem, inpResult, inpChannel); -- deprecated function call
@@ -1084,6 +1146,14 @@ void _save_reblit_buffer_state_(int blitState)
 
         case FULLBLT:
             blit(tempStorage, dBuffer, 0, 0, 0, 0, dBuffer->w, dBuffer->h);
+        break;
+
+        case ALERTCUTSCSAV:
+            blit(dBuffer, secTempStorage, 250, 150, 0, 0, queryBoxImg->w, queryBoxImg->h);
+        break;
+
+        case ALERTCUTSCBLT:
+            blit(secTempStorage, dBuffer, 0, 0, 250, 150, queryBoxImg->w, queryBoxImg->h);
         break;
     }
 }

@@ -41,6 +41,9 @@
 #define LOGINSAV 40
 #define LOGINBLT 41
 
+#define ALERTCUTSCSAV 200
+#define ALERTCUTSCBLT 201
+
 #define FULLSAV 100
 #define FULLBLT 111
 
