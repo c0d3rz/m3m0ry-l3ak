@@ -23,7 +23,8 @@ BITMAP *prevDisplayImg;    // level zero pre display image
 BITMAP *queryBoxImg;    // the alert box query user
 BITMAP *alertBoxImg;    // the alert box warning for the user
 BITMAP *objImg;     // the objective display image
-BITMAP *acPerf;     // action performed user -- previous action
+BITMAP *acPerfImg;     // action performed user -- previous action
+BITMAP *warningmsgImg; // the warning message
 DATAFILE *gfxDat;   // the gfx_datafile
 // ---------------------------------------------
 
@@ -76,14 +77,15 @@ void create_instances()
     queryBoxImg = (BITMAP *)gfxDat[QUERYBOX_BMP].dat;
     alertBoxImg = (BITMAP *)gfxDat[ALERT_BOX_BMP].dat;
     objImg = (BITMAP *)gfxDat[L0S_BMP].dat;
-    acPerf = (BITMAP *)gfxDat[UN_PW_QUERY_BMP].dat;
+    acPerfImg = (BITMAP *)gfxDat[UN_PW_QUERY_BMP].dat;
+    warningmsgImg = (BITMAP *)gfxDat[WARNINGMSG_BMP].dat;
 
     // error checking part
     if(gfx_error_handler(bootImg) && gfx_error_handler(splashImg) && gfxDat && gfx_error_handler(projNameImg) && gfx_error_handler(consoleImg)\
     && gfx_error_handler(creditImg) && gfx_error_handler(secTempStorage) && gfx_error_handler(loginBckImg) && gfx_error_handler(upQueryImg)\
     && gfx_error_handler(mainBgImg) && gfx_error_handler(webBrowserImg) && gfx_error_handler(prevDisplayImg) &&\
     gfx_error_handler(queryBoxImg) && gfx_error_handler(alertBoxImg) && gfx_error_handler(objImg) &&\
-    gfx_error_handler(acPerf));
+    gfx_error_handler(acPerfImg) && gfx_error_handler(warningmsgImg));
     else
     {
         allegro_message("Error loading game resource files in memory");
@@ -900,7 +902,7 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             // blitting the image -- objective screen -- This objective screen has to be removed
             // from this part -- too big to fit the small amount of text to be displayed
             // might be using the previous username query image for this
-            blit_on_dBuffer(acPerf, 550, 250, OPAQ);    // removing the objective image
+            blit_on_dBuffer(acPerfImg, 550, 250, OPAQ);    // removing the objective image
             // also have to tweak the save_reblit state code -- not required -- that is a FULLSAV
             update_screen();
 
@@ -917,7 +919,7 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             actionPerf.push_back("You had given the access to that node thereby installing a");
             actionPerf.push_back("backdoor to your system. This led to the final mishap");
 
-            _seq_display_(actionPerf, acPerf, 47, 14, 7, 7, 550, 250, false, CGREEN, LINEBYLN);
+            _seq_display_(actionPerf, acPerfImg, 47, 14, 7, 7, 550, 250, false, CGREEN, LINEBYLN);
             // now to move on to the next part of the coding
             update_screen();
 
@@ -988,7 +990,7 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
 
             // again repeating the above process
             clear_to_color(secTempStorage, CBLACK);
-            _distort_frame_(dBuffer, secTempStorage, 0, 0,45.5);
+            _distort_frame_(dBuffer, secTempStorage, 0, 0, 45.5);
             blit_on_dBuffer(secTempStorage, 0, 0, OPAQ);
             update_screen();
 
@@ -999,6 +1001,53 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             // now to show the warning message
 
             stop_play_sfx(inpExChannel, inpResult);
+            inpSystem->update();
+
+            // some temp variables that will be required for the blitting
+            int randPosX = rand();
+            int randPosY = rand();
+            int randDiv = rand();
+            int randAdd = rand();
+
+            randDiv = rand() % 563;
+            randAdd = rand() % 422;
+            // display the warning messages -- this part needs to be tweaked a bit
+            // might have to use the rand() function
+            for(int blitCounter = 1; blitCounter < 9999; ++blitCounter)
+            {
+                randPosX = rand() % randDiv + randAdd;  // let's make the magic numbers embedded here rand()
+                randPosY = rand() % randDiv + randAdd;  // I need some more
+            } // bug resolved -- remainder reduced to zero -- floating point exception
+            blit_on_dBuffer(warningmsgImg, 100, 100, OPAQ);
+            for(long counter = 0; counter < 9999999L; counter++);
+            update_screen();
+            blit_on_dBuffer(warningmsgImg, 150, 100, OPAQ);
+            for(long counter = 0; counter < 9999999L; counter++);
+            update_screen();
+            blit_on_dBuffer(warningmsgImg, 150, 150, OPAQ);
+            for(long counter = 0; counter < 9999999L; counter++);
+            update_screen();
+            blit_on_dBuffer(warningmsgImg, 200, 200, OPAQ);
+            for(long counter = 0; counter < 9999999L; counter++);
+            update_screen();
+            blit_on_dBuffer(warningmsgImg, 250, 230, OPAQ);
+            for(long counter = 0; counter < 9999999L; counter++);
+            update_screen();
+            blit_on_dBuffer(warningmsgImg, 100, 120, OPAQ);
+            for(long counter = 0; counter < 9999999L; counter++);
+            update_screen();
+            blit_on_dBuffer(warningmsgImg, 100, 160, OPAQ);
+            for(long counter = 0; counter < 9999999L; counter++);
+            update_screen();
+            blit_on_dBuffer(warningmsgImg, 50, 100, OPAQ);
+            for(long counter = 0; counter < 9999999L; counter++);
+            update_screen();
+            blit_on_dBuffer(warningmsgImg, 189, 100, OPAQ);
+            for(long counter = 0; counter < 9999999L; counter++);
+            update_screen();
+            blit_on_dBuffer(warningmsgImg, 146, 100, OPAQ);
+            for(long counter = 0; counter < 9999999L; counter++);
+            update_screen();
             install_keyboard();
             stop_play_sfx(inpBgChannel, inpResult);   // this will be stopping the bgMusic for the cutsc
             //release_channel(inpSystem, inpResult, inpChannel); -- deprecated function call
@@ -1011,7 +1060,7 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             // gfx issue to be resolved:
             // 1. display the "Warning" part to the user
             // 2. properly playSound in the background
-            inpSystem->update();
+            inpSystem->update();    // after this return control back to the calling function
         break;
     }
 }
