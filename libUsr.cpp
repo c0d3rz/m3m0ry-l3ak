@@ -159,7 +159,7 @@ void usrProfile::load_profile()
     }
 }
 
-void usrProfile::display_level_intro(FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD::Sound*& inpBgSfxState, FMOD::Sound*& inpExSfxState, FMOD::Channel*& inpBgChannel, FMOD::Channel*& inpExChannel)
+void usrProfile::display_level_intro(FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD::Sound*& inpBgSfxState, FMOD::Sound*& inpExSfxState, FMOD::Channel*& inpBgChannel, FMOD::Channel*& inpExChannel, bool &isDisplayed)
 {
     // working principle of this function
     // This function will be checking the usrLvl and based on this variable as well as the
@@ -181,19 +181,22 @@ void usrProfile::display_level_intro(FMOD::System*& inpSystem, FMOD_RESULT &inpR
     }
     else
         cout<<"Reading pre created profile\n";
-    cout<<hackVal<<"\t"<<accBal<<"\t"<<usrLvl<<"\t"<<_usrName_<<"\t"<<missionNum<<"\t"<<isMissionComplete<<"\t"<<isLevelComplete<<endl;
+    //cout<<hackVal<<"\t"<<accBal<<"\t"<<usrLvl<<"\t"<<_usrName_<<"\t"<<missionNum<<"\t"<<isMissionComplete<<"\t"<<isLevelComplete<<endl;
 
     if(usrLvl == 0)
     {
         // check if the usrLvl is zero or not
-        cout<<"UsrLvl is zero\n";   // usrLvl is checked
+        //cout<<"UsrLvl is zero\n";   // usrLvl is checked
         if(missionNum == 0)   // that's good
         {
             // call the function that will display the first cutscenes
             display_intro(INTRO, ".Init", _usrName_, inpSystem, inpResult, inpBgSfxState, inpExSfxState, inpBgChannel, inpExChannel);
 
-            // cleaned up the debug part that was implemented here
-            // cleaning up other files that were debugged
+            // now to do the other part of the code -- checking the return of control
+            cout<<"After the libGraphics::function to display_intro\n";
+
+            // set the isDisplayed flag to true
+            isDisplayed = true;
         }
         else
         {
@@ -201,7 +204,8 @@ void usrProfile::display_level_intro(FMOD::System*& inpSystem, FMOD_RESULT &inpR
             destroy_instances();
             allegro_exit();
         }
-    }
+    }   // have to write the else if clause for processing and displaying the appropriate
+    // cutscene by sending the correct params to the called function
 }
 
 string usrProfile::getUserName()

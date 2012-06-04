@@ -141,6 +141,7 @@ int main(int argc, char *argv[])
     usrProfile usrInst;
     bool calledOnce = false;    // not yet called
     bool isShown = false;   // not yet shown
+    bool isDisplayed = false;   // the cutscene is not yet shown
 
     usrInst.usrProfileInit();   // about to add more sounds for the key presses
     while(!key[KEY_ESC])
@@ -159,13 +160,59 @@ int main(int argc, char *argv[])
 
             // changing the music for the game
             // pass to function to be relayed to another one
-            usrInst.display_level_intro(sfxSystem, sfxResult, cutscMainSfx, distortFrameSfx, custscMainChannel, distortChannel);  // passing the system and others to this function
+            usrInst.display_level_intro(sfxSystem, sfxResult, cutscMainSfx, distortFrameSfx, custscMainChannel, distortChannel, isDisplayed);  // passing the system and others to this function
             // the userInstance display_level_intro will be passing two channels and two sounds
             // one will be the cutscene bg music and the other will be sfx music
+
+            // Tweaking for the display_level_intro function
+            // Display the present scenario and the objective of that mission and Level
+
+            // Have to decide on the number of levels to be implemented in the game
+            // plus have to make a network map as well as decide the boss names and the corp names
             isShown = true;
         }
         sfxSystem->update();
         menuChannel->setPaused(false);
+
+        // Issues to be resolved:
+        // 1. display the current day cutscene and the objectives for the current mission and Level
+
+        // New tweaking to be done
+        // Show the present scenario in the level_intro display function -- as well as the objectives too
+
+        // setting up the next screen for the game play
+        if(isDisplayed)
+        {
+            // background set -- now dislay the present day cutscene and the display of the objectives
+            set_gfx_background();
+            isDisplayed = false;    // so this is also working
+        }
+
+        // creating the main key_event handler
+        int rdKey;
+        char asciiChar;
+        char scanCode;
+        while(keypressed())
+        {
+            rdKey = readkey();
+            asciiChar = rdKey & 0xFF;
+            scanCode = rdKey >> 8;
+
+            // switiching the scanned code from the keyBuf
+            switch(scanCode)
+            {
+                case KEY_F5:
+                break;
+
+                case KEY_F6:
+                break;
+
+                default:
+                break;  // oopsie, this will be a bit of drag -- setting up the background
+                // this will need some more tinkering
+            }
+        }
+
         //play_sfx(sfxSystem, sfxResult, mainSfx, mainChannel);
         // implementing the code that was written here
         update_screen();

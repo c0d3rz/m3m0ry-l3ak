@@ -1013,41 +1013,16 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             randAdd = rand() % 422;
             // display the warning messages -- this part needs to be tweaked a bit
             // might have to use the rand() function
-            for(int blitCounter = 1; blitCounter < 9999; ++blitCounter)
+            for(int blitCounter = 1; blitCounter < 250; ++blitCounter)
             {
                 randPosX = rand() % randDiv + randAdd;  // let's make the magic numbers embedded here rand()
                 randPosY = rand() % randDiv + randAdd;  // I need some more
+
+                blit_on_dBuffer(warningmsgImg, randPosX, randPosY, OPAQ);
+                // also need other things to be displayed -- some extra things -- but this will
+                // be done while moving/creating the game play -- for now -- this is just fine
+                update_screen();
             } // bug resolved -- remainder reduced to zero -- floating point exception
-            blit_on_dBuffer(warningmsgImg, 100, 100, OPAQ);
-            for(long counter = 0; counter < 9999999L; counter++);
-            update_screen();
-            blit_on_dBuffer(warningmsgImg, 150, 100, OPAQ);
-            for(long counter = 0; counter < 9999999L; counter++);
-            update_screen();
-            blit_on_dBuffer(warningmsgImg, 150, 150, OPAQ);
-            for(long counter = 0; counter < 9999999L; counter++);
-            update_screen();
-            blit_on_dBuffer(warningmsgImg, 200, 200, OPAQ);
-            for(long counter = 0; counter < 9999999L; counter++);
-            update_screen();
-            blit_on_dBuffer(warningmsgImg, 250, 230, OPAQ);
-            for(long counter = 0; counter < 9999999L; counter++);
-            update_screen();
-            blit_on_dBuffer(warningmsgImg, 100, 120, OPAQ);
-            for(long counter = 0; counter < 9999999L; counter++);
-            update_screen();
-            blit_on_dBuffer(warningmsgImg, 100, 160, OPAQ);
-            for(long counter = 0; counter < 9999999L; counter++);
-            update_screen();
-            blit_on_dBuffer(warningmsgImg, 50, 100, OPAQ);
-            for(long counter = 0; counter < 9999999L; counter++);
-            update_screen();
-            blit_on_dBuffer(warningmsgImg, 189, 100, OPAQ);
-            for(long counter = 0; counter < 9999999L; counter++);
-            update_screen();
-            blit_on_dBuffer(warningmsgImg, 146, 100, OPAQ);
-            for(long counter = 0; counter < 9999999L; counter++);
-            update_screen();
             install_keyboard();
             stop_play_sfx(inpBgChannel, inpResult);   // this will be stopping the bgMusic for the cutsc
             //release_channel(inpSystem, inpResult, inpChannel); -- deprecated function call
@@ -1061,6 +1036,8 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
             // 1. display the "Warning" part to the user
             // 2. properly playSound in the background
             inpSystem->update();    // after this return control back to the calling function
+
+            // return control to the calling function
         break;
     }
 }
@@ -1068,6 +1045,23 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
 void clear_dBuffer()
 {
     clear_to_color(dBuffer, CBLACK);
+}
+
+void set_gfx_background()
+{
+    // let's do a fade out
+
+    // first save the image on the secTempStorage dBuffer storage
+    blit(dBuffer, secTempStorage, 0, 0, 0, 0,  dBuffer->w, dBuffer->h);
+
+    // clear the dBuffer now
+    clear_dBuffer();
+
+    // save the state in the SPLASHSAV mode
+    _save_reblit_buffer_state_(SPLASHSAV);
+    _fade_out_(secTempStorage, 0, 0, 64);
+    blit_on_dBuffer(mainBgImg, 0, 0, OPAQ);
+    update_screen();
 }
 
 // ------------ the internal functions ----------------------------------------------------------------------
