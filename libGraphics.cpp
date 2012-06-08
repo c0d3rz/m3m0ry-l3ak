@@ -1023,7 +1023,49 @@ Not shown: 997 filtered ports\n\nPORT    STATE  SERVICE VERSION\n22/tcp  closed 
                 // be done while moving/creating the game play -- for now -- this is just fine
                 update_screen();
             } // bug resolved -- remainder reduced to zero -- floating point exception
+
+            // let's do a fade out -- need some delay before performing the fade out
+            for(int numCounter = 0; numCounter < 100; numCounter++)   // hope this is apt
+                for(long counter = 0; counter < 9999999L; counter++);   // some delay inserted -- checking
+
+            // first save the image on the secTempStorage dBuffer storage
+            blit(dBuffer, secTempStorage, 0, 0, 0, 0,  dBuffer->w, dBuffer->h);
+
+            // clear the dBuffer now
+            clear_dBuffer();
+
+            // save the state in the SPLASHSAV mode
+            _save_reblit_buffer_state_(SPLASHSAV);
+            _fade_out_(secTempStorage, 0, 0, 64);
+
+            update_screen();    // update the screen -- for the final blitting part
+
+            // display present condition and the objectives before the main background is setup
+            vector<string> presentScene;
+            presentScene.push_back("Present Scenario:");
+            presentScene.push_back("You were framed for selling new designs and secure information");
+            presentScene.push_back("to the rival companies, multiple charges of digital espionage");
+            presentScene.push_back("and also leading an underground operation named m3m0ry-l3ak");
+            presentScene.push_back("\n\nA harsh 8 years in the prison, that's what you had to endure.");
+            presentScene.push_back("Now you are outside, free and the only thing that drives you is");
+            presentScene.push_back("TO FIND THE PERSON WHO WAS BEHIND ALL OF IT");
+
+            presentScene.push_back("\n\n\nPress any key to continue");
+
+            // call the _seq_display_ function to display the aforementioned
+            _seq_display_(presentScene, dBuffer, 100, 100, 150, 150, 150, 150, false, CGREEN, CHBYCH);
+
+            // objectives will be displayed once the game play starts -- first the player has to
+            // select the sysConfig that is going to be used as a base for the game. Later on
+            // the upgrades can be applied.
+
+            // AI to be written in Python -- will be trying to do that
+
+            // wait for the user keypress
             install_keyboard();
+            readkey();  // show the user to press a key
+            update_screen();
+
             stop_play_sfx(inpBgChannel, inpResult);   // this will be stopping the bgMusic for the cutsc
             //release_channel(inpSystem, inpResult, inpChannel); -- deprecated function call
             // not required any more
@@ -1049,17 +1091,6 @@ void clear_dBuffer()
 
 void set_gfx_background()
 {
-    // let's do a fade out
-
-    // first save the image on the secTempStorage dBuffer storage
-    blit(dBuffer, secTempStorage, 0, 0, 0, 0,  dBuffer->w, dBuffer->h);
-
-    // clear the dBuffer now
-    clear_dBuffer();
-
-    // save the state in the SPLASHSAV mode
-    _save_reblit_buffer_state_(SPLASHSAV);
-    _fade_out_(secTempStorage, 0, 0, 64);
     blit_on_dBuffer(mainBgImg, 0, 0, OPAQ);
     update_screen();
 }
