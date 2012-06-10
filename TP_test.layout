@@ -28,14 +28,14 @@
 	<File name="libSound.h" open="1" top="0" tabpos="9">
 		<Cursor position="329" topLine="3" />
 	</File>
-	<File name="libUsr.cpp" open="1" top="0" tabpos="5">
-		<Cursor position="7562" topLine="182" />
+	<File name="libUsr.cpp" open="1" top="1" tabpos="5">
+		<Cursor position="7870" topLine="197" />
 	</File>
 	<File name="libUsr.h" open="1" top="0" tabpos="4">
 		<Cursor position="1013" topLine="30" />
 	</File>
-	<File name="main.cpp" open="1" top="1" tabpos="1">
-		<Cursor position="3253" topLine="62" />
+	<File name="main.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="2733" topLine="62" />
 	</File>
 	<File name="main.h" open="1" top="0" tabpos="7">
 		<Cursor position="174" topLine="0" />

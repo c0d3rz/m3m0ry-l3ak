@@ -178,10 +178,12 @@ void usrProfile::display_level_intro(FMOD::System*& inpSystem, FMOD_RESULT &inpR
         cout<<"New Profile created\n";  // now read from the newly created profile file
         _usrName_.clear();
         _fileread_(_usrName_, hackVal, accBal, usrLvl, missionNum, isMissionComplete, isLevelComplete);
+        isDisplayed = true; // setting it at the start it self -- else never ending loop
     }
     else
         cout<<"Reading pre created profile\n";
     //cout<<hackVal<<"\t"<<accBal<<"\t"<<usrLvl<<"\t"<<_usrName_<<"\t"<<missionNum<<"\t"<<isMissionComplete<<"\t"<<isLevelComplete<<endl;
+    // file read and file write working properly
 
     if(usrLvl == 0)
     {
@@ -195,8 +197,11 @@ void usrProfile::display_level_intro(FMOD::System*& inpSystem, FMOD_RESULT &inpR
             // now to do the other part of the code -- checking the return of control
             cout<<"After the libGraphics::function to display_intro\n";
 
-            // set the isDisplayed flag to true
-            isDisplayed = true;
+            // increment the usrLvl
+            usrLvl++;   // write this in the profile file
+
+            // calling the fileWrite function
+            _filewrite_(_usrName_, hackVal, accBal, usrLvl, missionNum, isMissionComplete, isLevelComplete);
         }
         else
         {
@@ -218,7 +223,8 @@ string usrProfile::getUserName()
 void usrProfile::_filewrite_(std::string &inpUname, long &inpHackVal, long &inpAccBal, int &inpUsrLevel, int &inpMissionNum, int &inpIsMissionComplete, int &inpIsLevelComplete)
 {
     // create the path for the profile file
-    (profileDirPath.append(inpUname)).append(".profile");
+    if(profileDirPath.find(".profile") == string::npos)
+        (profileDirPath.append(inpUname)).append(".profile");
 
     // populate the key values
     string strKey = STRKEY;

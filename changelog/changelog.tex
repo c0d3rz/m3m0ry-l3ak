@@ -4,24 +4,27 @@
 
 \begin{document}
 
-\title{Changelog v26 devRelease}	% give document title here
+\title{Changelog v27 devRelease}	% give document title here
 \author{war10ck}	% give author name here
 \date{\today}
 \maketitle
 
-\section{Changelog for dev release v26:}
+\section{Changelog for dev release v27:}
 Issues Resolved:\newline
-1. distort\_frame() function created for displaying screen disturbance.\newline
-2. First part of the cutscene display enhanced.\newline
-3. distort\_frame() sfx has been played for once.\newline
-4. Major redesign of the libSound module.\newline
+1. Cutscene display for levelZero completed. Sfx implementation for the display of the cutscene also done.\newline
+2. Incrementing the usrLevel value and writing the same in the profile file -- working properly.\newline
 
 Issues to be resolved:\newline
-1. Finish cutscene display of the levelZero part.\newline
-2. Make the cutscene display a bit realistic so that the gamer reads the stuff that is being displayed.\newline
+1. Develop the rest of the gameplay design. Current work in this respect -- design the working of the main engine.\newline
+2. Develop the multi-window approach. Test Bed implementation has started, enable\_hardware\_cursor() working properly. Might have to check some flags before calling the same.[Discrepancies that might exist in other installations or PCs]\newline
+3. Check out threading concept for the multi-window approach. This might be required since there might be a number
+of threads that will be required for the same.\newline
+4. display\_terminal() function -\> libNxParser class implementation, needs to be tweaked and embedded in the main code.\newline
 
 \section{Note to developers}
-Hello fellow coders, I am sorry for the late update. But this was because of the low number of inputs from other people. However, now the update is here. You will love it. The libSound module has been redesigned for robust performance. The earlier version was giving huge issues, that might have happened because of my sloppy coding. Even though I changed, I seemed to get into more and more trouble. Hence the redesign. Still now, I am having some problems. But this update is necessary since this marks the first sign that the cutscene display is about to end.\newline
+Hi dear friends, who might be thinking when a new update is about to come, I am sorry to disappoint you. I have been working alone for quite a time and hence the delay in the updates. Not that I have been working very hard at this, but I have become very lazy. May the divine force help me out.\newline
+On a completely different note, check out the gameplay video of God of War - Ascension Campaign mode in E3 2012. It is really amazing[at least for a die hard fan like me, this was a big issue...the attacks are a bit more brutal]\newline
+Hoping to get a solution to the multi-window approach that I have in mind. The problem how do I switch from one window having different functionality to another without sacrificing anything in either/all of them[Here again I need help, either from you guys or from the divine force].\newline
 
 \pagebreak
 
