@@ -102,6 +102,7 @@ int main(int argc, char *argv[])
     bool calledOnce = false;    // not yet called
     bool isShown = false;   // not yet shown
     bool isDisplayed = false;   // the cutscene is not yet shown
+    bool setBck = false;    // the background by default not set
 
     usrInst.usrProfileInit();   // about to add more sounds for the key presses
     while(!key[KEY_ESC])
@@ -110,6 +111,7 @@ int main(int argc, char *argv[])
         if(!calledOnce)
         {
             usrInst.load_profile();
+            usrInst.load_cfg(); // also loading the configuration file
             calledOnce = true;
         }
 
@@ -137,31 +139,16 @@ int main(int argc, char *argv[])
             // background set -- now dislay the present day cutscene and the display of the objectives
             set_gfx_background();
             isDisplayed = false;    // so this is also working
+            setBck = true;
         }
 
-        // creating the main key_event handler
-        int rdKey;
-        char asciiChar;
-        char scanCode;
-        while(keypressed())
+        // since the levelNum has been incremented -- now there will be fileWrite routine for another
+        // type of file -- usrSysConfig.cfg
+        if(setBck)    // meaning that the cutscene display has been done
         {
-            rdKey = readkey();
-            asciiChar = rdKey & 0xFF;
-            scanCode = rdKey >> 8;
-
-            // switiching the scanned code from the keyBuf
-            switch(scanCode)
-            {
-                case KEY_F5:
-                break;
-
-                case KEY_F6:
-                break;
-
-                default:
-                break;  // oopsie, this will be a bit of drag -- setting up the background
-                // this will need some more tinkering
-            }
+            // call the usrProfile function for testing
+            usrInst.checkUsrCfg();
+            setBck = false; // the background image has been and hence the flag value reset
         }
 
         //play_sfx(sfxSystem, sfxResult, mainSfx, mainChannel);

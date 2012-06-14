@@ -5,18 +5,22 @@ using namespace std;
 void usrProfile::usrProfileInit()
 {
     // before even the essentials come up -- display the basic background
+    // Also check the cfgFile along with it
 
     // some of the essentials that might be required to carry out these tasks
     struct dirent *dirHnd = NULL;
 	DIR* dirPtr = NULL;
     profileDirPath = PROFILEDIRPATH;
+    string secCfgFilePath = PROFILEDIRPATH;
     fileCount = 0;  // set filecount to be zero at the start of each game instance
+    cfgFileCount = 0;
 
     cout<<"Before checking the profile dir existence\n";
     if(_is_dir_exist_(profileDirPath))  // if the dir exists
     {
         cout<<"profile dir found\n";
         profileDirPath.push_back('/');
+        //secCfgFilePath.push_back('/');
         // now check if any profile file exists or not -- set the profileExists boolean accordingly
         dirPtr = opendir(profileDirPath.c_str());
 
@@ -33,6 +37,12 @@ void usrProfile::usrProfileInit()
             if(fnmatch("*.profile", dirHnd->d_name, FNM_CASEFOLD) == 0)	// check files only with the <>.profile extension
             {
                 ++fileCount;
+                profileExists = true;
+            }
+
+            if(fnmatch("*.cfg", dirHnd->d_name, FNM_CASEFOLD) == 0)	// check files only with the <>.profile extension
+            {
+                ++cfgFileCount;
                 profileExists = true;
             }
         }
@@ -75,6 +85,9 @@ usrProfile::usrProfile()
     profileDirPath = PROFILEDIRPATH;
     loadProfile = false;
     isNewProfileCreated = false;    // assuming that new profile is not created till now
+
+    loadCfg = false;    // cfg file not loaded by default
+    cfgFileCount = 0;
 }
 
 void usrProfile::load_profile()
@@ -159,6 +172,13 @@ void usrProfile::load_profile()
     }
 }
 
+void usrProfile::load_cfg()
+{
+    // write the checking of the cfg file routines in the init usrProfile part only
+    cout<<"Configuration File Count\n";
+    cout<<cfgFileCount<<endl;
+}
+
 void usrProfile::display_level_intro(FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD::Sound*& inpBgSfxState, FMOD::Sound*& inpExSfxState, FMOD::Channel*& inpBgChannel, FMOD::Channel*& inpExChannel, bool &isDisplayed)
 {
     // working principle of this function
@@ -181,7 +201,10 @@ void usrProfile::display_level_intro(FMOD::System*& inpSystem, FMOD_RESULT &inpR
         isDisplayed = true; // setting it at the start it self -- else never ending loop
     }
     else
+    {
+        isDisplayed = true;
         cout<<"Reading pre created profile\n";
+    }
     //cout<<hackVal<<"\t"<<accBal<<"\t"<<usrLvl<<"\t"<<_usrName_<<"\t"<<missionNum<<"\t"<<isMissionComplete<<"\t"<<isLevelComplete<<endl;
     // file read and file write working properly
 
@@ -217,6 +240,37 @@ string usrProfile::getUserName()
 {
     cout<<_usrName_<<endl;  // why the hell is the username not displayed -- aaha new profile object
     return _usrName_;
+}
+
+void usrProfile::checkUsrCfg()
+{
+    // first check whether the cfg file exists or not
+    vector<string> fileList;    // the list of files in that directory
+
+    // display the profile path
+    string secCfgFilePath = PROFILEDIRPATH; // set to default
+
+    // time to check whether the cfg file exists or not
+    // In case it does not exist create one and write the data after querying the user about the same
+
+    // checking whether the data read from the profile file is still there in the memory or not
+    cout<<hackVal<<"\t"<<accBal<<"\t"<<usrLvl<<"\t"<<_usrName_<<"\t"<<missionNum<<"\t"<<isMissionComplete<<"\t"<<isLevelComplete<<endl;
+
+    // the data reading is working perfectly -- check the number of cfg files that are present in
+    // that directory
+    struct dirent *dirHnd = NULL;
+    DIR* dirPtr = NULL;
+    int secFileCount = 0;
+
+    if(_is_dir_exist_(secCfgFilePath))
+    {
+        // directory exists
+        secCfgFilePath.push_back('/');
+        cout<<secCfgFilePath<<endl; // start from here -- check the display_level_intro function for
+        // the rest of the code -- remove comments after that
+
+        // create the main function called loadCfg()
+    }
 }
 
 // ---------------------------------- Internal functions ----------------------------------------------------

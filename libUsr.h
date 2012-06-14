@@ -35,15 +35,19 @@ class usrProfile
         void usrProfileInit();   // initialize profile creation
         usrProfile();
         void load_profile();  // load the profile
+        void load_cfg();    // load the usr cfg file
         void display_level_intro(FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD::Sound*& inpBgSfxState, FMOD::Sound*& inpExSfxState, FMOD::Channel*& inpBgChannel, FMOD::Channel*& inpExChannel, bool &isDisplayed); // check the level, mission num and display the level story
         std::string getUserName();  // return the username of the player
+        void checkUsrCfg(); // usrSysConfig file -- This will be created later
 
     private:
         std::string _usrName_;
         bool profileExists;
         int fileCount;
+        int cfgFileCount;
         std::string profileDirPath;
         bool loadProfile;
+        bool loadCfg;
 
         // the user values that will be written in the profile file
         long hackVal;   // the hack value obtained by the user
