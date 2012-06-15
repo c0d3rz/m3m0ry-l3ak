@@ -127,24 +127,21 @@ int main(int argc, char *argv[])
         sfxSystem->update();
         menuChannel->setPaused(false);
 
-        // Issues to be resolved:
-        // 1. display the current day cutscene and the objectives for the current mission and Level
-
-        // New tweaking to be done
-        // Show the present scenario in the level_intro display function -- as well as the objectives too
-
-        // setting up the next screen for the game play
         if(isDisplayed)
         {
-            // background set -- now dislay the present day cutscene and the display of the objectives
             set_gfx_background();
-            isDisplayed = false;    // so this is also working
+            isDisplayed = false;
             setBck = true;
         }
 
         // since the levelNum has been incremented -- now there will be fileWrite routine for another
         // type of file -- usrSysConfig.cfg
-        if(setBck)    // meaning that the cutscene display has been done
+
+
+        // Enhancement -- to be implemented
+        // Remove the setting of display for the booting part, draw the same in the gfx_small_bmp,
+        // stretch blit the textBmp on the screen
+        if(setBck && (!isDisplayed))    // now isDisplayed = false means display has ended
         {
             // call the usrProfile function for testing
             usrInst.checkUsrCfg();

@@ -88,6 +88,13 @@ usrProfile::usrProfile()
 
     loadCfg = false;    // cfg file not loaded by default
     cfgFileCount = 0;
+    isNotCfgExist = NONE; // default no cfgFile exists
+
+    // the cfgRequirements
+    cpuOpFreq = 0;
+    nicCapability = 0;
+    ramCapac = 0;
+    modTxRate = 0;
 }
 
 void usrProfile::load_profile()
@@ -176,7 +183,24 @@ void usrProfile::load_cfg()
 {
     // write the checking of the cfg file routines in the init usrProfile part only
     cout<<"Configuration File Count\n";
-    cout<<cfgFileCount<<endl;
+    cout<<cfgFileCount<<endl;   // so the filecount is working fine
+
+    if(loadCfg)    // check bool
+        return;
+    else
+    {
+        if(cfgFileCount < 1)
+            isNotCfgExist = NONE;
+        else if(cfgFileCount == 1)
+            isNotCfgExist = FILER;  // read the file
+        else
+        {
+            allegro_message("Multiple cfgFile detected");
+            destroy_instances();
+            // destroy sfx issues remaining here -- needs to be resolved
+            allegro_exit();
+        }
+    }
 }
 
 void usrProfile::display_level_intro(FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD::Sound*& inpBgSfxState, FMOD::Sound*& inpExSfxState, FMOD::Channel*& inpBgChannel, FMOD::Channel*& inpExChannel, bool &isDisplayed)
@@ -244,33 +268,34 @@ string usrProfile::getUserName()
 
 void usrProfile::checkUsrCfg()
 {
-    // first check whether the cfg file exists or not
     vector<string> fileList;    // the list of files in that directory
-
-    // display the profile path
     string secCfgFilePath = PROFILEDIRPATH; // set to default
 
-    // time to check whether the cfg file exists or not
-    // In case it does not exist create one and write the data after querying the user about the same
+    if((isNotCfgExist == NONE) && (usrLvl == 1))
+    {
+        // ask the user to select the data from the gfx
+        // decide the variables that need to be set and written the cfg file
+
+        // Data:
+        // 1. string::<sysCpuName>
+        // 2. short int::<cpuOpFreq>
+        // 3. string::<NICName>
+        // 4. short int::<NIC_capability>
+        // 5. long int::<RAM_capacity>
+        // 6. short int::<Modem_transfer_rate>
+        // These should suffice for the configuration file for the user -- also implement suitable key
+        // to encrypt the same
+
+        display_cfg_units(GET, sysCpuName, cpuOpFreq, NICCardName, nicCapability, ramCapac, modTxRate);
+        cout<<sysCpuName<<" "<<cpuOpFreq<<" "<<NICCardName<<" "<<nicCapability<<" "<<ramCapac<<" "<<modTxRate<<endl;
+
+        //cout<<text_length(font, "D")<<" "<<text_height(font)<<endl; // This might be required for
+        // the function that will help in displaying and selecting the cfg_units to the user
+    }
+    else if(isNotCfgExist == FILER);    // read the configuration file contents
 
     // checking whether the data read from the profile file is still there in the memory or not
     cout<<hackVal<<"\t"<<accBal<<"\t"<<usrLvl<<"\t"<<_usrName_<<"\t"<<missionNum<<"\t"<<isMissionComplete<<"\t"<<isLevelComplete<<endl;
-
-    // the data reading is working perfectly -- check the number of cfg files that are present in
-    // that directory
-    struct dirent *dirHnd = NULL;
-    DIR* dirPtr = NULL;
-    int secFileCount = 0;
-
-    if(_is_dir_exist_(secCfgFilePath))
-    {
-        // directory exists
-        secCfgFilePath.push_back('/');
-        cout<<secCfgFilePath<<endl; // start from here -- check the display_level_intro function for
-        // the rest of the code -- remove comments after that
-
-        // create the main function called loadCfg()
-    }
 }
 
 // ---------------------------------- Internal functions ----------------------------------------------------

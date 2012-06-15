@@ -1095,6 +1095,34 @@ void set_gfx_background()
     update_screen();
 }
 
+void display_cfg_units(int inpMode, string& inpCpuName, int& inpOpFreq, string& inpNicCardName, int& inpNicCapability, long& inpRamCapac, int& inpModTxRate)
+{
+    if(inpMode == GET) // get from the user
+    {
+        // right now just passing some values -- testing mode
+        inpCpuName = "warCPU v1.0";
+        inpOpFreq = 31; // that is 31 Hz -- rem, make it a double var
+
+        inpNicCardName = "BCM43xx";
+        inpNicCapability = 32;    // just a dummy text
+
+        inpRamCapac = 4294967296L;  // 4GB of RAM allocated for DUMMY!!!!!
+        inpModTxRate = 16;  // This would be mbit/sec notation
+
+        // print the same in the calling function -- calling function this part is working fine
+
+        // uploading in git
+    }
+    else if(inpMode == DISP); // display to the user the current chosen configuration
+
+    // Now here we will be facing a problem
+    // Problem : Transfer different types of vars from called func
+    // and read and transfer different types of vars from calling function
+
+    // check out solution for the same -- might have to use some public variables
+    // or a friend function
+}
+
 // ------------ the internal functions ----------------------------------------------------------------------
 void _seq_display_(vector<string> inpVector, BITMAP *inpBitmap, int allocWidth, int allocHeight, int inpBmpBlitx, int inpBmpBlity, int dBufBlitx, int dBufBlity, bool cursorVisibility, int txtColor, int mode)
 {

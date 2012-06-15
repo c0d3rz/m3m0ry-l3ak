@@ -53,6 +53,9 @@
 #define CHBYCH 1
 #define LINEBYLN 2
 
+#define GET 111
+#define DISP 222
+
 #define CBLACK makecol(0, 0, 0)
 #define CWHITE makecol(255, 255, 255)
 #define CGREEN makecol(0, 255, 0)
@@ -75,6 +78,7 @@ std::string query_uname(); // username query
 void display_intro(int mode, std::string inpEpName, std::string inpUserName, FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD::Sound*& inpBgSfxState, FMOD::Sound*& inpExSfxState, FMOD::Channel*& inpBgChannel, FMOD::Channel*& inpExChannel);   // give the mode to display that intro -- decide other modes too
 void clear_dBuffer();   // just clear the double buffer to the dark color
 void set_gfx_background();  // This will be setting the final background
+void display_cfg_units(int inpMode, std::string& inpCpuName, int& inpOpFreq, std::string& inpNicCardName, int& inpNicCapability, long& inpRamCapac, int& inpModTxRate);    // mode->GET(user) -- currently working on this; mode->(DISP)(disp_on_screen)
 
 // internal functions
 void _seq_display_(std::vector<std::string> inpVector, BITMAP *inpBitmap, int allocWidth, int allocHeight, int inpBmpBlitx, int inpBmpBlity, int dBufBlitx, int dBufBlity, bool cursorVisibility, int txtColor, int mode); // character by character display

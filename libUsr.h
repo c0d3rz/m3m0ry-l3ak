@@ -29,6 +29,9 @@
 #define INTRO 0
 #define INIT 10
 
+#define NONE 0  // no file present
+#define FILER 1 // file is present -- read the file in this case
+
 class usrProfile
 {
     public:
@@ -40,6 +43,20 @@ class usrProfile
         std::string getUserName();  // return the username of the player
         void checkUsrCfg(); // usrSysConfig file -- This will be created later
 
+        // for simplcity
+        std::string sysCpuName;  // system CPU name
+        int cpuOpFreq;  // CPU Operating frequency
+        std::string NICCardName; // Network Interface Card Name -- another enhancement coming to mind
+        // maybe we can remove all the strings that are about to be written -- will see that later
+
+        // number matching -- remember that freeKevin -- for aforesaid enhancement
+        int nicCapability; // the data rate
+        long ramCapac;   // the RAM size
+        int modTxRate;  // modem transfer rate
+
+        // init vars in the constructor -- done
+        // check passing of such variables by reference to another function
+
     private:
         std::string _usrName_;
         bool profileExists;
@@ -48,6 +65,7 @@ class usrProfile
         std::string profileDirPath;
         bool loadProfile;
         bool loadCfg;
+        int isNotCfgExist;    // check for cfgFileExist
 
         // the user values that will be written in the profile file
         long hackVal;   // the hack value obtained by the user
