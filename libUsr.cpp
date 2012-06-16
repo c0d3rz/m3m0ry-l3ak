@@ -286,7 +286,7 @@ void usrProfile::checkUsrCfg()
         // These should suffice for the configuration file for the user -- also implement suitable key
         // to encrypt the same
 
-        display_cfg_units(GET, sysCpuName, cpuOpFreq, NICCardName, nicCapability, ramCapac, modTxRate);
+        display_cfg_units(GET, sysCpuName, cpuOpFreq, NICCardName, nicCapability, ramCapac, modTxRate, accBal);
         cout<<sysCpuName<<" "<<cpuOpFreq<<" "<<NICCardName<<" "<<nicCapability<<" "<<ramCapac<<" "<<modTxRate<<endl;
 
         //cout<<text_length(font, "D")<<" "<<text_height(font)<<endl; // This might be required for

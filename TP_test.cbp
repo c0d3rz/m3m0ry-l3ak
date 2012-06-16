@@ -40,6 +40,8 @@
 		<Unit filename="libGraphics.h" />
 		<Unit filename="libSound.cpp" />
 		<Unit filename="libSound.h" />
+		<Unit filename="libSysMod.cpp" />
+		<Unit filename="libSysMod.h" />
 		<Unit filename="libUsr.cpp" />
 		<Unit filename="libUsr.h" />
 		<Unit filename="main.cpp" />

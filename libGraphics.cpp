@@ -25,6 +25,7 @@ BITMAP *alertBoxImg;    // the alert box warning for the user
 BITMAP *objImg;     // the objective display image
 BITMAP *acPerfImg;     // action performed user -- previous action
 BITMAP *warningmsgImg; // the warning message
+BITMAP *selectImg;  // the menu selection image
 DATAFILE *gfxDat;   // the gfx_datafile
 // ---------------------------------------------
 
@@ -59,6 +60,7 @@ void create_instances()
     dBuffer = create_bitmap(sysWidth, sysHeight);
     tempStorage = create_bitmap(sysWidth, sysHeight);
     secTempStorage = create_bitmap(sysWidth, sysHeight);
+    selectImg = create_bitmap((text_length(font, "D") + 4), (text_height(font) + 4));
 
     // load the datafile here
     gfxDat = load_datafile("./data/gfx_util.dat");
@@ -85,7 +87,7 @@ void create_instances()
     && gfx_error_handler(creditImg) && gfx_error_handler(secTempStorage) && gfx_error_handler(loginBckImg) && gfx_error_handler(upQueryImg)\
     && gfx_error_handler(mainBgImg) && gfx_error_handler(webBrowserImg) && gfx_error_handler(prevDisplayImg) &&\
     gfx_error_handler(queryBoxImg) && gfx_error_handler(alertBoxImg) && gfx_error_handler(objImg) &&\
-    gfx_error_handler(acPerfImg) && gfx_error_handler(warningmsgImg));
+    gfx_error_handler(acPerfImg) && gfx_error_handler(warningmsgImg) && gfx_error_handler(selectImg));
     else
     {
         allegro_message("Error loading game resource files in memory");
@@ -95,6 +97,7 @@ void create_instances()
 
 void destroy_instances()
 {
+    destroy_bitmap(selectImg);
     destroy_bitmap(dBuffer);
     destroy_bitmap(tempStorage);
     destroy_bitmap(secTempStorage);
@@ -1095,11 +1098,21 @@ void set_gfx_background()
     update_screen();
 }
 
-void display_cfg_units(int inpMode, string& inpCpuName, int& inpOpFreq, string& inpNicCardName, int& inpNicCapability, long& inpRamCapac, int& inpModTxRate)
+void display_cfg_units(int inpMode, string& inpCpuName, int& inpOpFreq, string& inpNicCardName, int& inpNicCapability, long& inpRamCapac, int& inpModTxRate, long& inpAccBal)
 {
     if(inpMode == GET) // get from the user
     {
+        // set up the gfx -- check if sound will be required for the same
+        // create the selection bitmap -- selection image created and working properly
+        // also need to have the accBal value in here -- the accBal needs to be transferred
+        // by reference - trying -- if it comes out -- no error -- this is working fine
+        // good for me -- no more pain in the ass
         // right now just passing some values -- testing mode
+
+        // Question -- Should I do it in a function called market -- like sep markets for each
+        // component -- that should work out
+        // have to work on that part -- the showing of the additional info when the selectImg has been
+        // moved to the particular CPU name
         inpCpuName = "warCPU v1.0";
         inpOpFreq = 31; // that is 31 Hz -- rem, make it a double var
 
@@ -1110,6 +1123,7 @@ void display_cfg_units(int inpMode, string& inpCpuName, int& inpOpFreq, string& 
         inpModTxRate = 16;  // This would be mbit/sec notation
 
         // print the same in the calling function -- calling function this part is working fine
+        cout<<--inpAccBal<<endl;    // This is working fine
 
         // uploading in git
     }
