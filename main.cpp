@@ -57,51 +57,15 @@ int main(int argc, char *argv[])
     }
     //sfx.stop_sound(MENU);
 
-    /*
-        The following modules have been planned and will be implemented in the near future.
-        Current improvements/modules to be implemented:
-            1. libClParser -- this will be a commandline parser for parsing the command, renamed : libClTokenizer
-            2. libxParser -- this will be the expression parser for the toy programming language
-
-        libClParser -- implementation started, renamed: libClTokenizer
-
-        The libClTokenizer is mostly using the tokenizing technique used by libTxtParser created
-        by nb0dy. It's implementation is slightly tweaked to help the accumulation of tokens easier.
-
-        Level design:
-        1. Now when the maini_bg() has been set up, display the terminal first -- the display terminal
-        will be the basic thing the user will have at his/her disposal. This terminal will allow the
-        user to call different functions. Incase the user presses the delete key -- the terminal window
-        will go away but can be brought back using the F5 key from the main game engine[This part
-        seems to a bit tricky]
-
-        2. Create the lvlDesign documents using LaTeX[if possible include detailed information about
-        the steps to be performed]
-    */
-
     clear_dBuffer();
     graphics_init(WINDOW, 1024, 768);
     //sfx.play_sound(FSND);   // No level check for this -- the music will be played one after the other
 
-    // redesigning the sound library first
 
-    // tasks to be done:
-    // 1. Redesign the libSound
-    // 2. create the appropriate profile file and read & write from that file
-
-    // the problem is with the type of converter that are being used to convert the files
-    // create the user profile
-
-    // need to check the issue in other laptops with better display
-    // though it looks fine from my side
-
-    // tasks neede to be completed
-    // 1. first solve the blitting problem in fullscreen mode for desktops with higher
-    // resolution
     usrProfile usrInst;
-    bool calledOnce = false;    // not yet called
-    bool isShown = false;   // not yet shown
-    bool isDisplayed = false;   // the cutscene is not yet shown
+    bool calledOnce = false;    // for load_profile and for load_cfg(), true --> done
+    bool isShown = false;   // not yet shown -- cutSceneDisplay, true --> done
+    bool isDisplayed = false;   // the cfg_file part is not yet shown or the cfg has not been read
     bool setBck = false;    // the background by default not set
 
     usrInst.usrProfileInit();   // about to add more sounds for the key presses
@@ -122,16 +86,28 @@ int main(int argc, char *argv[])
 
             usrInst.display_level_intro(sfxSystem, sfxResult, cutscMainSfx, distortFrameSfx, custscMainChannel, distortChannel, isDisplayed);  // passing the system and others to this function
 
-            isShown = true;
+            isShown = true; // level_intro has been displayed
         }
         sfxSystem->update();
-        menuChannel->setPaused(false);
+        menuChannel->setPaused(false);  // This might be required to be kept true
 
-        if(isDisplayed)
+        if(!setBck)
         {
             set_gfx_background();
-            isDisplayed = false;
             setBck = true;
+        }
+
+        // now show the user to display the stored CPU names
+        // clearing the bitmap
+        if(!isDisplayed)    // only if background has been set
+        {
+            // call the usrProfile function for testing
+            usrInst.checkUsrCfg(); // Seg Fault occuring -- checking -- removed
+            // one more test -- if no profile and cfgFileCount >= 1 -- delete cfg file, ask user to create another
+            // cfg -- display_cfg_components
+
+            // the aforesaid enhancement needs to be implemented
+            isDisplayed = true; // set to true to display gfx_background
         }
 
         // since the levelNum has been incremented -- now there will be fileWrite routine for another
@@ -141,12 +117,6 @@ int main(int argc, char *argv[])
         // Enhancement -- to be implemented
         // Remove the setting of display for the booting part, draw the same in the gfx_small_bmp,
         // stretch blit the textBmp on the screen
-        if(setBck && (!isDisplayed))    // now isDisplayed = false means display has ended
-        {
-            // call the usrProfile function for testing
-            usrInst.checkUsrCfg();
-            setBck = false; // the background image has been and hence the flag value reset
-        }
 
         //play_sfx(sfxSystem, sfxResult, mainSfx, mainChannel);
         // implementing the code that was written here

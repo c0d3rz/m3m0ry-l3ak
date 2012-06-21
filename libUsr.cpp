@@ -15,10 +15,9 @@ void usrProfile::usrProfileInit()
     fileCount = 0;  // set filecount to be zero at the start of each game instance
     cfgFileCount = 0;
 
-    cout<<"Before checking the profile dir existence\n";
+
     if(_is_dir_exist_(profileDirPath))  // if the dir exists
     {
-        cout<<"profile dir found\n";
         profileDirPath.push_back('/');
         //secCfgFilePath.push_back('/');
         // now check if any profile file exists or not -- set the profileExists boolean accordingly
@@ -53,7 +52,6 @@ void usrProfile::usrProfileInit()
     else
     {
         // create the directory named profile and then create the profile file inside that dir
-        cout<<"Will be creating the profile dir as well as the file\n";
         // create the directory
         mode_t process_mask = umask(0);
 		if(mkdir(profileDirPath.c_str(), S_IRWXU | S_IRWXG | S_IRWXO) == 0);	// means dir created
@@ -115,8 +113,6 @@ void usrProfile::load_profile()
         // call the query username function to get the desired username from the user
         if(_usrName_.empty())
             _usrName_ = query_uname();
-        cout<<"Before the username print\n";
-        cout<<_usrName_<<endl;  // username obtained -- create profile
 
         // set the other variables that need to be set to proper values
         hackVal = 0;  // the special case has been implemented
@@ -285,6 +281,7 @@ void usrProfile::checkUsrCfg()
         // 6. short int::<Modem_transfer_rate>
         // These should suffice for the configuration file for the user -- also implement suitable key
         // to encrypt the same
+        cout<<"Before calling displayCfgUnits function\n";  // segFault occuring in display_cfg_units()
 
         display_cfg_units(GET, sysCpuName, cpuOpFreq, NICCardName, nicCapability, ramCapac, modTxRate, accBal);
         cout<<sysCpuName<<" "<<cpuOpFreq<<" "<<NICCardName<<" "<<nicCapability<<" "<<ramCapac<<" "<<modTxRate<<endl;
@@ -321,7 +318,6 @@ void usrProfile::_filewrite_(std::string &inpUname, long &inpHackVal, long &inpA
 
     // now for the vernam and base64 encoding of the string
     string encUname = _ver_encode_(inpUname, strKey);
-    cout<<encUname<<endl;
     encUname = base64_encode(reinterpret_cast<const unsigned char *>(encUname.c_str()), encUname.length());
 
     // populate the magic dynVal variable
@@ -389,7 +385,6 @@ void usrProfile::_fileread_(std::string &inpUname, long &inpHackVal, long &inpAc
 
 
     dynVal = 0; // before any mishap happens better make it zero
-    cout<<profileDirPath<<endl; // the profile dir path variable has the name of the profile file
     PACKFILE *readFile;
 
     // populate the key values
@@ -403,13 +398,10 @@ void usrProfile::_fileread_(std::string &inpUname, long &inpHackVal, long &inpAc
     // check if the file is read properly or not
     if(!readFile)
     {
-        allegro_message("Profile file could not be read");  // check out why inclusion of the libSound
-        // header is making the compiler to stop compiling and throwing an error for duplication
-        // of libSound_sfx class
+        allegro_message("Profile file could not be read");  // also destroy sfx_instances -- unresolved
         destroy_instances();
         allegro_exit();
     }
-    cout<<"After readFile check\n";
 
     // read the values accordingly
     inpHackVal = pack_igetl(readFile);
@@ -420,7 +412,6 @@ void usrProfile::_fileread_(std::string &inpUname, long &inpHackVal, long &inpAc
     inpMissionNum = pack_igetw(readFile);
     inpIsMissionComplete = pack_igetw(readFile);
     inpIsLevelComplete = pack_igetw(readFile);
-    cout<<"After reading the basic files\n";
 
     dynAr = new char[dynVal];   // dynamically allocate memory
     pack_fgets(dynAr, (dynVal + 1), readFile);
@@ -428,12 +419,9 @@ void usrProfile::_fileread_(std::string &inpUname, long &inpHackVal, long &inpAc
     // copy from the memory into the string that is provided
     for(int index = 0; index < (dynVal + 1); index++)
         inpUname.push_back(dynAr[index]);
-    cout<<"After reading the userName from the file\n";
 
     pack_fclose(readFile);  // close the pack_read_file_instance
     delete []dynAr; // free the dynamically allocated memory
-
-    cout<<"deleting the memory taken for dynamic memory allocation\n";
 
     // after this I will have to deploy the decoding techniques
     inpHackVal = _ver_decode_(inpHackVal, longKey);
@@ -444,13 +432,10 @@ void usrProfile::_fileread_(std::string &inpUname, long &inpHackVal, long &inpAc
     inpMissionNum = _ver_decode_(inpMissionNum, intKey);
     inpIsMissionComplete = _ver_decode_(inpIsMissionComplete, intKey);
     inpIsLevelComplete = _ver_decode_(inpIsLevelComplete, intKey);
-    cout<<"decoding the non-string variables\n";
 
     // Now release the decoding functions related to string
     inpUname = base64_decode(inpUname);
     cout<<inpUname<<endl;
     inpUname = _ver_decode_(inpUname, strKey);
     _unpad_string_(inpUname);   // proper string value done
-
-    cout<<"String operations done\n";
 }

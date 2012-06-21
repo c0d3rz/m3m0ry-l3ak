@@ -60,7 +60,6 @@ void create_instances()
     dBuffer = create_bitmap(sysWidth, sysHeight);
     tempStorage = create_bitmap(sysWidth, sysHeight);
     secTempStorage = create_bitmap(sysWidth, sysHeight);
-    selectImg = create_bitmap((text_length(font, "D") + 4), (text_height(font) + 4));
 
     // load the datafile here
     gfxDat = load_datafile("./data/gfx_util.dat");
@@ -87,7 +86,7 @@ void create_instances()
     && gfx_error_handler(creditImg) && gfx_error_handler(secTempStorage) && gfx_error_handler(loginBckImg) && gfx_error_handler(upQueryImg)\
     && gfx_error_handler(mainBgImg) && gfx_error_handler(webBrowserImg) && gfx_error_handler(prevDisplayImg) &&\
     gfx_error_handler(queryBoxImg) && gfx_error_handler(alertBoxImg) && gfx_error_handler(objImg) &&\
-    gfx_error_handler(acPerfImg) && gfx_error_handler(warningmsgImg) && gfx_error_handler(selectImg));
+    gfx_error_handler(acPerfImg) && gfx_error_handler(warningmsgImg));
     else
     {
         allegro_message("Error loading game resource files in memory");
@@ -1100,19 +1099,31 @@ void set_gfx_background()
 
 void display_cfg_units(int inpMode, string& inpCpuName, int& inpOpFreq, string& inpNicCardName, int& inpNicCapability, long& inpRamCapac, int& inpModTxRate, long& inpAccBal)
 {
+    cout<<"Inside display_cfg_units\n";
+    cout<<inpMode<<endl;
     if(inpMode == GET) // get from the user
     {
-        // set up the gfx -- check if sound will be required for the same
-        // create the selection bitmap -- selection image created and working properly
-        // also need to have the accBal value in here -- the accBal needs to be transferred
-        // by reference - trying -- if it comes out -- no error -- this is working fine
-        // good for me -- no more pain in the ass
-        // right now just passing some values -- testing mode
+        // display objImg
+        cout<<"Before displaying the objImg";
+        blit_on_dBuffer(objImg, 175, 200, OPAQ);    // this is not displayed -- why??
+        update_screen();
 
-        // Question -- Should I do it in a function called market -- like sep markets for each
-        // component -- that should work out
-        // have to work on that part -- the showing of the additional info when the selectImg has been
-        // moved to the particular CPU name
+        //_sys_cpu_sel_(objImg, inpCpuName, inpOpFreq);
+
+        // show the selectImg
+        //clear_to_color(selectImg, makecol(0, 0, 100));
+        //blit_on_dBuffer(selectImg, 217, 215, TRANS);    // remove creation of the bitmap
+        // from the create_instances and create the bitmap dynamically here as well as delete
+        // the same after every key press
+        //blit(selectImg, screen, 0, 0, 100, 100, selectImg->w, selectImg->h);    // the select image is
+        // not being displayed
+        update_screen();
+
+        // call the sysCpu Component transac function
+        //sysCpu(inpCpuName, inpOpFreq, inpAccBal); // routine code has not been written
+        // implementation is in abeyance
+
+
         inpCpuName = "warCPU v1.0";
         inpOpFreq = 31; // that is 31 Hz -- rem, make it a double var
 
@@ -1496,6 +1507,27 @@ void _distort_frame_(BITMAP* src, BITMAP* dst, int t, int type, float inpAmpli) 
 			src_x++;
 		}
 	}
+}
+
+void _sys_cpu_sel_(BITMAP *srcBmp, string& inpCpuName, int& inpOpFreq)
+{
+    // Issues to be resolved:
+    // 1. Complete the whole list of CPUs that will be used in the game
+
+    vector<string> sysCpuVec;
+    sysCpuVec.push_back("Choose CPU:");
+    sysCpuVec.push_back("  1. Intel Core Duo T2700 2.33 GHz");
+    sysCpuVec.push_back("  2. Intel Core Duo T2600 2.16 GHz");
+    sysCpuVec.push_back("  3. Xeon 5160 – 3.00 GHz (4 MB L2, 1333 MHz FSB, 80 W)");
+    sysCpuVec.push_back("  4. Xeon 5150 – 2.66 GHz (4 MB L2, 1333 MHz FSB, 65 W)");
+    sysCpuVec.push_back("  5. Xeon X5355 – 2.66 GHz (2×4 MB L2, 1333 MHz FSB, 105 W)");
+    sysCpuVec.push_back("  6. AMD Turion 64 X2");
+    sysCpuVec.push_back("  7. AMD Athlon Regor");
+    sysCpuVec.push_back("  8. AMD Athlon Propus");
+
+    _seq_display_(sysCpuVec, srcBmp, 76, 27, 100, 100, 100, 100, false, CGREEN, LINEBYLN);
+
+    selectImg = create_bitmap(text_length(font, "D") * sysCpuVec[5].length(), text_height(font) + 4);
 }
 
 // --------------------------------------- bitmap error checker ----------------------------------------------------

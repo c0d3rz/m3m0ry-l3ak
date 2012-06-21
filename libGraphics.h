@@ -2,6 +2,7 @@
 #define LIBGRAPHICS_H_INCLUDED
 
 #include "libSound.h"
+#include "libSysMod.h"
 
 #include <iostream>
 #include <cstdlib>
@@ -90,6 +91,7 @@ void _save_reblit_buffer_state_(int blitState); // saves the buffer state before
 void _translucent_bmp_txt_print_(BITMAP *inpHostBmp, BITMAP *inpTxtBmp, int reblitState, int blitTxtBmpPosx, int blitTxtBmpPosy, int alphaGradVal, int blitTransBmpPosx, int blitTransBmpPosy); // display the text on translucent BMP without losing the translucency
 void _handle_event_(BITMAP *consoleTextBmp, int keyRead, txtBox& inpObj, std::string& inpCliStr, bool& inpLoopCont, int &returnVal, std::string& desPromptStr, bool checkBootLvl);  // handle key_events --> non main Engine
 void _distort_frame_(BITMAP* src, BITMAP* dst, int t, int type, float inpAmpli);    // screen disturbance routine
+void _sys_cpu_sel_(BITMAP *srcBmp, std::string& inpCpuName, int& inpOpFreq);   // select CPU
 
 bool gfx_error_handler(BITMAP *inpBmp); // bitmap error checker
 
