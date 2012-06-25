@@ -4,27 +4,23 @@
 
 \begin{document}
 
-\title{Changelog v27 devRelease}	% give document title here
+\title{Changelog v28 devRelease}	% give document title here
 \author{war10ck}	% give author name here
 \date{\today}
 \maketitle
 
-\section{Changelog for dev release v27:}
+\section{Changelog for dev release v28:}
 Issues Resolved:\newline
-1. Cutscene display for levelZero completed. Sfx implementation for the display of the cutscene also done.\newline
-2. Incrementing the usrLevel value and writing the same in the profile file -- working properly.\newline
+1. SelectImage dislayed, dummy list of sysCpu displayed in objListImg.\newline
+2. load\_cfg() and other configuration file functions created.\newline
 
 Issues to be resolved:\newline
-1. Develop the rest of the gameplay design. Current work in this respect -- design the working of the main engine.\newline
-2. Develop the multi-window approach. Test Bed implementation has started, enable\_hardware\_cursor() working properly. Might have to check some flags before calling the same.[Discrepancies that might exist in other installations or PCs]\newline
-3. Check out threading concept for the multi-window approach. This might be required since there might be a number
-of threads that will be required for the same.\newline
-4. display\_terminal() function -\> libNxParser class implementation, needs to be tweaked and embedded in the main code.\newline
+1. Enhancement : Rather than switching the display resoluion while displaying the bootText, stretch\_blit the parent bootText image.\newline
+2. Enhancement : Create single handler for all events for selectImg -- cfgSelect.\newline
+3. Overload function \_fileWrite\_() for writing cfg file in profile folder.\newline
 
 \section{Note to developers}
-Hi dear friends, who might be thinking when a new update is about to come, I am sorry to disappoint you. I have been working alone for quite a time and hence the delay in the updates. Not that I have been working very hard at this, but I have become very lazy. May the divine force help me out.\newline
-On a completely different note, check out the gameplay video of God of War - Ascension Campaign mode in E3 2012. It is really amazing[at least for a die hard fan like me, this was a big issue...the attacks are a bit more brutal]\newline
-Hoping to get a solution to the multi-window approach that I have in mind. The problem how do I switch from one window having different functionality to another without sacrificing anything in either/all of them[Here again I need help, either from you guys or from the divine force].\newline
+Have removed some people from the contributor side -- since they haven't been giving me any inputs. So I am guessing that these people were not interested in the project anymore. I am also getting frustrated due to the lack of coders for my project. I need some people who can code. In case you guys know someone who might be interested in coding regardless of the language(Of course, I will not ask to code in Java!!!! I hate that language too.) and type of game -- please ask him/her to join me. I need a coder who can help me out now.\newline
 
 \pagebreak
 

@@ -1103,12 +1103,7 @@ void display_cfg_units(int inpMode, string& inpCpuName, int& inpOpFreq, string& 
     cout<<inpMode<<endl;
     if(inpMode == GET) // get from the user
     {
-        // display objImg
-        cout<<"Before displaying the objImg";
-        blit_on_dBuffer(objImg, 175, 200, OPAQ);    // this is not displayed -- why??
-        update_screen();
-
-        //_sys_cpu_sel_(objImg, inpCpuName, inpOpFreq);
+        _sys_cpu_sel_(objImg, inpCpuName, inpOpFreq);
 
         // show the selectImg
         //clear_to_color(selectImg, makecol(0, 0, 100));
@@ -1117,7 +1112,6 @@ void display_cfg_units(int inpMode, string& inpCpuName, int& inpOpFreq, string& 
         // the same after every key press
         //blit(selectImg, screen, 0, 0, 100, 100, selectImg->w, selectImg->h);    // the select image is
         // not being displayed
-        update_screen();
 
         // call the sysCpu Component transac function
         //sysCpu(inpCpuName, inpOpFreq, inpAccBal); // routine code has not been written
@@ -1511,6 +1505,10 @@ void _distort_frame_(BITMAP* src, BITMAP* dst, int t, int type, float inpAmpli) 
 
 void _sys_cpu_sel_(BITMAP *srcBmp, string& inpCpuName, int& inpOpFreq)
 {
+    // display objImg
+    blit_on_dBuffer(objImg, 175, 200, OPAQ);   // move this to the syCpuDisplayer function
+    update_screen();
+
     // Issues to be resolved:
     // 1. Complete the whole list of CPUs that will be used in the game
 
@@ -1525,9 +1523,48 @@ void _sys_cpu_sel_(BITMAP *srcBmp, string& inpCpuName, int& inpOpFreq)
     sysCpuVec.push_back("  7. AMD Athlon Regor");
     sysCpuVec.push_back("  8. AMD Athlon Propus");
 
-    _seq_display_(sysCpuVec, srcBmp, 76, 27, 100, 100, 100, 100, false, CGREEN, LINEBYLN);
+    _seq_display_(sysCpuVec, srcBmp, 65, 17, 100, 100, 175, 200, false, CGREEN, LINEBYLN);
+    // start displaying the objective image
 
     selectImg = create_bitmap(text_length(font, "D") * sysCpuVec[5].length(), text_height(font) + 4);
+
+    clear_to_color(selectImg, CLBLUE);  // selectImg is not getting updated
+    int select_index = 1;
+
+    // before displaying the selectImage on the screen -- save the screen state
+    clear_to_color(tempStorage, CBLACK);
+    blit(dBuffer, tempStorage, 100, 100 + SELECTGAP * select_index, 0, 0, selectImg->w, selectImg->h);
+    // cannot be moved to a difinite state reblit -- target blit will be changing
+
+
+    // adjust display of the selectImg -- if possible highlight the text that is under selection image
+    _blit_translucent_bmp_(selectImg, objImg, 128, 100, 100 + SELECTGAP * select_index);   // this is working fine
+    blit_on_dBuffer(objImg, 175, 200, OPAQ);
+    update_screen();
+}
+
+int _select_handler_(int &inpSelectIndex)
+{
+    int rdKey;
+    char scancode;
+    char asciiChar; // not required -- will be removing it
+
+    while(keypressed())
+    {
+        rdKey = readkey();
+        asciiChar = rdKey & 0xFF;   // not required
+        scancode = rdKey >> 8;
+
+
+        switch(scancode)
+        {
+            case KEY_UP:
+            break;
+
+            case KEY_DOWN:
+            break;
+        }
+    }
 }
 
 // --------------------------------------- bitmap error checker ----------------------------------------------------

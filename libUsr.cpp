@@ -199,7 +199,7 @@ void usrProfile::load_cfg()
     }
 }
 
-void usrProfile::display_level_intro(FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD::Sound*& inpBgSfxState, FMOD::Sound*& inpExSfxState, FMOD::Channel*& inpBgChannel, FMOD::Channel*& inpExChannel, bool &isDisplayed)
+void usrProfile::display_level_intro(FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD::Sound*& inpBgSfxState, FMOD::Sound*& inpExSfxState, FMOD::Channel*& inpBgChannel, FMOD::Channel*& inpExChannel)
 {
     // working principle of this function
     // This function will be checking the usrLvl and based on this variable as well as the
@@ -218,11 +218,9 @@ void usrProfile::display_level_intro(FMOD::System*& inpSystem, FMOD_RESULT &inpR
         cout<<"New Profile created\n";  // now read from the newly created profile file
         _usrName_.clear();
         _fileread_(_usrName_, hackVal, accBal, usrLvl, missionNum, isMissionComplete, isLevelComplete);
-        isDisplayed = true; // setting it at the start it self -- else never ending loop
     }
     else
     {
-        isDisplayed = true;
         cout<<"Reading pre created profile\n";
     }
     //cout<<hackVal<<"\t"<<accBal<<"\t"<<usrLvl<<"\t"<<_usrName_<<"\t"<<missionNum<<"\t"<<isMissionComplete<<"\t"<<isLevelComplete<<endl;

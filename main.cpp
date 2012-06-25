@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
             // stop the previous sound playing function
             menuChannel->setPaused(true);
 
-            usrInst.display_level_intro(sfxSystem, sfxResult, cutscMainSfx, distortFrameSfx, custscMainChannel, distortChannel, isDisplayed);  // passing the system and others to this function
+            usrInst.display_level_intro(sfxSystem, sfxResult, cutscMainSfx, distortFrameSfx, custscMainChannel, distortChannel);  // passing the system and others to this function
 
             isShown = true; // level_intro has been displayed
         }
@@ -97,10 +97,9 @@ int main(int argc, char *argv[])
             setBck = true;
         }
 
-        // now show the user to display the stored CPU names
-        // clearing the bitmap
         if(!isDisplayed)    // only if background has been set
         {
+            cout<<"Inside Check\n"; // This part is not being called -- check cause
             // call the usrProfile function for testing
             usrInst.checkUsrCfg(); // Seg Fault occuring -- checking -- removed
             // one more test -- if no profile and cfgFileCount >= 1 -- delete cfg file, ask user to create another

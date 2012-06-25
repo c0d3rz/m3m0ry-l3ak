@@ -39,7 +39,7 @@ class usrProfile
         usrProfile();
         void load_profile();  // load the profile
         void load_cfg();    // load the usr cfg file
-        void display_level_intro(FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD::Sound*& inpBgSfxState, FMOD::Sound*& inpExSfxState, FMOD::Channel*& inpBgChannel, FMOD::Channel*& inpExChannel, bool &isDisplayed); // check the level, mission num and display the level story
+        void display_level_intro(FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD::Sound*& inpBgSfxState, FMOD::Sound*& inpExSfxState, FMOD::Channel*& inpBgChannel, FMOD::Channel*& inpExChannel); // check the level, mission num and display the level story
         std::string getUserName();  // return the username of the player
         void checkUsrCfg(); // usrSysConfig file -- This will be created later
 

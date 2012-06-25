@@ -1,2 +1,10 @@
-The code update of version 27 dev release is not working properly -- work is going on in this respect.
-Absolve for the late update in gitHub.
+Issues to be resolved:
+1. Create the gfx for the "warning! memory leak" and make it appear at multiple places on the screen. Basically that will be a blitting function call -- a multiple call that will be showing it in different places on the screen.Formulate some thing for this too.
+2. Play distort_gfx_sfx properly. Twekaing of the timing is required.
+3. Replace the current cutscene BG sfx with a better one.
+
+Issues Resolved:
+1. LibSound tweaked to a proper extent.
+2. Distort sound placed and called for once. Timings for short interval done.
+
+P.S. Have become lazy and hence the delay in the upload. Will also try to upload in the google code dump
