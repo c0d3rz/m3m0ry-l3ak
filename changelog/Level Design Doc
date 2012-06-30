@@ -1,0 +1,24 @@
+Level Design document
+
+Current state of the user
+Level Num = 0;	// needs to be incremented to level 1
+missionNum = 0;	// no need of incrementing
+
+isMissionComplete->Flag_type_int = InComplete	// no change
+isLevelComplete->Flag_type_int = InComplete		// no change
+
+After the increment of the levelNumber:
+1. fileWrite(change(newLevelNum))->levelNumber; rest no change
+2. display main_bg()->dBuffer; display_time()-> right hand top corner
+3. Ask user to make the system -> along with that display the accBal
+4. after choosing the system config, fileWrite(systemConfig)->NewFile()
+
+After this the design of the main game engine along with other parts will be starting -- this is where the game play will
+start for the game
+
+Level 1, Mission 1 - Official Name: .Init()
+Level 1, Mission 2 - Official Name: .argv[1]	// the first target
+
+
+
+Important: Implement salted md5 check for the profile and other files that are going to be used for the game
