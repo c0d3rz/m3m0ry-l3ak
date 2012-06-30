@@ -1097,7 +1097,7 @@ void set_gfx_background()
     update_screen();
 }
 
-void display_cfg_units(int inpMode, string& inpCpuName, int& inpOpFreq, string& inpNicCardName, int& inpNicCapability, long& inpRamCapac, int& inpModTxRate, long& inpAccBal)
+void display_cfg_units(int inpMode, string& inpCpuName, double& inpOpFreq, string& inpNicCardName, int& inpNicCapability, long& inpRamCapac, int& inpModTxRate, long& inpAccBal)
 {
     cout<<"Inside display_cfg_units\n";
     cout<<inpMode<<endl;
@@ -1117,20 +1117,7 @@ void display_cfg_units(int inpMode, string& inpCpuName, int& inpOpFreq, string& 
         //sysCpu(inpCpuName, inpOpFreq, inpAccBal); // routine code has not been written
         // implementation is in abeyance
 
-
-        inpCpuName = "warCPU v1.0";
-        inpOpFreq = 31; // that is 31 Hz -- rem, make it a double var
-
-        inpNicCardName = "BCM43xx";
-        inpNicCapability = 32;    // just a dummy text
-
-        inpRamCapac = 4294967296L;  // 4GB of RAM allocated for DUMMY!!!!!
-        inpModTxRate = 16;  // This would be mbit/sec notation
-
-        // print the same in the calling function -- calling function this part is working fine
-        cout<<--inpAccBal<<endl;    // This is working fine
-
-        // uploading in git
+        cout<<inpCpuName<<"\t"<<inpOpFreq<<endl;
     }
     else if(inpMode == DISP); // display to the user the current chosen configuration
 
@@ -1503,7 +1490,7 @@ void _distort_frame_(BITMAP* src, BITMAP* dst, int t, int type, float inpAmpli) 
 	}
 }
 
-void _sys_cpu_sel_(BITMAP *srcBmp, string& inpCpuName, int& inpOpFreq)
+void _sys_cpu_sel_(BITMAP *srcBmp, string& inpCpuName, double& inpOpFreq)
 {
     // display objImg
     blit_on_dBuffer(srcBmp, 175, 200, OPAQ);   // move this to the syCpuDisplayer function
@@ -1527,7 +1514,34 @@ void _sys_cpu_sel_(BITMAP *srcBmp, string& inpCpuName, int& inpOpFreq)
 
 
     // call the handler function
-    _select_handler_(1, dBuffer, 8);
+    switch((_select_handler_(1, dBuffer, 8)))
+    {
+        case PROCFIRST:
+            inpCpuName = "Intel Core Duo T2700";
+            inpOpFreq = 2.33;
+        break;
+
+        case PROCSEC:
+        break;
+
+        case PROCTHIRD:
+        break;
+
+        case PROCFRTH:
+        break;
+
+        case PROCFIFTH:
+        break;
+
+        case PROCSIXTH:
+        break;
+
+        case PROCSEVN:
+        break;
+
+        case PROCEGHT:
+        break;
+    }
 }
 
 int _select_handler_(int inpSelectIndex, BITMAP *srcBmp, int limit)
@@ -1579,6 +1593,7 @@ int _select_handler_(int inpSelectIndex, BITMAP *srcBmp, int limit)
             }
         }
     }
+    return retVal;
 }
 
 // --------------------------------------- bitmap error checker ----------------------------------------------------

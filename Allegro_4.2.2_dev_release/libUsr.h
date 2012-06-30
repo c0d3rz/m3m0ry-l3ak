@@ -45,7 +45,7 @@ class usrProfile
 
         // for simplcity
         std::string sysCpuName;  // system CPU name
-        int cpuOpFreq;  // CPU Operating frequency
+        double cpuOpFreq;  // CPU Operating frequency
         std::string NICCardName; // Network Interface Card Name -- another enhancement coming to mind
         // maybe we can remove all the strings that are about to be written -- will see that later
 

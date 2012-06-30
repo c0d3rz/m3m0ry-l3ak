@@ -65,6 +65,14 @@
 #define MAXCHAR 8
 
 #define SELECTGAP 13
+#define PROCFIRST 1
+#define PROCSEC 2
+#define PROCTHIRD 3
+#define PROCFRTH 4
+#define PROCFIFTH 5
+#define PROCSIXTH 6
+#define PROCSEVN 7
+#define PROCEGHT 8
 
 void graphics_init(int mode, int widthReso, int heightReso);   // calls all other funstions for setting up the grahics primitives
 
@@ -82,7 +90,7 @@ std::string query_uname(); // username query
 void display_intro(int mode, std::string inpEpName, std::string inpUserName, FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD::Sound*& inpBgSfxState, FMOD::Sound*& inpExSfxState, FMOD::Channel*& inpBgChannel, FMOD::Channel*& inpExChannel);   // give the mode to display that intro -- decide other modes too
 void clear_dBuffer();   // just clear the double buffer to the dark color
 void set_gfx_background();  // This will be setting the final background
-void display_cfg_units(int inpMode, std::string& inpCpuName, int& inpOpFreq, std::string& inpNicCardName, int& inpNicCapability, long& inpRamCapac, int& inpModTxRate, long& inpAccBal);    // mode->GET(user) -- currently working on this; mode->(DISP)(disp_on_screen)
+void display_cfg_units(int inpMode, std::string& inpCpuName, double& inpOpFreq, std::string& inpNicCardName, int& inpNicCapability, long& inpRamCapac, int& inpModTxRate, long& inpAccBal);    // mode->GET(user) -- currently working on this; mode->(DISP)(disp_on_screen)
 
 // internal functions
 void _seq_display_(std::vector<std::string> inpVector, BITMAP *inpBitmap, int allocWidth, int allocHeight, int inpBmpBlitx, int inpBmpBlity, int dBufBlitx, int dBufBlity, bool cursorVisibility, int txtColor, int mode); // character by character display
@@ -94,7 +102,7 @@ void _save_reblit_buffer_state_(int blitState); // saves the buffer state before
 void _translucent_bmp_txt_print_(BITMAP *inpHostBmp, BITMAP *inpTxtBmp, int reblitState, int blitTxtBmpPosx, int blitTxtBmpPosy, int alphaGradVal, int blitTransBmpPosx, int blitTransBmpPosy); // display the text on translucent BMP without losing the translucency
 void _handle_event_(BITMAP *consoleTextBmp, int keyRead, txtBox& inpObj, std::string& inpCliStr, bool& inpLoopCont, int &returnVal, std::string& desPromptStr, bool checkBootLvl);  // handle key_events --> non main Engine
 void _distort_frame_(BITMAP* src, BITMAP* dst, int t, int type, float inpAmpli);    // screen disturbance routine
-void _sys_cpu_sel_(BITMAP *srcBmp, std::string& inpCpuName, int& inpOpFreq);   // select CPU
+void _sys_cpu_sel_(BITMAP *srcBmp, std::string& inpCpuName, double& inpOpFreq);   // select CPU
 int _select_handler_(int inpSelectIndex, BITMAP *srcBmp, int limit); // return the selectedIndex -- set up Macros for retVal
 
 bool gfx_error_handler(BITMAP *inpBmp); // bitmap error checker
