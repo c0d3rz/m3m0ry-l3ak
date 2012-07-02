@@ -1104,6 +1104,9 @@ void display_cfg_units(int inpMode, string& inpCpuName, double& inpOpFreq, strin
     if(inpMode == GET) // get from the user
     {
         _sys_cpu_sel_(objImg, inpCpuName, inpOpFreq, inpAccBal);
+        // now start the selection of the NicCards that will be used by the user
+        _sys_nic_sel_(objImg, inpNicCardName, inpNicCapability, inpAccBal); // create the function definition and
+        // the body of the aforementioned
 
         // show the selectImg
         //clear_to_color(selectImg, makecol(0, 0, 100));
@@ -1566,6 +1569,11 @@ void _sys_cpu_sel_(BITMAP *srcBmp, string& inpCpuName, double& inpOpFreq, long &
             // though these are dummy values -- the list will undergo a change once the Alpha is final
         break;
     }
+}
+
+void _sys_nic_sel_(BITMAP *srcBmp, std::string &inpNicCardName, int &inpNicCapability, long &inpAccBal)
+{
+    // now again do the same process as done for the Cpu Selection function
 }
 
 int _select_handler_(int inpSelectIndex, BITMAP *srcBmp, int limit)

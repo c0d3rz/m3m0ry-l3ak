@@ -103,6 +103,7 @@ void _translucent_bmp_txt_print_(BITMAP *inpHostBmp, BITMAP *inpTxtBmp, int rebl
 void _handle_event_(BITMAP *consoleTextBmp, int keyRead, txtBox& inpObj, std::string& inpCliStr, bool& inpLoopCont, int &returnVal, std::string& desPromptStr, bool checkBootLvl);  // handle key_events --> non main Engine
 void _distort_frame_(BITMAP* src, BITMAP* dst, int t, int type, float inpAmpli);    // screen disturbance routine
 void _sys_cpu_sel_(BITMAP *srcBmp, std::string& inpCpuName, double& inpOpFreq, long &inpAccBal);   // select CPU
+void _sys_nic_sel_(BITMAP *srcBmp, std::string &inpNicCardName, int &inpNicCapability, long &inpAccBal);
 int _select_handler_(int inpSelectIndex, BITMAP *srcBmp, int limit); // return the selectedIndex -- set up Macros for retVal
 
 bool gfx_error_handler(BITMAP *inpBmp); // bitmap error checker
