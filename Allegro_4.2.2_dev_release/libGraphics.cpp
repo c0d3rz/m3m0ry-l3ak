@@ -1103,7 +1103,7 @@ void display_cfg_units(int inpMode, string& inpCpuName, double& inpOpFreq, strin
     cout<<inpMode<<endl;
     if(inpMode == GET) // get from the user
     {
-        _sys_cpu_sel_(objImg, inpCpuName, inpOpFreq);
+        _sys_cpu_sel_(objImg, inpCpuName, inpOpFreq, inpAccBal);
 
         // show the selectImg
         //clear_to_color(selectImg, makecol(0, 0, 100));
@@ -1490,7 +1490,7 @@ void _distort_frame_(BITMAP* src, BITMAP* dst, int t, int type, float inpAmpli) 
 	}
 }
 
-void _sys_cpu_sel_(BITMAP *srcBmp, string& inpCpuName, double& inpOpFreq)
+void _sys_cpu_sel_(BITMAP *srcBmp, string& inpCpuName, double& inpOpFreq, long &inpAccBal)
 {
     // display objImg
     blit_on_dBuffer(srcBmp, 175, 200, OPAQ);   // move this to the syCpuDisplayer function
@@ -1518,28 +1518,52 @@ void _sys_cpu_sel_(BITMAP *srcBmp, string& inpCpuName, double& inpOpFreq)
     {
         case PROCFIRST:
             inpCpuName = "Intel Core Duo T2700";
-            inpOpFreq = 2.33;
+            inpOpFreq = 2.33;   // also reduce the accBal
+            inpAccBal -= 621;   // Issue to be resolved -- reduce accBal allocated to user
         break;
 
         case PROCSEC:
+            inpCpuName = "Intel Core Duo T2600";
+            inpOpFreq = 2.16;
+            inpAccBal -= 413;
         break;
 
         case PROCTHIRD:
+            inpCpuName = "Intel Xeon 5160";
+            inpOpFreq = 3.00;
+            inpAccBal -= 903;   // all the deductions are done with the box prices available
+            // from ark.intel.com
         break;
 
         case PROCFRTH:
+            inpCpuName = "Intel Xeon 5150";
+            inpOpFreq = 2.66;
+            inpAccBal -= 735;
         break;
 
         case PROCFIFTH:
+            inpCpuName = "Intel Xeon X5355";
+            inpOpFreq = 2.66;
+            inpAccBal -= 748;
         break;
 
         case PROCSIXTH:
+            inpCpuName = "AMD Turion 64 X2";
+            inpOpFreq = 2.80;
+            inpAccBal -= 1043;  // the higher price starts from here
         break;
 
         case PROCSEVN:
+            inpCpuName = "AMD Athlon Regor";
+            inpOpFreq = 3.00;
+            inpAccBal -= 1128;
         break;
 
         case PROCEGHT:
+            inpCpuName = "AMD Athlon Propus";
+            inpOpFreq = 2.60;
+            inpAccBal -= 932;   // seems a bit overpriced based on the opFreq
+            // though these are dummy values -- the list will undergo a change once the Alpha is final
         break;
     }
 }

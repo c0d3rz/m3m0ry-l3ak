@@ -117,8 +117,8 @@ void usrProfile::load_profile()
         // set the other variables that need to be set to proper values
         hackVal = 0;  // the special case has been implemented
         usrLvl = 0;
-        accBal = 20000; // the amount is in 20k dollars -- Don't take in the westernization impact
-        // using packfile functions to write the values in a file
+        accBal = 5000; // Reducing the accBal allocated to the user -- for the time being -- only 5k$
+        // rest of the amount will be earned by the user while playing the game
 
         // starting part hence no check is required
         missionNum = 0;
