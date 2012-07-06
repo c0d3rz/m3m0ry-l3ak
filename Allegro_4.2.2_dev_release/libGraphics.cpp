@@ -1573,7 +1573,31 @@ void _sys_cpu_sel_(BITMAP *srcBmp, string& inpCpuName, double& inpOpFreq, long &
 
 void _sys_nic_sel_(BITMAP *srcBmp, std::string &inpNicCardName, int &inpNicCapability, long &inpAccBal)
 {
-    // now again do the same process as done for the Cpu Selection function
+    blit_on_dBuffer(srcBmp, 175, 200, OPAQ);   // move this to the syCpuDisplayer function
+    update_screen();
+
+
+    vector<string> nicList;
+
+    nicList.push_back("Choose NIC Card:");
+    nicList.push_back("  1. AT-2712FX(Encrypted) 100Mbps");
+    nicList.push_back("  2. AT2912T(Encrypted) 1000Mbps");
+    nicList.push_back("  3. AT2500(Non-Encrypted) 10Mbps");
+
+    // the above list is a dummy list which will be rectified once the alpha is out
+    _seq_display_(nicList, srcBmp, 65, 17, 100, 100, 175, 200, false, CGREEN, LINEBYLN);
+
+    switch(_select_handler_(1, dBuffer, 3))
+    {
+        case NICF:
+        break;
+
+        case NICS:
+        break;
+
+        case NICT:
+        break;
+    }
 }
 
 int _select_handler_(int inpSelectIndex, BITMAP *srcBmp, int limit)

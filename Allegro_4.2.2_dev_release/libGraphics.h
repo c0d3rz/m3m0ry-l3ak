@@ -74,6 +74,10 @@
 #define PROCSEVN 7
 #define PROCEGHT 8
 
+#define NICF 1
+#define NICS 2
+#define NICT 3
+
 void graphics_init(int mode, int widthReso, int heightReso);   // calls all other funstions for setting up the grahics primitives
 
 void create_instances();
