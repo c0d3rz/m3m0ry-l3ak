@@ -1105,20 +1105,12 @@ void display_cfg_units(int inpMode, string& inpCpuName, double& inpOpFreq, strin
     {
         _sys_cpu_sel_(objImg, inpCpuName, inpOpFreq, inpAccBal);
         // now start the selection of the NicCards that will be used by the user
-        _sys_nic_sel_(objImg, inpNicCardName, inpNicCapability, inpAccBal); // create the function definition and
-        // the body of the aforementioned
+        _sys_nic_sel_(objImg, inpNicCardName, inpModTxRate, inpNicCapability, inpAccBal); // create the function definition and
+        _sys_ram_sel_(objImg, inpRamCapac, inpAccBal);  // will be pouring in dummy values
+        // Add parameter -- internal HDD space storage -- upgradable as game progresses
 
-        // show the selectImg
-        //clear_to_color(selectImg, makecol(0, 0, 100));
-        //blit_on_dBuffer(selectImg, 217, 215, TRANS);    // remove creation of the bitmap
-        // from the create_instances and create the bitmap dynamically here as well as delete
-        // the same after every key press
-        //blit(selectImg, screen, 0, 0, 100, 100, selectImg->w, selectImg->h);    // the select image is
-        // not being displayed
-
-        // call the sysCpu Component transac function
-        //sysCpu(inpCpuName, inpOpFreq, inpAccBal); // routine code has not been written
-        // implementation is in abeyance
+        // Now create the overloaded fileWrite functions for writing this data onto the userCfg file
+        // as well as updating the profile file with the current inpAccBal
 
         cout<<inpCpuName<<"\t"<<inpOpFreq<<endl;
     }
@@ -1571,7 +1563,7 @@ void _sys_cpu_sel_(BITMAP *srcBmp, string& inpCpuName, double& inpOpFreq, long &
     }
 }
 
-void _sys_nic_sel_(BITMAP *srcBmp, std::string &inpNicCardName, int &inpNicCapability, long &inpAccBal)
+void _sys_nic_sel_(BITMAP *srcBmp, std::string &inpNicCardName, int &inpModTxRate, int &inpNicCapability, long &inpAccBal)
 {
     blit_on_dBuffer(srcBmp, 175, 200, OPAQ);   // move this to the syCpuDisplayer function
     update_screen();
@@ -1581,8 +1573,8 @@ void _sys_nic_sel_(BITMAP *srcBmp, std::string &inpNicCardName, int &inpNicCapab
 
     nicList.push_back("Choose NIC Card:");
     nicList.push_back("  1. AT-2712FX(Encrypted) 100Mbps");
-    nicList.push_back("  2. AT2912T(Encrypted) 1000Mbps");
-    nicList.push_back("  3. AT2500(Non-Encrypted) 10Mbps");
+    nicList.push_back("  2. AT-2912T(Encrypted) 1000Mbps");
+    nicList.push_back("  3. AT-2500(Non-Encrypted) 10Mbps");
 
     // the above list is a dummy list which will be rectified once the alpha is out
     _seq_display_(nicList, srcBmp, 65, 17, 100, 100, 175, 200, false, CGREEN, LINEBYLN);
@@ -1590,12 +1582,66 @@ void _sys_nic_sel_(BITMAP *srcBmp, std::string &inpNicCardName, int &inpNicCapab
     switch(_select_handler_(1, dBuffer, 3))
     {
         case NICF:
+            inpNicCardName = "Allied Telesis AT-2712FX";
+            inpNicCapability = 100;
+            inpAccBal -= 161.61;    // this is in $$ -- According to CNET
+            inpModTxRate = 2;
         break;
 
         case NICS:
+            inpNicCardName = "Allied Telesis AT-2912T";
+            inpNicCapability = 1000;    // These are in Mbits/sec
+            inpAccBal -= 96.99; // seems a bit too less for an encrypted version
+            inpModTxRate = 3;
         break;
 
         case NICT:
+            inpNicCardName = "Allied Telesis AT-2500";
+            inpNicCapability = 10;
+            inpAccBal -= 148.66;    // This is a dummy value -- could not check up
+            inpModTxRate = 1;
+        break;
+    }
+
+    // Final version of this list coming up later after release of alpha version -- modTxRate
+    // have not done anything on this -- modTxRate will be used to define the speed of TxRx
+}
+
+
+void _sys_ram_sel_(BITMAP *srcBmp, long &inpRamCapac, long &inpAccBal)
+{
+    blit_on_dBuffer(srcBmp, 175, 200, OPAQ);   // move this to the syCpuDisplayer function
+    update_screen();
+
+    vector<string> ramList;
+    ramList.push_back("Choose RAM:");
+    ramList.push_back("  1. 1 GB RAM DDR2");
+    ramList.push_back("  2. 1 GB RAM DDR3");
+    ramList.push_back("  3. 2 GB RAM DDR3");
+    ramList.push_back("  4. 3 GB RAM DDR5");
+
+    _seq_display_(ramList, srcBmp, 65, 17, 100, 100, 175, 200, false, CGREEN, LINEBYLN);
+
+    switch(_select_handler_(1, dBuffer, 4)) // create the MACROS used here
+    {
+        case RAMF:
+            inpRamCapac = 4194304;  // This is in KBs
+            inpAccBal -= 58.19;
+        break;
+
+        case RAMT:
+            inpRamCapac = 4194304;
+            inpAccBal -= 64.66;
+        break;
+
+        case RAMTH:
+            inpRamCapac = 2097152;
+            inpAccBal -= 124.48;
+        break;
+
+        case RAMFR:
+            inpRamCapac = 3145728;
+            inpAccBal -= 132.46;
         break;
     }
 }

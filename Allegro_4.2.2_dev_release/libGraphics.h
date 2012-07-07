@@ -78,6 +78,11 @@
 #define NICS 2
 #define NICT 3
 
+#define RAMF 1
+#define RAMT 2
+#define RAMTH 3
+#define RAMFR 4
+
 void graphics_init(int mode, int widthReso, int heightReso);   // calls all other funstions for setting up the grahics primitives
 
 void create_instances();
@@ -107,7 +112,8 @@ void _translucent_bmp_txt_print_(BITMAP *inpHostBmp, BITMAP *inpTxtBmp, int rebl
 void _handle_event_(BITMAP *consoleTextBmp, int keyRead, txtBox& inpObj, std::string& inpCliStr, bool& inpLoopCont, int &returnVal, std::string& desPromptStr, bool checkBootLvl);  // handle key_events --> non main Engine
 void _distort_frame_(BITMAP* src, BITMAP* dst, int t, int type, float inpAmpli);    // screen disturbance routine
 void _sys_cpu_sel_(BITMAP *srcBmp, std::string& inpCpuName, double& inpOpFreq, long &inpAccBal);   // select CPU
-void _sys_nic_sel_(BITMAP *srcBmp, std::string &inpNicCardName, int &inpNicCapability, long &inpAccBal);
+void _sys_nic_sel_(BITMAP *srcBmp, std::string &inpNicCardName, int &inpModTxRate, int &inpNicCapability, long &inpAccBal);
+void _sys_ram_sel_(BITMAP *srcBmp, long &inpRamCapac, long &inpAccBal); // select RAM to be used
 int _select_handler_(int inpSelectIndex, BITMAP *srcBmp, int limit); // return the selectedIndex -- set up Macros for retVal
 
 bool gfx_error_handler(BITMAP *inpBmp); // bitmap error checker
