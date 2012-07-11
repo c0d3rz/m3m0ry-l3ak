@@ -1104,24 +1104,11 @@ void display_cfg_units(int inpMode, string& inpCpuName, double& inpOpFreq, strin
     if(inpMode == GET) // get from the user
     {
         _sys_cpu_sel_(objImg, inpCpuName, inpOpFreq, inpAccBal);
-        // now start the selection of the NicCards that will be used by the user
-        _sys_nic_sel_(objImg, inpNicCardName, inpModTxRate, inpNicCapability, inpAccBal); // create the function definition and
-        _sys_ram_sel_(objImg, inpRamCapac, inpAccBal);  // will be pouring in dummy values
+        _sys_nic_sel_(objImg, inpNicCardName, inpModTxRate, inpNicCapability, inpAccBal);
+        _sys_ram_sel_(objImg, inpRamCapac, inpAccBal);
         // Add parameter -- internal HDD space storage -- upgradable as game progresses
-
-        // Now create the overloaded fileWrite functions for writing this data onto the userCfg file
-        // as well as updating the profile file with the current inpAccBal
-
-        cout<<inpCpuName<<"\t"<<inpOpFreq<<endl;
     }
     else if(inpMode == DISP); // display to the user the current chosen configuration
-
-    // Now here we will be facing a problem
-    // Problem : Transfer different types of vars from called func
-    // and read and transfer different types of vars from calling function
-
-    // check out solution for the same -- might have to use some public variables
-    // or a friend function
 }
 
 // ------------ the internal functions ----------------------------------------------------------------------
@@ -1625,12 +1612,12 @@ void _sys_ram_sel_(BITMAP *srcBmp, long &inpRamCapac, long &inpAccBal)
     switch(_select_handler_(1, dBuffer, 4)) // create the MACROS used here
     {
         case RAMF:
-            inpRamCapac = 4194304;  // This is in KBs
+            inpRamCapac = 1048576;  // This is in KBs
             inpAccBal -= 58.19;
         break;
 
         case RAMT:
-            inpRamCapac = 4194304;
+            inpRamCapac = 1048576;
             inpAccBal -= 64.66;
         break;
 

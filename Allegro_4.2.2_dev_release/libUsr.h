@@ -19,7 +19,7 @@
 
 // MACROS
 #define PROFILEDIRPATH "./profile"  // this is a relative path
-#define STRKEY "ncpw@m3m0ry_l3ak"
+#define STRKEY "nb0dy_war10ck@m3m0ry_l3ak"
 #define LONGKEY 64000
 #define INTKEY 90
 
@@ -31,6 +31,8 @@
 
 #define NONE 0  // no file present
 #define FILER 1 // file is present -- read the file in this case
+
+#define TAB "\t"
 
 class usrProfile
 {
@@ -63,6 +65,7 @@ class usrProfile
         int fileCount;
         int cfgFileCount;
         std::string profileDirPath;
+        std::string cfgDirPath; // for creating and reading the cfg file
         bool loadProfile;
         bool loadCfg;
         int isNotCfgExist;    // check for cfgFileExist
@@ -85,6 +88,10 @@ class usrProfile
         bool _is_dir_exist_(std::string inpDirPath);    // check dir existence
         void _filewrite_(std::string &inpUname, long &inpHackVal, long &inpAccBal, int &inpUsrLevel, int &inpMissionNum, int &inpIsMissionComplete, int &inpIsLevelComplete);
         void _fileread_(std::string &inpUname, long &inpHackVal, long &inpAccBal, int &inpUsrLevel, int &inpMissionNum, int &inpIsMissionComplete, int &inpIsLevelComplete);
+
+        // cfgFile write overloaded function definition -- write routine for the following
+        void _filewrite_(std::string &inpCpuName, double &inpOpFreq, std::string &inpNicCardName, int &inpNicCapability, long &inpRamCapac, int &inpModTxRate);
+        void _fileread_(std::string &inpCpuName, double &inpOpFreq, std::string &inpNicCardName, int &inpNicCapability, long &inpRamCapac, int &inpModTxRate);
         // Now next code would be written for manData --> manipulates user data
         // For now --> search for the segfault that is being displayed at the back-end console
         // Less sleep has rendered me saturated -- I might be needing some nap time

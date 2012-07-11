@@ -267,25 +267,11 @@ void usrProfile::checkUsrCfg()
 
     if((isNotCfgExist == NONE) && (usrLvl == 1))
     {
-        // ask the user to select the data from the gfx
-        // decide the variables that need to be set and written the cfg file
-
-        // Data:
-        // 1. string::<sysCpuName>
-        // 2. short int::<cpuOpFreq>
-        // 3. string::<NICName>
-        // 4. short int::<NIC_capability>
-        // 5. long int::<RAM_capacity>
-        // 6. short int::<Modem_transfer_rate>
-        // These should suffice for the configuration file for the user -- also implement suitable key
-        // to encrypt the same
+        // Additional parameter -- internal HDD selection -- needs to be added
         cout<<"Before calling displayCfgUnits function\n";  // segFault occuring in display_cfg_units()
 
         display_cfg_units(GET, sysCpuName, cpuOpFreq, NICCardName, nicCapability, ramCapac, modTxRate, accBal);
-        cout<<sysCpuName<<" "<<cpuOpFreq<<" "<<NICCardName<<" "<<nicCapability<<" "<<ramCapac<<" "<<modTxRate<<endl;
-
-        //cout<<text_length(font, "D")<<" "<<text_height(font)<<endl; // This might be required for
-        // the function that will help in displaying and selecting the cfg_units to the user
+        _filewrite_(sysCpuName, cpuOpFreq, NICCardName, nicCapability, ramCapac, modTxRate);
     }
     else if(isNotCfgExist == FILER);    // read the configuration file contents
 
@@ -436,4 +422,45 @@ void usrProfile::_fileread_(std::string &inpUname, long &inpHackVal, long &inpAc
     cout<<inpUname<<endl;
     inpUname = _ver_decode_(inpUname, strKey);
     _unpad_string_(inpUname);   // proper string value done
+}
+
+void usrProfile::_filewrite_(std::string &inpCpuName, double &inpOpFreq, std::string &inpNicCardName, int &inpNicCapability, long &inpRamCapac, int &inpModTxRate)
+{
+    cout<<inpCpuName<<TAB<<inpOpFreq<<TAB<<inpNicCardName<<TAB<<inpNicCapability<<TAB<<((inpRamCapac/1024)/1024)<<TAB<<inpModTxRate<<endl;
+
+    cfgDirPath = PROFILEDIRPATH;
+    cfgDirPath.append("/");
+    (cfgDirPath.append(getUserName())).append(".cfg");
+
+    cout<<cfgDirPath<<endl; // the cfgDirPath is set properly
+
+
+    int doubleFirst = int(inpOpFreq);
+    int doubleSecond = int(inpOpFreq * 100) % 100;
+
+    // Now since both of them are int type -- just do the encryption on the int types
+    string strKey = STRKEY;
+    long longKey = LONGKEY;
+    int intKey = INTKEY;
+
+
+    if(inpCpuName.length() < strKey.length())
+        _pad_string_(inpCpuName, strKey.size());
+    else if(inpCpuName.length() == strKey.length());    // no padding required
+
+    string encCpuName = _ver_encode_(inpCpuName, strKey);
+    cout<<encCpuName<<endl;
+    encCpuName = base64_encode(reinterpret_cast<const unsigned char *>(encCpuName.c_str()), encCpuName.length());
+    cout<<encCpuName<<endl;
+
+    string decCpuName = base64_decode(encCpuName);
+    cout<<decCpuName<<endl;
+    decCpuName = _ver_decode_(decCpuName, strKey);
+    _unpad_string_(decCpuName); // Encoding seems to be working perfectly -- now time to write the
+    // encoded version of the cfgData onto a file -- the cfgFile
+
+    // Remove the decoding function calls from the fileWrite overloaded function
+    // create and write data into the file.
+
+    cout<<decCpuName<<endl;
 }
