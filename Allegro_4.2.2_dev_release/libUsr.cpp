@@ -169,18 +169,11 @@ void usrProfile::load_profile()
         _fileread_(_usrName_, hackVal, accBal, usrLvl, missionNum, isMissionComplete, isLevelComplete);   // write the file read code
 
         closedir(dirPtr);   // close the directory pointer after all the loading has taken place
-
-        // display the values that are read from the profile file
-        cout<<hackVal<<"\t"<<accBal<<"\t"<<usrLvl<<"\t"<<_usrName_<<"\t"<<missionNum<<"\t"<<isMissionComplete<<"\t"<<isLevelComplete<<endl;
     }
 }
 
 void usrProfile::load_cfg()
 {
-    // write the checking of the cfg file routines in the init usrProfile part only
-    cout<<"Configuration File Count\n";
-    cout<<cfgFileCount<<endl;   // so the filecount is working fine
-
     if(loadCfg)    // check bool
         return;
     else
@@ -212,7 +205,6 @@ void usrProfile::display_level_intro(FMOD::System*& inpSystem, FMOD_RESULT &inpR
     // missions available for the user in level 1 is 6
 
     // let the coding begin
-    //cout<<usrLvl<<endl;
     if(isNewProfileCreated)
     {
         cout<<"New Profile created\n";  // now read from the newly created profile file
@@ -223,13 +215,9 @@ void usrProfile::display_level_intro(FMOD::System*& inpSystem, FMOD_RESULT &inpR
     {
         cout<<"Reading pre created profile\n";
     }
-    //cout<<hackVal<<"\t"<<accBal<<"\t"<<usrLvl<<"\t"<<_usrName_<<"\t"<<missionNum<<"\t"<<isMissionComplete<<"\t"<<isLevelComplete<<endl;
-    // file read and file write working properly
 
     if(usrLvl == 0)
     {
-        // check if the usrLvl is zero or not
-        //cout<<"UsrLvl is zero\n";   // usrLvl is checked
         if(missionNum == 0)   // that's good
         {
             // call the function that will display the first cutscenes
@@ -256,7 +244,6 @@ void usrProfile::display_level_intro(FMOD::System*& inpSystem, FMOD_RESULT &inpR
 
 string usrProfile::getUserName()
 {
-    cout<<_usrName_<<endl;  // why the hell is the username not displayed -- aaha new profile object
     return _usrName_;
 }
 
@@ -272,6 +259,7 @@ void usrProfile::checkUsrCfg()
 
         display_cfg_units(GET, sysCpuName, cpuOpFreq, NICCardName, nicCapability, ramCapac, modTxRate, accBal);
         _filewrite_(sysCpuName, cpuOpFreq, NICCardName, nicCapability, ramCapac, modTxRate);
+        _filewrite_(_usrName_, hackVal, accBal, usrLvl, missionNum, isMissionComplete, isLevelComplete);
     }
     else if(isNotCfgExist == FILER);    // read the configuration file contents
 
@@ -419,20 +407,15 @@ void usrProfile::_fileread_(std::string &inpUname, long &inpHackVal, long &inpAc
 
     // Now release the decoding functions related to string
     inpUname = base64_decode(inpUname);
-    cout<<inpUname<<endl;
     inpUname = _ver_decode_(inpUname, strKey);
     _unpad_string_(inpUname);   // proper string value done
 }
 
 void usrProfile::_filewrite_(std::string &inpCpuName, double &inpOpFreq, std::string &inpNicCardName, int &inpNicCapability, long &inpRamCapac, int &inpModTxRate)
 {
-    cout<<inpCpuName<<TAB<<inpOpFreq<<TAB<<inpNicCardName<<TAB<<inpNicCapability<<TAB<<((inpRamCapac/1024)/1024)<<TAB<<inpModTxRate<<endl;
-
     cfgDirPath = PROFILEDIRPATH;
     cfgDirPath.append("/");
     (cfgDirPath.append(getUserName())).append(".cfg");
-
-    cout<<cfgDirPath<<endl; // the cfgDirPath is set properly
 
 
     int doubleFirst = int(inpOpFreq);
@@ -448,19 +431,63 @@ void usrProfile::_filewrite_(std::string &inpCpuName, double &inpOpFreq, std::st
         _pad_string_(inpCpuName, strKey.size());
     else if(inpCpuName.length() == strKey.length());    // no padding required
 
+    // same for the inpNicCardName
+    if(inpNicCardName.length() < strKey.length())
+        _pad_string_(inpNicCardName, strKey.size());
+    else if(inpNicCardName.length() == strKey.length());
+
     string encCpuName = _ver_encode_(inpCpuName, strKey);
-    cout<<encCpuName<<endl;
+    string encNicCardName = _ver_encode_(inpNicCardName, strKey);
     encCpuName = base64_encode(reinterpret_cast<const unsigned char *>(encCpuName.c_str()), encCpuName.length());
-    cout<<encCpuName<<endl;
+    encNicCardName = base64_encode(reinterpret_cast<const unsigned char*>(encNicCardName.c_str()), encNicCardName.length());
 
-    string decCpuName = base64_decode(encCpuName);
-    cout<<decCpuName<<endl;
-    decCpuName = _ver_decode_(decCpuName, strKey);
-    _unpad_string_(decCpuName); // Encoding seems to be working perfectly -- now time to write the
-    // encoded version of the cfgData onto a file -- the cfgFile
+    // now start writing the next part of the cfgFileWrite function
+    char *dynCpuArr;
+    dynCpuArr = new char[encCpuName.length()];
 
-    // Remove the decoding function calls from the fileWrite overloaded function
-    // create and write data into the file.
+    char *dynNicArr;
+    dynNicArr = new char[encNicCardName.length()];
 
-    cout<<decCpuName<<endl;
+    for(int index = 0; index < encCpuName.length(); index++)
+        dynCpuArr[index] = encCpuName[index];
+    for(int index = 0; index < encNicCardName.length(); index++)
+        dynNicArr[index] = encNicCardName[index];
+
+    // encode the other values too
+    // processing the double variable contents
+
+    int encDoubFirst = _ver_encode_(doubleFirst, intKey);
+    int encDoubSec = _ver_encode_(doubleSecond, intKey);
+
+    int encNicCapability = _ver_encode_(inpNicCapability, intKey);
+    long encRamCapac = _ver_encode_(inpRamCapac, longKey);
+    int encModTxRate = _ver_encode_(inpModTxRate, intKey);
+
+    // create the packfile instance
+    PACKFILE *cfgFileInst;
+    cfgFileInst = pack_fopen(cfgDirPath.c_str(), "wp");
+
+    if(!cfgFileInst)
+    {
+        delete []dynNicArr;
+        delete []dynCpuArr;
+        destroy_instances();
+        allegro_exit();
+    }
+
+    // start writing data in the file.
+    pack_iputl(encRamCapac, cfgFileInst);
+    pack_iputw(encDoubFirst, cfgFileInst);
+    pack_iputw(encDoubSec, cfgFileInst);
+    pack_iputw(encNicCapability, cfgFileInst);
+    pack_iputw(encModTxRate, cfgFileInst);
+
+    // start writing the string variables
+    pack_fwrite(dynCpuArr, encCpuName.length(), cfgFileInst);
+    pack_fwrite(dynNicArr, encNicCardName.length(), cfgFileInst);
+
+    // close instances and free memory
+    pack_fclose(cfgFileInst);
+    delete []dynCpuArr;
+    delete []dynNicArr;
 }
