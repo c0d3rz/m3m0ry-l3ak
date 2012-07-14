@@ -76,6 +76,9 @@ class usrProfile
         int usrLvl; // the game level in which the user is presently playing
         int dynVal;
 
+        int dynCpuStrVal;
+        int dynNicStrVal;   // these are for the cpu and the nir card name
+
 
         // Other mission and level related variables
         int missionNum; // store the value of the last mission completed -- default value at the start

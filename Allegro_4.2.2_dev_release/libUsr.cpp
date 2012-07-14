@@ -81,6 +81,7 @@ usrProfile::usrProfile()
     profileExists = false;
     fileCount = 0;
     profileDirPath = PROFILEDIRPATH;
+    cfgDirPath = PROFILEDIRPATH;
     loadProfile = false;
     isNewProfileCreated = false;    // assuming that new profile is not created till now
 
@@ -261,7 +262,37 @@ void usrProfile::checkUsrCfg()
         _filewrite_(sysCpuName, cpuOpFreq, NICCardName, nicCapability, ramCapac, modTxRate);
         _filewrite_(_usrName_, hackVal, accBal, usrLvl, missionNum, isMissionComplete, isLevelComplete);
     }
-    else if(isNotCfgExist == FILER);    // read the configuration file contents
+    else if(isNotCfgExist == FILER)
+    {
+        // first process the cfgDirPath variable
+        cfgDirPath = PROFILEDIRPATH;    // reset to original variable
+        cfgDirPath.push_back('/');
+
+        vector<string> fileList;
+        DIR *dirPtr;
+        struct dirent *dirp;
+
+        if((dirPtr = opendir(cfgDirPath.c_str())) == NULL)
+        {
+            allegro_message("Error Opening Directory");
+            destroy_instances();
+            // also need to destroy the sfx instances
+            allegro_exit();
+        }
+
+        while((dirp = readdir(dirPtr)) != NULL)
+            fileList.push_back(dirp->d_name);
+
+        vector<string>::iterator iter = fileList.begin();
+        for(; iter != fileList.end(); iter++)
+        {
+            if((*iter).find(".cfg") != string::npos)
+                cfgDirPath.append(*iter);
+        }
+        // check the value of the cfgDirPath
+        cout<<"cfg dir path "<<cfgDirPath<<endl;
+        _fileread_(sysCpuName, cpuOpFreq,NICCardName, nicCapability, ramCapac, modTxRate);
+    }
 
     // checking whether the data read from the profile file is still there in the memory or not
     cout<<hackVal<<"\t"<<accBal<<"\t"<<usrLvl<<"\t"<<_usrName_<<"\t"<<missionNum<<"\t"<<isMissionComplete<<"\t"<<isLevelComplete<<endl;
@@ -415,7 +446,8 @@ void usrProfile::_filewrite_(std::string &inpCpuName, double &inpOpFreq, std::st
 {
     cfgDirPath = PROFILEDIRPATH;
     cfgDirPath.append("/");
-    (cfgDirPath.append(getUserName())).append(".cfg");
+    (cfgDirPath.append(getUserName())).append(".cfg"); // This part also needs to be done in the
+    // place before the fileRead function call -- will be doing that after fileRead
 
 
     int doubleFirst = int(inpOpFreq);
@@ -443,14 +475,17 @@ void usrProfile::_filewrite_(std::string &inpCpuName, double &inpOpFreq, std::st
 
     // now start writing the next part of the cfgFileWrite function
     char *dynCpuArr;
-    dynCpuArr = new char[encCpuName.length()];
+    dynCpuStrVal = encCpuName.length();
+    dynNicStrVal = encNicCardName.length();
+
+    dynCpuArr = new char[dynCpuStrVal];
 
     char *dynNicArr;
-    dynNicArr = new char[encNicCardName.length()];
+    dynNicArr = new char[dynNicStrVal];
 
-    for(int index = 0; index < encCpuName.length(); index++)
+    for(int index = 0; index < dynCpuStrVal; index++)
         dynCpuArr[index] = encCpuName[index];
-    for(int index = 0; index < encNicCardName.length(); index++)
+    for(int index = 0; index < dynNicStrVal; index++)
         dynNicArr[index] = encNicCardName[index];
 
     // encode the other values too
@@ -462,6 +497,10 @@ void usrProfile::_filewrite_(std::string &inpCpuName, double &inpOpFreq, std::st
     int encNicCapability = _ver_encode_(inpNicCapability, intKey);
     long encRamCapac = _ver_encode_(inpRamCapac, longKey);
     int encModTxRate = _ver_encode_(inpModTxRate, intKey);
+
+    // encode the string lengths
+    int encCpuStrVal = _ver_encode_(dynCpuStrVal, intKey);
+    int encNicStrVal = _ver_encode_(dynNicStrVal, intKey);
 
     // create the packfile instance
     PACKFILE *cfgFileInst;
@@ -482,12 +521,51 @@ void usrProfile::_filewrite_(std::string &inpCpuName, double &inpOpFreq, std::st
     pack_iputw(encNicCapability, cfgFileInst);
     pack_iputw(encModTxRate, cfgFileInst);
 
+    // dynVals of strings
+    pack_iputw(encCpuStrVal, cfgFileInst);
+    pack_iputw(encNicStrVal, cfgFileInst);
+
     // start writing the string variables
-    pack_fwrite(dynCpuArr, encCpuName.length(), cfgFileInst);
-    pack_fwrite(dynNicArr, encNicCardName.length(), cfgFileInst);
+    pack_fwrite(dynCpuArr, dynCpuStrVal, cfgFileInst);
+    pack_fwrite(dynNicArr, dynNicStrVal, cfgFileInst);
 
     // close instances and free memory
     pack_fclose(cfgFileInst);
     delete []dynCpuArr;
     delete []dynNicArr;
+}
+
+
+void usrProfile::_fileread_(std::string &inpCpuName, double &inpOpFreq, std::string &inpNicCardName, int &inpNicCapability, long &inpRamCapac, int &inpModTxRate)
+{
+    // cfgDirPath has been set up before
+    // just checking whether the cfgDirPath is fine or not
+    cout<<"Current cfgDirPath "<<cfgDirPath<<endl;
+
+    // problem solved
+    // before any mishap
+    dynCpuStrVal = 0;
+    dynNicStrval = 0;
+
+    // open up the packFile instance
+    PACKFILE *readCfg;
+
+    string strKey = STRKEY;
+    long longKey = LONGKEY;
+    int intKey = INTKEY;
+
+    readCfg = pack_fopen(cfgDirPath.c_str(), "rp");
+    char *dynCpuArr;
+    char *dynNicArr;    // these are for the strings of CpuName and the NicCardName
+
+    // check if file
+    if(!readCfg)
+    {
+        // cleanup
+        allegro_message("Config file could not be read");
+        destroy_instances();
+        allegro_exit();
+    }
+
+    // Read the values accordingly
 }
