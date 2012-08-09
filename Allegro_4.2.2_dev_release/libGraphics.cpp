@@ -1097,15 +1097,21 @@ void set_gfx_background()
     update_screen();
 }
 
-void display_cfg_units(int inpMode, string& inpCpuName, double& inpOpFreq, string& inpNicCardName, int& inpNicCapability, long& inpRamCapac, int& inpModTxRate, long& inpAccBal)
+void display_cfg_units(int inpMode, int& inpCpuNameDef, int& inpOpFreq, int& inpNicCardDef, int& inpNicCapability, long& inpRamCapac, int& inpModTxRate, long& inpAccBal)
 {
     cout<<"Inside display_cfg_units\n";
     cout<<inpMode<<endl;
+
+    // The inpCpuNameDef is the decision maker for the inpCpuName -- decision to be done in the
+    // libUsr side
     if(inpMode == GET) // get from the user
     {
-        _sys_cpu_sel_(objImg, inpCpuName, inpOpFreq, inpAccBal);
-        _sys_nic_sel_(objImg, inpNicCardName, inpModTxRate, inpNicCapability, inpAccBal);
+        // Now to change the selection functions
+        _sys_cpu_sel_(objImg, inpCpuNameDef, inpOpFreq, inpAccBal);
+        _sys_nic_sel_(objImg, inpNicCardDef, inpModTxRate, inpNicCapability, inpAccBal);
         _sys_ram_sel_(objImg, inpRamCapac, inpAccBal);
+
+        // Now to change the filewrite that is happening in the libUsr module
         // Add parameter -- internal HDD space storage -- upgradable as game progresses
     }
     else if(inpMode == DISP); // display to the user the current chosen configuration
@@ -1472,7 +1478,7 @@ void _distort_frame_(BITMAP* src, BITMAP* dst, int t, int type, float inpAmpli) 
 	}
 }
 
-void _sys_cpu_sel_(BITMAP *srcBmp, string& inpCpuName, double& inpOpFreq, long &inpAccBal)
+void _sys_cpu_sel_(BITMAP *srcBmp, int &inpCpuNameDef, int& inpOpFreq, long &inpAccBal)
 {
     // display objImg
     blit_on_dBuffer(srcBmp, 175, 200, OPAQ);   // move this to the syCpuDisplayer function
@@ -1499,58 +1505,58 @@ void _sys_cpu_sel_(BITMAP *srcBmp, string& inpCpuName, double& inpOpFreq, long &
     switch((_select_handler_(1, dBuffer, 8)))
     {
         case PROCFIRST:
-            inpCpuName = "Intel Core Duo T2700";
-            inpOpFreq = 2.33;   // also reduce the accBal
+            inpCpuNameDef = CPU1;
+            inpOpFreq = 233;   // also reduce the accBal
             inpAccBal -= 621;   // Issue to be resolved -- reduce accBal allocated to user
         break;
 
         case PROCSEC:
-            inpCpuName = "Intel Core Duo T2600";
-            inpOpFreq = 2.16;
+            inpCpuNameDef = CPU2;
+            inpOpFreq = 216;
             inpAccBal -= 413;
         break;
 
         case PROCTHIRD:
-            inpCpuName = "Intel Xeon 5160";
-            inpOpFreq = 3.00;
+            inpCpuNameDef = CPU3;
+            inpOpFreq = 300;
             inpAccBal -= 903;   // all the deductions are done with the box prices available
             // from ark.intel.com
         break;
 
         case PROCFRTH:
-            inpCpuName = "Intel Xeon 5150";
-            inpOpFreq = 2.66;
+            inpCpuNameDef = CPU4;
+            inpOpFreq = 266;
             inpAccBal -= 735;
         break;
 
         case PROCFIFTH:
-            inpCpuName = "Intel Xeon X5355";
-            inpOpFreq = 2.66;
+            inpCpuNameDef = CPU5;
+            inpOpFreq = 266;
             inpAccBal -= 748;
         break;
 
         case PROCSIXTH:
-            inpCpuName = "AMD Turion 64 X2";
-            inpOpFreq = 2.80;
+            inpCpuNameDef = CPU6;
+            inpOpFreq = 280;
             inpAccBal -= 1043;  // the higher price starts from here
         break;
 
         case PROCSEVN:
-            inpCpuName = "AMD Athlon Regor";
-            inpOpFreq = 3.00;
+            inpCpuNameDef = CPU7;
+            inpOpFreq = 300;
             inpAccBal -= 1128;
         break;
 
         case PROCEGHT:
-            inpCpuName = "AMD Athlon Propus";
-            inpOpFreq = 2.60;
+            inpCpuNameDef = CPU8;
+            inpOpFreq = 260;
             inpAccBal -= 932;   // seems a bit overpriced based on the opFreq
             // though these are dummy values -- the list will undergo a change once the Alpha is final
         break;
     }
 }
 
-void _sys_nic_sel_(BITMAP *srcBmp, std::string &inpNicCardName, int &inpModTxRate, int &inpNicCapability, long &inpAccBal)
+void _sys_nic_sel_(BITMAP *srcBmp, int &inpNicCardDef, int &inpModTxRate, int &inpNicCapability, long &inpAccBal)
 {
     blit_on_dBuffer(srcBmp, 175, 200, OPAQ);   // move this to the syCpuDisplayer function
     update_screen();
@@ -1569,21 +1575,21 @@ void _sys_nic_sel_(BITMAP *srcBmp, std::string &inpNicCardName, int &inpModTxRat
     switch(_select_handler_(1, dBuffer, 3))
     {
         case NICF:
-            inpNicCardName = "Allied Telesis AT-2712FX";
+            inpNicCardDef = NIC1;
             inpNicCapability = 100;
             inpAccBal -= 161.61;    // this is in $$ -- According to CNET
             inpModTxRate = 2;
         break;
 
         case NICS:
-            inpNicCardName = "Allied Telesis AT-2912T";
+            inpNicCardDef = NIC2;
             inpNicCapability = 1000;    // These are in Mbits/sec
             inpAccBal -= 96.99; // seems a bit too less for an encrypted version
             inpModTxRate = 3;
         break;
 
         case NICT:
-            inpNicCardName = "Allied Telesis AT-2500";
+            inpNicCardDef = NIC3;
             inpNicCapability = 10;
             inpAccBal -= 148.66;    // This is a dummy value -- could not check up
             inpModTxRate = 1;

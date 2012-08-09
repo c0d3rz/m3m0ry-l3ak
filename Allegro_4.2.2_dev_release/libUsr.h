@@ -34,6 +34,19 @@
 
 #define TAB "\t"
 
+#define CPU1 1
+#define CPU2 2
+#define CPU3 3
+#define CPU4 4
+#define CPU5 5
+#define CPU6 6
+#define CPU7 7
+#define CPU8 8
+
+#define NIC1 1
+#define NIC2 2
+#define NIC3 3
+
 class usrProfile
 {
     public:
@@ -47,9 +60,10 @@ class usrProfile
 
         // for simplcity
         std::string sysCpuName;  // system CPU name
-        double cpuOpFreq;  // CPU Operating frequency
-        std::string NICCardName; // Network Interface Card Name -- another enhancement coming to mind
-        // maybe we can remove all the strings that are about to be written -- will see that later
+        int cpuNameDef; // for switching the name based on the macro stored in this var
+        int cpuOpFreq;  // CPU Operating frequency
+        std::string NICCardName;
+        int nicCardNamedef;
 
         // number matching -- remember that freeKevin -- for aforesaid enhancement
         int nicCapability; // the data rate
@@ -93,11 +107,34 @@ class usrProfile
         void _fileread_(std::string &inpUname, long &inpHackVal, long &inpAccBal, int &inpUsrLevel, int &inpMissionNum, int &inpIsMissionComplete, int &inpIsLevelComplete);
 
         // cfgFile write overloaded function definition -- write routine for the following
-        void _filewrite_(std::string &inpCpuName, double &inpOpFreq, std::string &inpNicCardName, int &inpNicCapability, long &inpRamCapac, int &inpModTxRate);
-        void _fileread_(std::string &inpCpuName, double &inpOpFreq, std::string &inpNicCardName, int &inpNicCapability, long &inpRamCapac, int &inpModTxRate);
-        // Now next code would be written for manData --> manipulates user data
-        // For now --> search for the segfault that is being displayed at the back-end console
-        // Less sleep has rendered me saturated -- I might be needing some nap time
+        void _filewrite_(std::string &inpCpuName, int &inpOpFreq, std::string &inpNicCardName, int &inpNicCapability, long &inpRamCapac, int &inpModTxRate);
+        void _fileread_(std::string &inpCpuName, int &inpOpFreq, std::string &inpNicCardName, int &inpNicCapability, long &inpRamCapac, int &inpModTxRate);
+
+        void _populate_sys_var_(int &inpCpuNameDef, int &inpNicCardNameDef);    // switch and populate system display variables
+
+        // Solution to the string read problem
+
+        // Write a unique data in the packFile with encryption
+        // on read -- do a switch and populate the string data variable
+
+        // Soution 2
+        // Create two cfg files for the same -- the problem will be solved either ways
+
+
+        // Design pattern for the cfgFileWrite needs to be changed
+
+        // The following will be the design pattern:
+        // 1. rather than writing the string variable data -- write some MACRO onto to the cfgFile
+        // 2. after the cfgFileRead -- do a switch operation to populate the string variables
+
+        // remove all the strings that were written in the cfg file
+
+        // Changes required to be done:
+        // 1. change the call to the overloaded fileWrite and fileRead functions
+        // 2. change the call to the selectItem functions
+        // 3. Create MACROS over which the switching will be done
+        // 4. Inside the display_cfg_unitts function do the switching of the dataMacro and then display the same to the user
+        // when the disp pmode is given
 };
 
 #endif

@@ -253,14 +253,24 @@ void usrProfile::checkUsrCfg()
     vector<string> fileList;    // the list of files in that directory
     string secCfgFilePath = PROFILEDIRPATH; // set to default
 
+    // Keep the variables named nicCardName and the sysCpuName -- make the change in the values
+    // after performing the switch operation on the integer parameters
+
     if((isNotCfgExist == NONE) && (usrLvl == 1))
     {
         // Additional parameter -- internal HDD selection -- needs to be added
         cout<<"Before calling displayCfgUnits function\n";  // segFault occuring in display_cfg_units()
 
-        display_cfg_units(GET, sysCpuName, cpuOpFreq, NICCardName, nicCapability, ramCapac, modTxRate, accBal);
-        _filewrite_(sysCpuName, cpuOpFreq, NICCardName, nicCapability, ramCapac, modTxRate);
-        _filewrite_(_usrName_, hackVal, accBal, usrLvl, missionNum, isMissionComplete, isLevelComplete);
+        // First create variables that will fill up the string values
+        // pass these to the display_cfg_units() function rather than the sysCpuName, NICCardName
+
+        display_cfg_units(GET, cpuNameDef, cpuOpFreq, nicCardNamedef, nicCapability, ramCapac, modTxRate, accBal);
+        _populate_sys_var_(cpuNameDef, nicCardNamedef);
+
+        // change the file write function -- write the Def inp variable data -- switch run after
+        // cfg file read
+        //_filewrite_(sysCpuName, cpuOpFreq, NICCardName, nicCapability, ramCapac, modTxRate);
+        //_filewrite_(_usrName_, hackVal, accBal, usrLvl, missionNum, isMissionComplete, isLevelComplete);
     }
     else if(isNotCfgExist == FILER)
     {
@@ -295,7 +305,7 @@ void usrProfile::checkUsrCfg()
     }
 
     // checking whether the data read from the profile file is still there in the memory or not
-    cout<<hackVal<<"\t"<<accBal<<"\t"<<usrLvl<<"\t"<<_usrName_<<"\t"<<missionNum<<"\t"<<isMissionComplete<<"\t"<<isLevelComplete<<endl;
+    //cout<<hackVal<<"\t"<<accBal<<"\t"<<usrLvl<<"\t"<<_usrName_<<"\t"<<missionNum<<"\t"<<isMissionComplete<<"\t"<<isLevelComplete<<endl;
 }
 
 // ---------------------------------- Internal functions ----------------------------------------------------
@@ -442,16 +452,12 @@ void usrProfile::_fileread_(std::string &inpUname, long &inpHackVal, long &inpAc
     _unpad_string_(inpUname);   // proper string value done
 }
 
-void usrProfile::_filewrite_(std::string &inpCpuName, double &inpOpFreq, std::string &inpNicCardName, int &inpNicCapability, long &inpRamCapac, int &inpModTxRate)
+void usrProfile::_filewrite_(std::string &inpCpuName, int &inpOpFreq, std::string &inpNicCardName, int &inpNicCapability, long &inpRamCapac, int &inpModTxRate)
 {
     cfgDirPath = PROFILEDIRPATH;
     cfgDirPath.append("/");
     (cfgDirPath.append(getUserName())).append(".cfg"); // This part also needs to be done in the
     // place before the fileRead function call -- will be doing that after fileRead
-
-
-    int doubleFirst = int(inpOpFreq);
-    int doubleSecond = int(inpOpFreq * 100) % 100;
 
     // Now since both of them are int type -- just do the encryption on the int types
     string strKey = STRKEY;
@@ -477,6 +483,7 @@ void usrProfile::_filewrite_(std::string &inpCpuName, double &inpOpFreq, std::st
     char *dynCpuArr;
     dynCpuStrVal = encCpuName.length();
     dynNicStrVal = encNicCardName.length();
+    cout<<dynCpuStrVal<<endl;   // need to check the reading of file in the basic test bed
 
     dynCpuArr = new char[dynCpuStrVal];
 
@@ -491,8 +498,7 @@ void usrProfile::_filewrite_(std::string &inpCpuName, double &inpOpFreq, std::st
     // encode the other values too
     // processing the double variable contents
 
-    int encDoubFirst = _ver_encode_(doubleFirst, intKey);
-    int encDoubSec = _ver_encode_(doubleSecond, intKey);
+    int encOpFreq = _ver_encode_(inpOpFreq, intKey);
 
     int encNicCapability = _ver_encode_(inpNicCapability, intKey);
     long encRamCapac = _ver_encode_(inpRamCapac, longKey);
@@ -501,6 +507,8 @@ void usrProfile::_filewrite_(std::string &inpCpuName, double &inpOpFreq, std::st
     // encode the string lengths
     int encCpuStrVal = _ver_encode_(dynCpuStrVal, intKey);
     int encNicStrVal = _ver_encode_(dynNicStrVal, intKey);
+
+    cout<<encNicCardName<<endl;
 
     // create the packfile instance
     PACKFILE *cfgFileInst;
@@ -516,8 +524,7 @@ void usrProfile::_filewrite_(std::string &inpCpuName, double &inpOpFreq, std::st
 
     // start writing data in the file.
     pack_iputl(encRamCapac, cfgFileInst);
-    pack_iputw(encDoubFirst, cfgFileInst);
-    pack_iputw(encDoubSec, cfgFileInst);
+    pack_iputw(encOpFreq, cfgFileInst);
     pack_iputw(encNicCapability, cfgFileInst);
     pack_iputw(encModTxRate, cfgFileInst);
 
@@ -536,7 +543,7 @@ void usrProfile::_filewrite_(std::string &inpCpuName, double &inpOpFreq, std::st
 }
 
 
-void usrProfile::_fileread_(std::string &inpCpuName, double &inpOpFreq, std::string &inpNicCardName, int &inpNicCapability, long &inpRamCapac, int &inpModTxRate)
+void usrProfile::_fileread_(std::string &inpCpuName, int &inpOpFreq, std::string &inpNicCardName, int &inpNicCapability, long &inpRamCapac, int &inpModTxRate)
 {
     // cfgDirPath has been set up before
     // just checking whether the cfgDirPath is fine or not
@@ -545,7 +552,7 @@ void usrProfile::_fileread_(std::string &inpCpuName, double &inpOpFreq, std::str
     // problem solved
     // before any mishap
     dynCpuStrVal = 0;
-    dynNicStrval = 0;
+    dynNicStrVal = 0;
 
     // open up the packFile instance
     PACKFILE *readCfg;
@@ -567,5 +574,107 @@ void usrProfile::_fileread_(std::string &inpCpuName, double &inpOpFreq, std::str
         allegro_exit();
     }
 
-    // Read the values accordingly
+    // Read the values accordingly -- This is the part that makes the things tricky
+    inpRamCapac = pack_igetl(readCfg);
+    inpOpFreq = pack_igetw(readCfg);
+
+    inpNicCapability = pack_igetw(readCfg);
+    inpModTxRate = pack_igetw(readCfg);
+
+    // read the dynamic values of strings
+    dynCpuStrVal = pack_igetw(readCfg);
+    dynNicStrVal = pack_igetw(readCfg);
+
+    // need to read the strings
+    //dynCpuStrVal = _ver_decode_(dynCpuStrVal, intKey);
+    cout<<dynNicStrVal<<endl;
+
+    dynCpuArr = new char[dynCpuStrVal];
+    pack_fgets(dynCpuArr, (dynCpuStrVal + 1), readCfg);
+
+    for(int index = 0; index < (dynCpuStrVal + 1); index++)
+        inpCpuName.push_back(dynCpuArr[index]);
+    inpCpuName = base64_decode(inpCpuName);
+    inpCpuName = _ver_decode_(inpCpuName, strKey);
+    _unpad_string_(inpCpuName);
+
+    dynNicStrVal = _ver_decode_(dynNicStrVal, intKey);
+    dynNicArr = new char[dynNicStrVal];
+    pack_fgets(dynNicArr, (dynNicStrVal + 1), readCfg);
+
+    for(int index = 0; index < (dynNicStrVal + 1); index++)
+        inpNicCardName.push_back(dynNicArr[index]);
+
+    cout<<inpCpuName<<endl;
+
+    //inpNicCardName = base64_decode(inpNicCardName); // the string is NULL here -- why?
+    //inpNicCardName = _ver_decode_(inpNicCardName, strKey);
+    //_unpad_string_(inpNicCardName);
+
+    cout<<inpNicCardName<<endl;
+
+    // string still not read -- closing off the cfgRead instance
+    pack_fclose(readCfg);
+    delete []dynCpuArr; // This is where the problem keeps creeping up
+    delete []dynNicArr;
+    // free memory will be done later
+
+    // debugging section
+    //cout<<(_ver_decode_(inpRamCapac, longKey)/1024)/1024<<endl;
+    //cout<<_ver_decode_(inpOpFreq, intKey)<<endl;
+
+    // changed inpOpFreq to short int -- read is working fine
+}
+
+void usrProfile::_populate_sys_var_(int &inpCpuNameDef, int &inpNicCardNameDef)
+{
+    switch(inpCpuNameDef)
+    {
+        case CPU1:
+            sysCpuName = "Intel Core Duo T2700";
+        break;
+
+        case CPU2:
+            sysCpuName = "Intel Core Duo T2600";
+        break;
+
+        case CPU3:
+            sysCpuName = "Intel Xeon 5160";
+        break;
+
+        case CPU4:
+            sysCpuName = "Intel Xeon 5150";
+        break;
+
+        case CPU5:
+            sysCpuName = "Intel Xeon X5355";
+        break;
+
+        case CPU6:
+            sysCpuName = "AMD Turion 64 X2";
+        break;
+
+        case CPU7:
+            sysCpuName = "AMD Athlon Regor";
+        break;
+
+        case CPU8:
+            sysCpuName = "AMD Athlon Propus";
+            break;
+    }
+
+    switch(inpNicCardNameDef)
+    {
+        case NIC1:
+            NICCardName = "Allied Telesis AT-2712FX";
+        break;
+
+        case NIC2:
+            NICCardName = "Allied Telesis AT-2912T";
+        break;
+
+        case NIC3:
+            NICCardName = "Allied Telesis AT-2500";
+        break;
+    }
 }

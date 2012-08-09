@@ -1,49 +1,49 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="libClParser.cpp" open="1" top="0" tabpos="6">
+	<File name="libClParser.cpp" open="0" top="0" tabpos="6">
 		<Cursor position="687" topLine="9" />
 	</File>
-	<File name="libClParser.h" open="1" top="0" tabpos="9">
-		<Cursor position="438" topLine="3" />
+	<File name="libClParser.h" open="1" top="0" tabpos="5">
+		<Cursor position="438" topLine="1" />
 	</File>
-	<File name="libCrypt.cpp" open="1" top="0" tabpos="5">
-		<Cursor position="4610" topLine="179" />
+	<File name="libCrypt.cpp" open="0" top="0" tabpos="5">
+		<Cursor position="4610" topLine="176" />
 	</File>
-	<File name="libCrypt.h" open="1" top="0" tabpos="10">
-		<Cursor position="946" topLine="6" />
+	<File name="libCrypt.h" open="1" top="0" tabpos="6">
+		<Cursor position="946" topLine="3" />
 	</File>
 	<File name="libGraphics.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="75080" topLine="1618" />
+		<Cursor position="55788" topLine="1102" />
 	</File>
-	<File name="libGraphics.h" open="1" top="0" tabpos="11">
-		<Cursor position="1440" topLine="86" />
+	<File name="libGraphics.h" open="1" top="0" tabpos="7">
+		<Cursor position="4594" topLine="101" />
 	</File>
-	<File name="libSound.cpp" open="1" top="0" tabpos="4">
+	<File name="libSound.cpp" open="0" top="0" tabpos="4">
 		<Cursor position="1009" topLine="42" />
 	</File>
-	<File name="libSound.h" open="1" top="0" tabpos="12">
+	<File name="libSound.h" open="1" top="0" tabpos="8">
 		<Cursor position="329" topLine="3" />
 	</File>
-	<File name="libUsr.cpp" open="1" top="1" tabpos="2">
-		<Cursor position="18990" topLine="512" />
+	<File name="libUsr.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="16380" topLine="445" />
 	</File>
-	<File name="libUsr.h" open="1" top="0" tabpos="13">
-		<Cursor position="3883" topLine="80" />
+	<File name="libUsr.h" open="1" top="1" tabpos="9">
+		<Cursor position="4360" topLine="53" />
 	</File>
 	<File name="main.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="1583" topLine="97" />
+		<Cursor position="1583" topLine="85" />
 	</File>
-	<File name="main.h" open="1" top="0" tabpos="14">
+	<File name="main.h" open="1" top="0" tabpos="10">
 		<Cursor position="174" topLine="0" />
 	</File>
-	<File name="test.cpp" open="1" top="0" tabpos="7">
+	<File name="test.cpp" open="1" top="0" tabpos="4">
 		<Cursor position="2" topLine="0" />
 	</File>
-	<File name="txtBox.cpp" open="1" top="0" tabpos="8">
-		<Cursor position="5797" topLine="251" />
+	<File name="txtBox.cpp" open="0" top="0" tabpos="8">
+		<Cursor position="5797" topLine="248" />
 	</File>
-	<File name="txtBox.h" open="1" top="0" tabpos="15">
+	<File name="txtBox.h" open="1" top="0" tabpos="11">
 		<Cursor position="2303" topLine="0" />
 	</File>
 </CodeBlocks_layout_file>

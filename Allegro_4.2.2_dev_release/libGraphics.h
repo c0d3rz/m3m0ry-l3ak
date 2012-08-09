@@ -99,7 +99,7 @@ std::string query_uname(); // username query
 void display_intro(int mode, std::string inpEpName, std::string inpUserName, FMOD::System*& inpSystem, FMOD_RESULT &inpResult, FMOD::Sound*& inpBgSfxState, FMOD::Sound*& inpExSfxState, FMOD::Channel*& inpBgChannel, FMOD::Channel*& inpExChannel);   // give the mode to display that intro -- decide other modes too
 void clear_dBuffer();   // just clear the double buffer to the dark color
 void set_gfx_background();  // This will be setting the final background
-void display_cfg_units(int inpMode, std::string& inpCpuName, double& inpOpFreq, std::string& inpNicCardName, int& inpNicCapability, long& inpRamCapac, int& inpModTxRate, long& inpAccBal);    // mode->GET(user) -- currently working on this; mode->(DISP)(disp_on_screen)
+void display_cfg_units(int inpMode, int& inpCpuNameDef, int& inpOpFreq, int& inpNicCardDef, int& inpNicCapability, long& inpRamCapac, int& inpModTxRate, long& inpAccBal);    // mode->GET(user) -- currently working on this; mode->(DISP)(disp_on_screen)
 
 // internal functions
 void _seq_display_(std::vector<std::string> inpVector, BITMAP *inpBitmap, int allocWidth, int allocHeight, int inpBmpBlitx, int inpBmpBlity, int dBufBlitx, int dBufBlity, bool cursorVisibility, int txtColor, int mode); // character by character display
@@ -111,8 +111,8 @@ void _save_reblit_buffer_state_(int blitState); // saves the buffer state before
 void _translucent_bmp_txt_print_(BITMAP *inpHostBmp, BITMAP *inpTxtBmp, int reblitState, int blitTxtBmpPosx, int blitTxtBmpPosy, int alphaGradVal, int blitTransBmpPosx, int blitTransBmpPosy); // display the text on translucent BMP without losing the translucency
 void _handle_event_(BITMAP *consoleTextBmp, int keyRead, txtBox& inpObj, std::string& inpCliStr, bool& inpLoopCont, int &returnVal, std::string& desPromptStr, bool checkBootLvl);  // handle key_events --> non main Engine
 void _distort_frame_(BITMAP* src, BITMAP* dst, int t, int type, float inpAmpli);    // screen disturbance routine
-void _sys_cpu_sel_(BITMAP *srcBmp, std::string& inpCpuName, double& inpOpFreq, long &inpAccBal);   // select CPU
-void _sys_nic_sel_(BITMAP *srcBmp, std::string &inpNicCardName, int &inpModTxRate, int &inpNicCapability, long &inpAccBal);
+void _sys_cpu_sel_(BITMAP *srcBmp, int& inpCpuNameDef, int& inpOpFreq, long &inpAccBal);   // select CPU
+void _sys_nic_sel_(BITMAP *srcBmp, int &inpNicCardDef, int &inpModTxRate, int &inpNicCapability, long &inpAccBal);
 void _sys_ram_sel_(BITMAP *srcBmp, long &inpRamCapac, long &inpAccBal); // select RAM to be used
 int _select_handler_(int inpSelectIndex, BITMAP *srcBmp, int limit); // return the selectedIndex -- set up Macros for retVal
 
