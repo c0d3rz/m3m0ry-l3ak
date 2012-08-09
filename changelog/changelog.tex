@@ -4,23 +4,26 @@
 
 \begin{document}
 
-\title{Changelog v28 devRelease}	% give document title here
-\author{war10ck}	% give author name here
+\title{Changelog v31 devRelease}	% give document title here
+\author{war10ck, Sudo}	% give author name here
 \date{\today}
 \maketitle
 
-\section{Changelog for dev release v28:}
+\section{Changelog for dev release v31:}
 Issues Resolved:\newline
-1. SelectImage dislayed, dummy list of sysCpu displayed in objListImg.\newline
-2. load\_cfg() and other configuration file functions created.\newline
+1. Select functions created to select CPU, NICCard, RAM and other data values related to the mentioned like the transfer rate, the capacity of RAM, the name of the CPU, it's operating frequency.\newline
+2. Overloaded fileWrite and fileRead functions created. Need to change parameters written to properly create cfgFile.\newline
 
 Issues to be resolved:\newline
 1. Enhancement : Rather than switching the display resoluion while displaying the bootText, stretch\_blit the parent bootText image.\newline
 2. Enhancement : Create single handler for all events for selectImg -- cfgSelect.\newline
-3. Overload function \_fileWrite\_() for writing cfg file in profile folder.\newline
+3. Change writeParam -- remomve the string params that were written by the identifier variables that have been declared -- in the overloaded fileWrite and fileRead function. Read failure in second string written after the firs string is written and read. Writing occurs fine. Read doesn't produce correct results in the resulting var.\newline
+4. Verify function and flow for reading the cfg file and display of sysConfig when main gameplay starts.\newline
 
 \section{Note to developers}
-Have removed some people from the contributor side -- since they haven't been giving me any inputs. So I am guessing that these people were not interested in the project anymore. I am also getting frustrated due to the lack of coders for my project. I need some people who can code. In case you guys know someone who might be interested in coding regardless of the language(Of course, I will not ask to code in Java!!!! I hate that language too.) and type of game -- please ask him/her to join me. I need a coder who can help me out now.\newline
+Sorry for being so late in giving the update. Had lost all interest in this area, though as I am writing this changelog it still is not back. Sudo is the person who is trying to code at the moment taking all thehelp that he can take fomr war10ck.\newline
+
+Happy Coding!!!\newline
 
 \pagebreak
 
