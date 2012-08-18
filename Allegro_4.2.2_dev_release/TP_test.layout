@@ -25,11 +25,11 @@
 	<File name="libSound.h" open="1" top="0" tabpos="8">
 		<Cursor position="329" topLine="3" />
 	</File>
-	<File name="libUsr.cpp" open="1" top="0" tabpos="2">
-		<Cursor position="16380" topLine="445" />
+	<File name="libUsr.cpp" open="1" top="1" tabpos="2">
+		<Cursor position="18470" topLine="491" />
 	</File>
-	<File name="libUsr.h" open="1" top="1" tabpos="9">
-		<Cursor position="4360" topLine="53" />
+	<File name="libUsr.h" open="1" top="0" tabpos="9">
+		<Cursor position="4139" topLine="95" />
 	</File>
 	<File name="main.cpp" open="1" top="0" tabpos="1">
 		<Cursor position="1583" topLine="85" />

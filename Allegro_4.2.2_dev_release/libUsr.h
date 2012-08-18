@@ -107,8 +107,8 @@ class usrProfile
         void _fileread_(std::string &inpUname, long &inpHackVal, long &inpAccBal, int &inpUsrLevel, int &inpMissionNum, int &inpIsMissionComplete, int &inpIsLevelComplete);
 
         // cfgFile write overloaded function definition -- write routine for the following
-        void _filewrite_(std::string &inpCpuName, int &inpOpFreq, std::string &inpNicCardName, int &inpNicCapability, long &inpRamCapac, int &inpModTxRate);
-        void _fileread_(std::string &inpCpuName, int &inpOpFreq, std::string &inpNicCardName, int &inpNicCapability, long &inpRamCapac, int &inpModTxRate);
+        void _filewrite_(int &inpCpuNameDef, int &inpOpFreq, int &inpNicCardNameDef, int &inpNicCapability, long &inpRamCapac, int &inpModTxRate);
+        void _fileread_(int &inpCpuNameDef, int &inpOpFreq, int &inpNicCardNameDef, int &inpNicCapability, long &inpRamCapac, int &inpModTxRate);
 
         void _populate_sys_var_(int &inpCpuNameDef, int &inpNicCardNameDef);    // switch and populate system display variables
 

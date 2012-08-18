@@ -267,10 +267,8 @@ void usrProfile::checkUsrCfg()
         display_cfg_units(GET, cpuNameDef, cpuOpFreq, nicCardNamedef, nicCapability, ramCapac, modTxRate, accBal);
         _populate_sys_var_(cpuNameDef, nicCardNamedef);
 
-        // change the file write function -- write the Def inp variable data -- switch run after
-        // cfg file read
-        //_filewrite_(sysCpuName, cpuOpFreq, NICCardName, nicCapability, ramCapac, modTxRate);
-        //_filewrite_(_usrName_, hackVal, accBal, usrLvl, missionNum, isMissionComplete, isLevelComplete);
+        _filewrite_(cpuNameDef, cpuOpFreq, nicCardNamedef, nicCapability, ramCapac, modTxRate);
+        _filewrite_(_usrName_, hackVal, accBal, usrLvl, missionNum, isMissionComplete, isLevelComplete);
     }
     else if(isNotCfgExist == FILER)
     {
@@ -299,9 +297,8 @@ void usrProfile::checkUsrCfg()
             if((*iter).find(".cfg") != string::npos)
                 cfgDirPath.append(*iter);
         }
-        // check the value of the cfgDirPath
-        cout<<"cfg dir path "<<cfgDirPath<<endl;
-        _fileread_(sysCpuName, cpuOpFreq,NICCardName, nicCapability, ramCapac, modTxRate);
+        _fileread_(cpuNameDef, cpuOpFreq,nicCardNamedef, nicCapability, ramCapac, modTxRate);
+        _populate_sys_var_(cpuNameDef, nicCardNamedef);
     }
 
     // checking whether the data read from the profile file is still there in the memory or not
@@ -452,63 +449,33 @@ void usrProfile::_fileread_(std::string &inpUname, long &inpHackVal, long &inpAc
     _unpad_string_(inpUname);   // proper string value done
 }
 
-void usrProfile::_filewrite_(std::string &inpCpuName, int &inpOpFreq, std::string &inpNicCardName, int &inpNicCapability, long &inpRamCapac, int &inpModTxRate)
+void usrProfile::_filewrite_(int &inpCpuNameDef, int &inpOpFreq, int &inpNicCardNameDef, int &inpNicCapability, long &inpRamCapac, int &inpModTxRate)
 {
+    // params changed -- changing the values that will be written -- routine needs to be changed
     cfgDirPath = PROFILEDIRPATH;
     cfgDirPath.append("/");
     (cfgDirPath.append(getUserName())).append(".cfg"); // This part also needs to be done in the
     // place before the fileRead function call -- will be doing that after fileRead
 
-    // Now since both of them are int type -- just do the encryption on the int types
-    string strKey = STRKEY;
+    // Only int and long are required -- elimminated the requirement of strKey
     long longKey = LONGKEY;
     int intKey = INTKEY;
 
 
-    if(inpCpuName.length() < strKey.length())
-        _pad_string_(inpCpuName, strKey.size());
-    else if(inpCpuName.length() == strKey.length());    // no padding required
+    // removed the string padding code
+    // base64 and vernam encryption of the strings removed
 
-    // same for the inpNicCardName
-    if(inpNicCardName.length() < strKey.length())
-        _pad_string_(inpNicCardName, strKey.size());
-    else if(inpNicCardName.length() == strKey.length());
-
-    string encCpuName = _ver_encode_(inpCpuName, strKey);
-    string encNicCardName = _ver_encode_(inpNicCardName, strKey);
-    encCpuName = base64_encode(reinterpret_cast<const unsigned char *>(encCpuName.c_str()), encCpuName.length());
-    encNicCardName = base64_encode(reinterpret_cast<const unsigned char*>(encNicCardName.c_str()), encNicCardName.length());
-
-    // now start writing the next part of the cfgFileWrite function
-    char *dynCpuArr;
-    dynCpuStrVal = encCpuName.length();
-    dynNicStrVal = encNicCardName.length();
-    cout<<dynCpuStrVal<<endl;   // need to check the reading of file in the basic test bed
-
-    dynCpuArr = new char[dynCpuStrVal];
-
-    char *dynNicArr;
-    dynNicArr = new char[dynNicStrVal];
-
-    for(int index = 0; index < dynCpuStrVal; index++)
-        dynCpuArr[index] = encCpuName[index];
-    for(int index = 0; index < dynNicStrVal; index++)
-        dynNicArr[index] = encNicCardName[index];
+    // I would seriously start hating this code in case there still exits some memory leak somewhere
+    // after being moderated
 
     // encode the other values too
-    // processing the double variable contents
-
+    int encCpuNameDef = _ver_encode_(inpCpuNameDef, intKey);
+    int encNicCardNameDef = _ver_encode_(inpNicCardNameDef, intKey);
     int encOpFreq = _ver_encode_(inpOpFreq, intKey);
 
     int encNicCapability = _ver_encode_(inpNicCapability, intKey);
     long encRamCapac = _ver_encode_(inpRamCapac, longKey);
     int encModTxRate = _ver_encode_(inpModTxRate, intKey);
-
-    // encode the string lengths
-    int encCpuStrVal = _ver_encode_(dynCpuStrVal, intKey);
-    int encNicStrVal = _ver_encode_(dynNicStrVal, intKey);
-
-    cout<<encNicCardName<<endl;
 
     // create the packfile instance
     PACKFILE *cfgFileInst;
@@ -516,54 +483,41 @@ void usrProfile::_filewrite_(std::string &inpCpuName, int &inpOpFreq, std::strin
 
     if(!cfgFileInst)
     {
-        delete []dynNicArr;
-        delete []dynCpuArr;
         destroy_instances();
         allegro_exit();
     }
 
     // start writing data in the file.
     pack_iputl(encRamCapac, cfgFileInst);
+    pack_iputw(encCpuNameDef, cfgFileInst);
+    pack_iputw(encNicCardNameDef, cfgFileInst);
     pack_iputw(encOpFreq, cfgFileInst);
     pack_iputw(encNicCapability, cfgFileInst);
     pack_iputw(encModTxRate, cfgFileInst);
 
-    // dynVals of strings
-    pack_iputw(encCpuStrVal, cfgFileInst);
-    pack_iputw(encNicStrVal, cfgFileInst);
-
-    // start writing the string variables
-    pack_fwrite(dynCpuArr, dynCpuStrVal, cfgFileInst);
-    pack_fwrite(dynNicArr, dynNicStrVal, cfgFileInst);
-
     // close instances and free memory
     pack_fclose(cfgFileInst);
-    delete []dynCpuArr;
-    delete []dynNicArr;
 }
 
 
-void usrProfile::_fileread_(std::string &inpCpuName, int &inpOpFreq, std::string &inpNicCardName, int &inpNicCapability, long &inpRamCapac, int &inpModTxRate)
+void usrProfile::_fileread_(int &inpCpuNameDef, int &inpOpFreq, int &inpNicCardNameDef, int &inpNicCapability, long &inpRamCapac, int &inpModTxRate)
 {
+    // Now to change the fileRead routine -- check the overloaded fileWrite function above
+    // for the changes that heve been done -- only ineteger is about to be written at the moment
+    // removal of string vars required -- check *this function call for appropriate param passing
     // cfgDirPath has been set up before
     // just checking whether the cfgDirPath is fine or not
     cout<<"Current cfgDirPath "<<cfgDirPath<<endl;
 
-    // problem solved
-    // before any mishap
-    dynCpuStrVal = 0;
-    dynNicStrVal = 0;
+    // remember to delete the dynVal variables from the header in the class definition
 
     // open up the packFile instance
     PACKFILE *readCfg;
 
-    string strKey = STRKEY;
     long longKey = LONGKEY;
     int intKey = INTKEY;
 
     readCfg = pack_fopen(cfgDirPath.c_str(), "rp");
-    char *dynCpuArr;
-    char *dynNicArr;    // these are for the strings of CpuName and the NicCardName
 
     // check if file
     if(!readCfg)
@@ -576,55 +530,25 @@ void usrProfile::_fileread_(std::string &inpCpuName, int &inpOpFreq, std::string
 
     // Read the values accordingly -- This is the part that makes the things tricky
     inpRamCapac = pack_igetl(readCfg);
+    inpCpuNameDef = pack_igetw(readCfg);
+    inpNicCardNameDef = pack_igetw(readCfg);
     inpOpFreq = pack_igetw(readCfg);
-
     inpNicCapability = pack_igetw(readCfg);
     inpModTxRate = pack_igetw(readCfg);
 
-    // read the dynamic values of strings
-    dynCpuStrVal = pack_igetw(readCfg);
-    dynNicStrVal = pack_igetw(readCfg);
-
-    // need to read the strings
-    //dynCpuStrVal = _ver_decode_(dynCpuStrVal, intKey);
-    cout<<dynNicStrVal<<endl;
-
-    dynCpuArr = new char[dynCpuStrVal];
-    pack_fgets(dynCpuArr, (dynCpuStrVal + 1), readCfg);
-
-    for(int index = 0; index < (dynCpuStrVal + 1); index++)
-        inpCpuName.push_back(dynCpuArr[index]);
-    inpCpuName = base64_decode(inpCpuName);
-    inpCpuName = _ver_decode_(inpCpuName, strKey);
-    _unpad_string_(inpCpuName);
-
-    dynNicStrVal = _ver_decode_(dynNicStrVal, intKey);
-    dynNicArr = new char[dynNicStrVal];
-    pack_fgets(dynNicArr, (dynNicStrVal + 1), readCfg);
-
-    for(int index = 0; index < (dynNicStrVal + 1); index++)
-        inpNicCardName.push_back(dynNicArr[index]);
-
-    cout<<inpCpuName<<endl;
-
-    //inpNicCardName = base64_decode(inpNicCardName); // the string is NULL here -- why?
-    //inpNicCardName = _ver_decode_(inpNicCardName, strKey);
-    //_unpad_string_(inpNicCardName);
-
-    cout<<inpNicCardName<<endl;
+    // now decrypting the values read from the cfg file
+    inpRamCapac = _ver_decode_(inpRamCapac, longKey);
+    inpCpuNameDef = _ver_decode_(inpCpuNameDef, intKey);
+    inpNicCardNameDef = _ver_decode_(inpNicCardNameDef, intKey);
+    inpOpFreq = _ver_decode_(inpOpFreq, intKey);
+    inpNicCapability = _ver_decode_(inpNicCapability, intKey);
+    inpModTxRate = _ver_decode_(inpModTxRate, intKey);
 
     // string still not read -- closing off the cfgRead instance
     pack_fclose(readCfg);
-    delete []dynCpuArr; // This is where the problem keeps creeping up
-    delete []dynNicArr;
-    // free memory will be done later
 
-    // debugging section
-    //cout<<(_ver_decode_(inpRamCapac, longKey)/1024)/1024<<endl;
-    //cout<<_ver_decode_(inpOpFreq, intKey)<<endl;
-
-    // changed inpOpFreq to short int -- read is working fine
-}
+    // changing the read cfg fileRead overloaded function
+}/**/
 
 void usrProfile::_populate_sys_var_(int &inpCpuNameDef, int &inpNicCardNameDef)
 {
