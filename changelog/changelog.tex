@@ -4,24 +4,23 @@
 
 \begin{document}
 
-\title{Changelog v31 devRelease}	% give document title here
-\author{war10ck, Sudo}	% give author name here
+\title{Changelog v32 devRelease}	% give document title here
+\author{Sudo}	% give author name here
 \date{\today}
 \maketitle
 
-\section{Changelog for dev release v31:}
+\section{Changelog for dev release v32:}
 Issues Resolved:\newline
-1. Select functions created to select CPU, NICCard, RAM and other data values related to the mentioned like the transfer rate, the capacity of RAM, the name of the CPU, it's operating frequency.\newline
-2. Overloaded fileWrite and fileRead functions created. Need to change parameters written to properly create cfgFile.\newline
+1. Overloaded fileWrite and fileRead functions created. All changes in inpParams done.\newline
+2. Populate string vars for the cpuName and NICCardName created. Switching working perfectly.\newline
 
 Issues to be resolved:\newline
 1. Enhancement : Rather than switching the display resoluion while displaying the bootText, stretch\_blit the parent bootText image.\newline
 2. Enhancement : Create single handler for all events for selectImg -- cfgSelect.\newline
-3. Change writeParam -- remomve the string params that were written by the identifier variables that have been declared -- in the overloaded fileWrite and fileRead function. Read failure in second string written after the firs string is written and read. Writing occurs fine. Read doesn't produce correct results in the resulting var.\newline
-4. Verify function and flow for reading the cfg file and display of sysConfig when main gameplay starts.\newline
+3. Create the first version of the basic gameplay.\newline
 
 \section{Note to developers}
-Sorry for being so late in giving the update. Had lost all interest in this area, though as I am writing this changelog it still is not back. Sudo is the person who is trying to code at the moment taking all thehelp that he can take fomr war10ck.\newline
+It's nb0dy's birthday and I am late with the update. Sorry for that, so here it is the 32nd update. This update will be available even inthe google code dump.\newline
 
 Happy Coding!!!\newline
 
