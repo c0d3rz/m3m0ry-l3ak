@@ -7,6 +7,12 @@
 	<File name="libClParser.h" open="1" top="0" tabpos="5">
 		<Cursor position="438" topLine="1" />
 	</File>
+	<File name="libComp.cpp" open="1" top="1" tabpos="13">
+		<Cursor position="416" topLine="0" />
+	</File>
+	<File name="libComp.h" open="1" top="0" tabpos="12">
+		<Cursor position="157" topLine="0" />
+	</File>
 	<File name="libCrypt.cpp" open="0" top="0" tabpos="5">
 		<Cursor position="4610" topLine="176" />
 	</File>
@@ -14,10 +20,10 @@
 		<Cursor position="946" topLine="3" />
 	</File>
 	<File name="libGraphics.cpp" open="1" top="0" tabpos="3">
-		<Cursor position="55788" topLine="1102" />
+		<Cursor position="2403" topLine="696" />
 	</File>
 	<File name="libGraphics.h" open="1" top="0" tabpos="7">
-		<Cursor position="4594" topLine="101" />
+		<Cursor position="4903" topLine="102" />
 	</File>
 	<File name="libSound.cpp" open="0" top="0" tabpos="4">
 		<Cursor position="1009" topLine="42" />
@@ -25,17 +31,17 @@
 	<File name="libSound.h" open="1" top="0" tabpos="8">
 		<Cursor position="329" topLine="3" />
 	</File>
-	<File name="libUsr.cpp" open="1" top="1" tabpos="2">
-		<Cursor position="18470" topLine="491" />
+	<File name="libUsr.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="9404" topLine="274" />
 	</File>
 	<File name="libUsr.h" open="1" top="0" tabpos="9">
 		<Cursor position="4139" topLine="95" />
 	</File>
 	<File name="main.cpp" open="1" top="0" tabpos="1">
-		<Cursor position="1583" topLine="85" />
+		<Cursor position="4905" topLine="121" />
 	</File>
 	<File name="main.h" open="1" top="0" tabpos="10">
-		<Cursor position="174" topLine="0" />
+		<Cursor position="234" topLine="0" />
 	</File>
 	<File name="test.cpp" open="1" top="0" tabpos="4">
 		<Cursor position="2" topLine="0" />

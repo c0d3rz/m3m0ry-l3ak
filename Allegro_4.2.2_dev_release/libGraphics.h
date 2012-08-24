@@ -115,6 +115,7 @@ void _sys_cpu_sel_(BITMAP *srcBmp, int& inpCpuNameDef, int& inpOpFreq, long &inp
 void _sys_nic_sel_(BITMAP *srcBmp, int &inpNicCardDef, int &inpModTxRate, int &inpNicCapability, long &inpAccBal);
 void _sys_ram_sel_(BITMAP *srcBmp, long &inpRamCapac, long &inpAccBal); // select RAM to be used
 int _select_handler_(int inpSelectIndex, BITMAP *srcBmp, int limit); // return the selectedIndex -- set up Macros for retVal
+void _display_time_(std::string inpAscTime); // Display the ascii time to the user
 
 bool gfx_error_handler(BITMAP *inpBmp); // bitmap error checker
 

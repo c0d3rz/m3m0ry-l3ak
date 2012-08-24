@@ -26,6 +26,7 @@ BITMAP *objImg;     // the objective display image
 BITMAP *acPerfImg;     // action performed user -- previous action
 BITMAP *warningmsgImg; // the warning message
 BITMAP *selectImg;  // the menu selection image
+BITMAP *timeTxtWriteImg;    // the time write text image
 DATAFILE *gfxDat;   // the gfx_datafile
 // ---------------------------------------------
 
@@ -60,6 +61,7 @@ void create_instances()
     dBuffer = create_bitmap(sysWidth, sysHeight);
     tempStorage = create_bitmap(sysWidth, sysHeight);
     secTempStorage = create_bitmap(sysWidth, sysHeight);
+    timeTxtWriteImg = create_bitmap(150, 13);  // magic numbers need to be removed
 
     // load the datafile here
     gfxDat = load_datafile("./data/gfx_util.dat");
@@ -87,7 +89,8 @@ void create_instances()
     && gfx_error_handler(creditImg) && gfx_error_handler(secTempStorage) && gfx_error_handler(loginBckImg) && gfx_error_handler(upQueryImg)\
     && gfx_error_handler(mainBgImg) && gfx_error_handler(webBrowserImg) && gfx_error_handler(prevDisplayImg) &&\
     gfx_error_handler(queryBoxImg) && gfx_error_handler(alertBoxImg) && gfx_error_handler(objImg) &&\
-    gfx_error_handler(acPerfImg) && gfx_error_handler(warningmsgImg) && gfx_error_handler(selectImg));
+    gfx_error_handler(acPerfImg) && gfx_error_handler(warningmsgImg) && gfx_error_handler(selectImg) &&\
+    gfx_error_handler(timeTxtWriteImg));
     else
     {
         allegro_message("Error loading game resource files in memory");
@@ -100,6 +103,7 @@ void destroy_instances()
     destroy_bitmap(dBuffer);
     destroy_bitmap(tempStorage);
     destroy_bitmap(secTempStorage);
+    destroy_bitmap(timeTxtWriteImg);
 
     unload_datafile(gfxDat);    // SegFault removed -- make an update as soon as possible
     // a big hurdle is removed -- more tweakings require to be done
@@ -1689,6 +1693,18 @@ int _select_handler_(int inpSelectIndex, BITMAP *srcBmp, int limit)
         }
     }
     return retVal;
+}
+
+void _display_time_(string inpAscTime)  // also add blitPosx and blitPosY support
+{
+    cout<<"Inside _display_time_ function\n";
+    // on every call -- clear the bitmap before writing anything on it
+    clear_to_color(timeTxtWriteImg, CBLACK);
+    cout<<"After clearing the timeTxtWriteImg\n";
+    textprintf_ex(timeTxtWriteImg, font, 0, 0, CGREEN, -1, "%s", const_cast<char *>(inpAscTime.c_str()));
+    // fixing the image to dissolve this issue with the display - resoFix required for the display
+    cout<<"After image write\n";
+    blit_on_dBuffer(timeTxtWriteImg, 830, 8, OPAQ);
 }
 
 // --------------------------------------- bitmap error checker ----------------------------------------------------

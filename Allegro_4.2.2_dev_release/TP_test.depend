@@ -1,13 +1,13 @@
 # depslib dependency file v1.0
-1341056040 source:/home/sayantan/tp_test/TP_test/main.cpp
+1345671134 source:/home/sayantan/tp_test/TP_test/main.cpp
 	"main.h"
 
 1339525290 source:/home/sayantan/tp_test/TP_test/test.cpp
 
-1344540008 source:/home/sayantan/tp_test/TP_test/libGraphics.cpp
+1345845040 source:/home/sayantan/tp_test/TP_test/libGraphics.cpp
 	"libGraphics.h"
 
-1344539753 /home/sayantan/tp_test/TP_test/libGraphics.h
+1345845065 /home/sayantan/tp_test/TP_test/libGraphics.h
 	"libSound.h"
 	"libSysMod.h"
 	<iostream>
@@ -21,14 +21,16 @@
 	"libUsr.h"
 	"data/gfx_util.h"
 
-1337884958 /home/sayantan/tp_test/TP_test/main.h
+1345670482 /home/sayantan/tp_test/TP_test/main.h
 	<iostream>
 	<cstdlib>
 	<string>
+	<time.h>
 	<allegro.h>
 	"libGraphics.h"
 	"libUsr.h"
 	"libSound.h"
+	"libComp.h"
 	<fmodex/fmod.hpp>
 	<fmodex/fmod_errors.h>
 
@@ -68,7 +70,7 @@
 	<fmodex/fmod.hpp>
 	<fmodex/fmod_errors.h>
 
-1344190950 source:/home/sayantan/tp_test/TP_test/libUsr.cpp
+1345318207 source:/home/sayantan/tp_test/TP_test/libUsr.cpp
 	"libUsr.h"
 
 1330978958 /home/sayantan/tp_test/TP_test/libB64.h
@@ -125,4 +127,14 @@
 
 1340039966 source:/home/sayantan/tp_test/TP_test/libSysMod.cpp
 	"libSysMod.h"
+
+1345845203 source:/home/sayantan/tp_test/TP_test/libComp.cpp
+	"libComp.h"
+
+1345845140 /home/sayantan/tp_test/TP_test/libComp.h
+	<iostream>
+	<cstdlib>
+	<time.h>
+	<string>
+	"libGraphics.h"
 

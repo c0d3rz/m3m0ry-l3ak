@@ -34,6 +34,8 @@
 		<Unit filename="data/gfx_util.h" />
 		<Unit filename="libClParser.cpp" />
 		<Unit filename="libClParser.h" />
+		<Unit filename="libComp.cpp" />
+		<Unit filename="libComp.h" />
 		<Unit filename="libCrypt.cpp" />
 		<Unit filename="libCrypt.h" />
 		<Unit filename="libGraphics.cpp" />
